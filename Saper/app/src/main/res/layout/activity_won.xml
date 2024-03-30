@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".won_activity">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="96dp"
+            android:text="YOU WON"
+            android:textColor="#FF0000"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="70sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="454dp"
+
+            android:src="@drawable/won_game" />
+
+        <TextView
+            android:id="@+id/your_time"
+            android:layout_width="match_parent"
+            android:layout_height="33dp"
+            android:gravity="center"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:text="Your time:" />
+
+        <Button
+            android:id="@+id/main_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Main menu" />
+
+        <Button
+            android:id="@+id/try_again"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Play again" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
