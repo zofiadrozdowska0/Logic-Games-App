@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.MyApplication" parent="android:Theme.Material.Light.NoActionBar">
+        <!-- Ukryj pasek tytułowy -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- Dodaj domyślny styl do paska akcji -->
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+    </style>
+
+    <!-- Styl dla paska akcji -->
+    <style name="MyActionBar" parent="@android:style/Widget.Holo.ActionBar">
+        <!-- Ustaw wysokość na 0dp -->
+        <item name="android:height">0dp</item>
+    </style>
+
+</resources>
