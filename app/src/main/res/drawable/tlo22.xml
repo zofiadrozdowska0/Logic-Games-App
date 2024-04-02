@@ -1,0 +1,8 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <bitmap android:src="@drawable/tlo2" android:tileMode="disabled"/>
+    </item>
+    <item>
+        <color android:color="#50FFFFFF"/> <!-- 50% przezroczysty biały -->
+    </item>
+</layer-list>
