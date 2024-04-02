@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Maze</string>
+    <string name="score_message">Score: %1$d</string>
+</resources>
