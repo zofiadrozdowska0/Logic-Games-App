@@ -1,0 +1,89 @@
+package com.example.game
+import android.os.Bundle
+import android.view.animation.AnimationUtils
+import android.widget.ImageButton
+import android.widget.TextView
+import androidx.activity.ComponentActivity
+import com.example.game.R
+import androidx.activity.compose.setContent
+import java.util.Timer
+import java.util.TimerTask
+import kotlin.random.Random
+
+class MainActivity : ComponentActivity() {
+    private var score = 0
+    private var appearanceTimer: Timer? = null
+    private var level = 1 // Poziom trudności
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            setContentView(R.layout.layout)
+
+            // Inicjalizacja wszystkich przycisków obrazków
+            val imageButtons = listOf<ImageButton>(
+                findViewById(R.id.imageButton1),
+                findViewById(R.id.imageButton2),
+                findViewById(R.id.imageButton3),
+                findViewById(R.id.imageButton4),
+                findViewById(R.id.imageButton5),
+                findViewById(R.id.imageButton6),
+                findViewById(R.id.imageButton7),
+                findViewById(R.id.imageButton8),
+                findViewById(R.id.imageButton9)
+            )
+
+            // Inicjalizacja TextView dla wyniku
+            val scoreTextView = findViewById<TextView>(R.id.textView5)
+
+            // Ukrycie wszystkich obrazków na początku
+            imageButtons.forEach { it.visibility = ImageButton.INVISIBLE }
+
+            // Funkcja do losowego pojawiania się obrazków piratów w losowym czasie
+            fun randomAppearance() {
+                val randomIndex = Random.nextInt(imageButtons.size)
+                val imageButton = imageButtons[randomIndex]
+                val minDelayMillis = 500L // Minimalne opóźnienie w milisekundach
+                val maxDelayMillis = 2000L - (level * 100) // Maksymalne opóźnienie, zmniejszane wraz z poziomem trudności
+                val delayMillis = Random.nextLong(minDelayMillis, maxDelayMillis)
+                imageButton.postDelayed({
+                    imageButton.startAnimation(AnimationUtils.loadAnimation(this@MainActivity, R.anim.animation))
+                    imageButton.visibility = ImageButton.VISIBLE // Ustaw widoczność na widoczne po zakończeniu animacji
+                    val timer = Timer()
+                    timer.schedule(object : TimerTask() {
+                        override fun run() {
+                            runOnUiThread {
+                                if (imageButton.visibility == ImageButton.VISIBLE) {
+                                    imageButton.visibility = ImageButton.INVISIBLE // Ukryj obrazek, jeśli nie został kliknięty
+                                }
+                            }
+                        }
+                    }, 1000) // Ustaw czas, po którym obrazek zniknie (np. 3 sekundy)
+                }, delayMillis)
+            }
+
+            // Rozpocznij losowe pojawianie się obrazków piratów
+            val appearanceTimerTask = object : TimerTask() {
+                override fun run() {
+                    randomAppearance()
+                }
+            }
+            appearanceTimer = Timer()
+            appearanceTimer?.schedule(appearanceTimerTask, 0, 2000) // Uruchamia co 2 sekundy
+
+            // Ustawienie obsługi zdarzenia kliknięcia dla każdego przycisku obrazka
+            imageButtons.forEach { imageButton ->
+                imageButton.setOnClickListener {
+                    if (imageButton.visibility == ImageButton.VISIBLE) {
+                        score++
+                        scoreTextView.text = "Score: $score"
+                        imageButton.visibility = ImageButton.INVISIBLE
+                        if (score % 5 == 0) { // Zwiększ poziom trudności co 5 punktów
+                            level++
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
