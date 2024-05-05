@@ -14,30 +14,16 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 
-class friends : AppCompatActivity() {
+class checkfriend : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
-    private lateinit var btnadd: FloatingActionButton
 
     private lateinit var toggle: ActionBarDrawerToggle
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_friends)
+        setContentView(R.layout.activity_friendcheck)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        val linearLayout: LinearLayout =  findViewById(R.id.friendsView)
-        for (i in 0 until 10) {
-            val textView = TextView(this)
-            textView.text = "Friend $i"
-            textView.textSize = 22f
-            textView.setPadding(18, 18, 16, 16)
-            linearLayout.addView(textView)
-            textView.setOnClickListener {
-                val intent = Intent(applicationContext, checkfriend::class.java)
-                startActivity(intent)
-            }
-        }
-        btnadd = findViewById(R.id.fab_add_friend)
         drawerLayout = findViewById(R.id.drawer_layout)
         val navigationView: NavigationView = findViewById(R.id.nav_view)
 
@@ -67,10 +53,6 @@ class friends : AppCompatActivity() {
             }
             drawerLayout.closeDrawer(GravityCompat.START)
             true
-        }
-        btnadd.setOnClickListener{
-            val intent = Intent(this, addfriend::class.java)
-            startActivity(intent)
         }
     }
 

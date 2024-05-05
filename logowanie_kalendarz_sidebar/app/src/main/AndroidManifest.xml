@@ -19,6 +19,9 @@
             android:name=".friends"
             android:exported="false" />
         <activity
+            android:name=".checkfriend"
+            android:exported="false" />
+        <activity
             android:name=".addfriend"
             android:exported="false" />
         <activity

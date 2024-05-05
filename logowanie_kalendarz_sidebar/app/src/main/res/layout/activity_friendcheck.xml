@@ -4,7 +4,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".addfriend">
+    tools:context=".checkfriend">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main"
@@ -16,54 +16,47 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
+            app:layout_constraintBottom_toTopOf="@+id/calendarView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ScrollView
-            android:id="@+id/scrollView2"
-            android:layout_width="411dp"
-            android:layout_height="565dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginBottom="4dp"
+        <CalendarView
+            android:id="@+id/calendarView"
+            android:layout_width="413dp"
+            android:layout_height="339dp"
+            app:layout_constraintBottom_toTopOf="@+id/chartContainer"
+            app:layout_constraintHeight_percent="0.5"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+        <FrameLayout
+            android:id="@+id/chartContainer"
+            android:layout_width="408dp"
+            android:layout_height="231dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="3dp"
+            android:layout_marginBottom="26dp"
             app:layout_constraintBottom_toTopOf="@+id/button5"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchView">
-
-            <LinearLayout
-                android:id="@+id/addfriendView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
-        </ScrollView>
-
-        <SearchView
-            android:id="@+id/searchView"
-            android:layout_width="409dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="1dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="1dp"
-            android:layout_marginBottom="1dp"
-            app:layout_constraintBottom_toTopOf="@+id/scrollView2"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.5"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar"
-            app:layout_constraintVertical_bias="0.968" />
+            app:layout_constraintTop_toBottomOf="@+id/calendarView" />
 
         <Button
             android:id="@+id/button5"
             android:layout_width="161dp"
             android:layout_height="51dp"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="6dp"
             android:layout_marginEnd="25dp"
-            android:layout_marginBottom="10dp"
-            android:text="Dodaj znajomego"
+            android:layout_marginBottom="5dp"
+            android:text="Usuń znajomego"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
+            app:layout_constraintTop_toBottomOf="@+id/chartContainer" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
