@@ -133,6 +133,34 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "Userdata", null, 1
         return count > 0
     }
 
+    fun getInvitedFriends(): List<String> {
+        val userId = MainActivity.CurrentUser.userId
+        val invitedFriends = mutableListOf<String>()
+        val db = this.readableDatabase
+
+        // Zapytanie wybiera użytkowników, którzy zaprosili aktualnie zalogowanego użytkownika,
+        // ale którzy nie są jego obustronnymi znajomymi
+        val query = "SELECT user_id " +
+                "FROM Friends " +
+                "WHERE friend_id = ? " +
+                "AND user_id != ? " +
+                "AND user_id NOT IN (SELECT friend_id FROM Friends WHERE user_id = ?)"
+
+        val selectionArgs = arrayOf(userId.toString(), userId.toString(), userId.toString())
+        val cursor = db.rawQuery(query, selectionArgs)
+
+        cursor.use {
+            val friendIdIndex = cursor.getColumnIndex("user_id")
+            while (it.moveToNext()) {
+                val friendId = it.getString(friendIdIndex)
+                invitedFriends.add(friendId)
+            }
+        }
+
+        return invitedFriends
+    }
+
+
 
 
     fun getUsernames(): List<String> {

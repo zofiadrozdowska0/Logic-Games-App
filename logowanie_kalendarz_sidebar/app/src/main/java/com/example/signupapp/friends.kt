@@ -92,7 +92,7 @@ class friends : AppCompatActivity() {
             startActivity(intent)
         }
         btnadd2.setOnClickListener{
-            val intent = Intent(this, addfriend::class.java)
+            val intent = Intent(this, friendinv::class.java)
             startActivity(intent)
         }
     }
