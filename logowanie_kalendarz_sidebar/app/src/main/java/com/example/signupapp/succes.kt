@@ -1,5 +1,6 @@
 package com.example.signupapp
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -35,7 +36,21 @@ class succes : AppCompatActivity() {
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                // Handle menu item click
+                R.id.nav_home -> {
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                }
+                R.id.nav_rules -> {
+                    val intent = Intent(applicationContext, rules::class.java)
+                    startActivity(intent)
+                }
+                R.id.nav_friends -> {
+                    val intent = Intent(applicationContext, friends::class.java)
+                    startActivity(intent)
+                }
+                R.id.nav_logout -> {
+                    val intent = Intent(applicationContext, MainActivity::class.java)
+                    startActivity(intent)
+                }
             }
             drawerLayout.closeDrawer(GravityCompat.START)
             true

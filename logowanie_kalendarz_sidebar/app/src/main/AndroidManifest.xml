@@ -16,6 +16,12 @@
             android:name=".succes"
             android:exported="false" />
         <activity
+            android:name=".friends"
+            android:exported="false" />
+        <activity
+            android:name=".rules"
+            android:exported="false" />
+        <activity
             android:name=".login"
             android:exported="false" />
         <activity
