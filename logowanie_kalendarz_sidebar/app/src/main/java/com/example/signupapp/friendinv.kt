@@ -1,9 +1,9 @@
 package com.example.signupapp
+
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.CheckBox
+import android.widget.LinearLayout
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -11,15 +11,17 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 
-class rules : AppCompatActivity() {
-    private lateinit var drawerLayout: DrawerLayout
-    private lateinit var toggle: ActionBarDrawerToggle
 
+class friendinv : AppCompatActivity() {
+    private lateinit var drawerLayout: DrawerLayout
+
+    private lateinit var toggle: ActionBarDrawerToggle
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_rules)
+        setContentView(R.layout.activity_addfriend)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
+
         drawerLayout = findViewById(R.id.drawer_layout)
         val navigationView: NavigationView = findViewById(R.id.nav_view)
 
@@ -27,7 +29,15 @@ class rules : AppCompatActivity() {
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_ryba1)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_ryba1)  // Ikona menu hamburger (dodaj plik do drawable)
+        val linearLayout: LinearLayout =  findViewById(R.id.addfriendView)
+        for (i in 0 until 100) {
+            val checkBox =
+                CheckBox(this) // 'this' refers to the context, replace with getActivity() if in a fragment
+            checkBox.text = "Friend " + (i + 1) // Set text for the checkbox
+            checkBox.setId(i) // Set unique ID for each checkbox
+            linearLayout.addView(checkBox) // Add checkbox to the linear layout
+        }
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_home -> {
@@ -49,39 +59,12 @@ class rules : AppCompatActivity() {
             drawerLayout.closeDrawer(GravityCompat.START)
             true
         }
-        val dropdown1 = findViewById<RelativeLayout>(R.id.dropdown1)
-        val content1 = findViewById<TextView>(R.id.content1)
-        dropdown1.setOnClickListener {
-            toggleContentVisibility(content1)
-        }
-        val dropdown2 = findViewById<RelativeLayout>(R.id.dropdown2)
-        val content2 = findViewById<TextView>(R.id.content2)
-        dropdown2.setOnClickListener {
-            toggleContentVisibility(content2)
-        }
-        val dropdown3 = findViewById<RelativeLayout>(R.id.dropdown3)
-        val content3 = findViewById<TextView>(R.id.content3)
-        dropdown3.setOnClickListener {
-            toggleContentVisibility(content3)
-        }
-        val dropdown4 = findViewById<RelativeLayout>(R.id.dropdown4)
-        val content4 = findViewById<TextView>(R.id.content4)
-        dropdown4.setOnClickListener {
-            toggleContentVisibility(content4)
-        }
-
     }
+
     override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {
         if (toggle.onOptionsItemSelected(item)) {
             return true
         }
         return super.onOptionsItemSelected(item)
-    }
-    private fun toggleContentVisibility(content: TextView) {
-        if (content.visibility == View.GONE) {
-            content.visibility = View.VISIBLE
-        } else {
-            content.visibility = View.GONE
-        }
     }
 }
