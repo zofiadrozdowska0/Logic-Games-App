@@ -17,7 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/butelka" />
+        app:srcCompat="@drawable/logo_butelka" />
 
     <TextView
         android:id="@+id/textView"
@@ -39,7 +39,7 @@
         android:background="@drawable/tab"
         android:backgroundTint="#F25F2A24"
         android:backgroundTintMode="multiply"
-        android:text="SIGN UP"
+        android:text="UTWÓRZ KONTO"
         android:textColor="#E6D9A2"
         android:textSize="30sp"
         android:textStyle="bold"
@@ -55,7 +55,7 @@
         android:background="@drawable/tab"
         android:backgroundTint="#F25F2A24"
         android:backgroundTintMode="multiply"
-        android:text="LOGIN"
+        android:text="ZALOGUJ SIĘ"
         android:textColor="#E6D9A2 "
         android:textSize="30sp"
         android:textStyle="bold"
