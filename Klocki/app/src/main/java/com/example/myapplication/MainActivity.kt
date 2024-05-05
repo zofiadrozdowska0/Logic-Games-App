@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity() {
                     view.animate().setDuration(0).start()
                 }
                 else -> {
-                    if (orgx - view.x == 0f && orgy - view.y == 0f) {
+                    if (orgx - view.x <= 3f && orgy - view.y <= 3f) {
                         view.animate().setDuration(60)
                         view.animate().rotationBy(90f)
                         if (view.rotation % 90 != 0f) //zabezpieczenie przed zatrzymaniem animacji przed wykonaniem całego obrotu
