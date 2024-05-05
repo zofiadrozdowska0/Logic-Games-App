@@ -30,7 +30,7 @@ class signup : AppCompatActivity() {
             val unametext = uname.text.toString()
             val pwordtext = pword.text.toString()
             val cpwordtext = cpword.text.toString()
-            val savedata = db.insertdata(unametext, pwordtext)
+            val savedata = db.insertUser(unametext, pwordtext)
 
             if (TextUtils.isEmpty(unametext) || TextUtils.isEmpty(pwordtext) || TextUtils.isEmpty(cpwordtext)){
                 Toast.makeText(this, "Add Username, Password & Confirm Password", Toast.LENGTH_SHORT).show()
