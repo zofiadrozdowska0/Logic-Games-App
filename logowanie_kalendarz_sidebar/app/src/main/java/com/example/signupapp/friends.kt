@@ -67,7 +67,7 @@ class friends : AppCompatActivity() {
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_ryba1)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_ryba_navbar)
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {

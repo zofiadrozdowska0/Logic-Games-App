@@ -6,31 +6,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".rules">
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/bg_piratestuff" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#E6D9A2">
+        android:background="#39FFFFFF">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/main"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#E6D9A2">
+            android:layout_height="match_parent">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="#811E3D"
+                android:background="#2F1F2B"
+                android:title=""
                 app:layout_constraintTop_toTopOf="parent"
-                tools:layout_editor_absoluteX="0dp" />
+                app:titleTextColor="#E5BE95" />
 
             <TextView
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:text="REGUŁY GRY"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textColor="#2F1F2B"
+                android:textSize="34sp"
+                android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/toolbar" />
@@ -40,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:background="#CAB5B4"
+                android:background="#E5BE95"
                 android:clickable="true"
                 android:focusable="true"
                 android:foregroundGravity="center_horizontal"
@@ -55,7 +66,7 @@
                     android:padding="16dp"
                     android:text="Refleks i koordynacja"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="#5F2A24" />
+                    android:textColor="#2F1F2B" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -71,6 +82,7 @@
                 android:id="@+id/content1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#80E5BE95"
                 android:padding="16dp"
                 android:text="WHAC-A-PIRATE\n\n
 Na ekranie wyświetlają się szybko znikające czaszki. Gracz musi kliknąć na czaszkę przed jej zniknięciem.\n\n
@@ -84,13 +96,11 @@ Przez minutę gracz obserwuje wyświetlające się kolorowe napisy. Kiedy kolor 
 +1 punkt za każde 2 poprawnie pominięte słowa\n
 +1 punkt za każde poprawne wskazanie\n
 -1 punkt za każde niepoprawne wskazanie\n"
-                android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/dropdown1"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
-                android:textStyle="bold" />
-
-
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/dropdown1" />
 
 
             <!-- Dropdown 2 -->
@@ -100,7 +110,7 @@ Przez minutę gracz obserwuje wyświetlające się kolorowe napisy. Kiedy kolor 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:background="#A3D6CC"
+                android:background="#E5BE95"
                 android:clickable="true"
                 android:focusable="true"
                 app:layout_constraintTop_toBottomOf="@id/content1"
@@ -115,7 +125,7 @@ Przez minutę gracz obserwuje wyświetlające się kolorowe napisy. Kiedy kolor 
                     android:padding="16dp"
                     android:text="Pamięć"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="#5F2A24" />
+                    android:textColor="#2F1F2B" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -130,6 +140,7 @@ Przez minutę gracz obserwuje wyświetlające się kolorowe napisy. Kiedy kolor 
                 android:id="@+id/content2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#80E5BE95"
                 android:padding="16dp"
                 android:text="MEMORY\n\n
 Na ekranie zostaje wyświetlona plansza z kart. Gracz, klikając na kart, ma za zadanie znaleźć pasujące do siebie pary.\n\n
@@ -141,11 +152,11 @@ ZAPAMIĘTYWANIE ELEMENTÓW\n\n
 Ekran podzielony jest na dwie części. początkowo dolna jest zakryta a na górnej wyświetlają się elementy należące do zbioru. Po 10 sekundach górna plansza zostaje zakryta i widoczna jest dolna część w której wyświetlane są elementy. Gracz musi wskazać elementy nie należące do górnego zboru poprzez kliknięcie na nie.\n\n
 +1 punkt za każde poprawne zaznaczenie elementu\n
 -1 punkt za każde niepoprawne zaznaczenie elementu\n"
-                android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/dropdown2"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/dropdown2" />
 
             <!-- Dropdown 3 -->
 
@@ -154,7 +165,7 @@ Ekran podzielony jest na dwie części. początkowo dolna jest zakryta a na gór
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:background="#E2D2D2 "
+                android:background="#E5BE95"
                 android:clickable="true"
                 android:focusable="true"
                 app:layout_constraintTop_toBottomOf="@id/content2"
@@ -169,7 +180,7 @@ Ekran podzielony jest na dwie części. początkowo dolna jest zakryta a na gór
                     android:padding="16dp"
                     android:text="Spostrzegawczość i koncentracja"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="#5F2A24" />
+                    android:textColor="#2F1F2B" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -184,6 +195,7 @@ Ekran podzielony jest na dwie części. początkowo dolna jest zakryta a na gór
                 android:id="@+id/content3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#80E5BE95"
                 android:padding="16dp"
                 android:text="UFOLUDKI\n\n
 Na ekranie wyświetlony zostaje statek do którego z lewej strony wchodzą piraci a z prawej wychodzą. Gracz ma za zadanie zliczać piratów znajdujących się wewnątrz statku.
@@ -203,11 +215,11 @@ Na podstawie małej mapy obrazków wyświetlającej się na górze ekranu, wskaz
 KLOCKI KSZTAŁTY\n\n
 Mając rozrzucone elementy, ułożyć je na wzór wyświetlający się na górze ekranu. Elementy można przesuwać przytrzymując je i przeciągając po ekranie. Można je też obracać klikając na nie.\n\n
 Gracz ma początkowo 6 punktów, po każdych 10 sekundach odejmowany jest 1 punkt.\n"
-                android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/dropdown3"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/dropdown3" />
 
             <!-- Dropdown 4 -->
 
@@ -216,7 +228,7 @@ Gracz ma początkowo 6 punktów, po każdych 10 sekundach odejmowany jest 1 punk
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:background="#BBE6DC"
+                android:background="#E5BE95"
                 android:clickable="true"
                 android:focusable="true"
                 app:layout_constraintTop_toBottomOf="@id/content3"
@@ -231,7 +243,7 @@ Gracz ma początkowo 6 punktów, po każdych 10 sekundach odejmowany jest 1 punk
                     android:padding="16dp"
                     android:text="Logika i dedukcja"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="#5F2A24" />
+                    android:textColor="#2F1F2B" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -246,6 +258,7 @@ Gracz ma początkowo 6 punktów, po każdych 10 sekundach odejmowany jest 1 punk
                 android:id="@+id/content4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#80E5BE95"
                 android:padding="16dp"
                 android:text="MATEMATYCZNE WORDLE\n\n
 Gracz z liczb i znaków wyświetlanych na dole ekranu musi ułożyć z nich 8 elementowe równanie. Tabela składająca się z 6 rzędów zapełniana jest od góry. Jeden rząd odpowiada jednemu równaniu. Po zapełnieniu jednego rzędu, gracz musi nacisnąć enter. Spowoduje to podświetlenie elementów w następujący sposób:\n
@@ -273,11 +286,11 @@ SEKWENCJE LICZB\n\n
 Na ekranie zostaje wyświetlona 3 elementowa sekwencja liczba z zasłoniętym 4 elementem. Gracz musi wskazać ten 4 element z elementów dostępnych na dole planszy.\n\n
 +1 - za każde poprawne wskazanie\n
 -1 - za każde niepoprawne wskazanie\n"
-                android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/dropdown4"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/dropdown4" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
@@ -286,6 +299,8 @@ Na ekranie zostaje wyświetlona 3 elementowa sekwencja liczba z zasłoniętym 4 
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:background="#2F1F2B"
+        app:itemTextColor="#E5BE95"
         app:menu="@menu/drawer_menu" />
 
 
