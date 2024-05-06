@@ -222,5 +222,22 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "Userdata", null, 1
         return userId
     }
 
+    fun checkUsernameExists(username: String): Boolean {
+        val db = this.readableDatabase
+        val query = "SELECT COUNT(*) FROM Users WHERE username = ?"
+        val selectionArgs = arrayOf(username)
+        val cursor = db.rawQuery(query, selectionArgs)
+
+        var count = 0
+        cursor.use {
+            if (it.moveToNext()) {
+                count = it.getInt(0)
+            }
+        }
+
+        return count > 0
+    }
+
+
 }
 
