@@ -5,24 +5,16 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E6D9A2"
+    android:background="@drawable/bg_tropics"
+    android:backgroundTint="#54FFFFFF"
+    android:backgroundTintMode="src_atop"
     tools:context=".MainActivity">
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_marginTop="50dp"
-        android:backgroundTint="#5F2A24"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo_butelka" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:text="SAMOGON"
         android:textColor="#5F2A24"
         android:textSize="50sp"
@@ -35,7 +27,7 @@
         android:id="@+id/button"
         android:layout_width="300dp"
         android:layout_height="60dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:background="@drawable/tab"
         android:backgroundTint="#F25F2A24"
         android:backgroundTintMode="multiply"
@@ -51,7 +43,7 @@
         android:id="@+id/button2"
         android:layout_width="300dp"
         android:layout_height="60dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="30dp"
         android:background="@drawable/tab"
         android:backgroundTint="#F25F2A24"
         android:backgroundTintMode="multiply"
@@ -63,4 +55,15 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#5F2A24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo_butelka" />
 </androidx.constraintlayout.widget.ConstraintLayout>
