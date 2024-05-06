@@ -18,10 +18,14 @@ class checkfriend : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
 
     private lateinit var toggle: ActionBarDrawerToggle
+    private lateinit var dbHelper: DBHelper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_friendcheck)
+        dbHelper = DBHelper(this) // Zainicjuj dbHelper
         val toolbar: Toolbar = findViewById(R.id.toolbar)
+        val toolbarTitle = dbHelper.getUsernameById(MainActivity.CurrentUser.userId)
+        toolbar.title = toolbarTitle
         setSupportActionBar(toolbar)
 
         drawerLayout = findViewById(R.id.drawer_layout)

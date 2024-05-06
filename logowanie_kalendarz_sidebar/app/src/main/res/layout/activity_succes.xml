@@ -17,7 +17,10 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="#811E3D"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:title=""
+            app:layout_constraintTop_toTopOf="parent"/>
+
+
 
         <CalendarView
             android:id="@+id/calendarView"

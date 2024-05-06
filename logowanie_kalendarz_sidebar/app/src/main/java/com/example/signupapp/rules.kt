@@ -14,11 +14,15 @@ import com.google.android.material.navigation.NavigationView
 class rules : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toggle: ActionBarDrawerToggle
+    private lateinit var dbHelper: DBHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rules)
+        dbHelper = DBHelper(this) // Zainicjuj dbHelper
         val toolbar: Toolbar = findViewById(R.id.toolbar)
+        val toolbarTitle = dbHelper.getUsernameById(MainActivity.CurrentUser.userId)
+        toolbar.title = toolbarTitle
         setSupportActionBar(toolbar)
         drawerLayout = findViewById(R.id.drawer_layout)
         val navigationView: NavigationView = findViewById(R.id.nav_view)
@@ -26,6 +30,7 @@ class rules : AppCompatActivity() {
         toggle = ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close)
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
+
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_ryba1)
         navigationView.setNavigationItemSelectedListener { menuItem ->

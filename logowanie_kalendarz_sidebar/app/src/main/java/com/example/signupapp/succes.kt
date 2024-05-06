@@ -2,6 +2,7 @@ package com.example.signupapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -16,13 +17,20 @@ import androidx.appcompat.widget.Toolbar
 class succes : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toggle: ActionBarDrawerToggle
+    private lateinit var dbHelper: DBHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_succes)
 
+        dbHelper = DBHelper(this)
+
         val toolbar: Toolbar = findViewById(R.id.toolbar)
+        val toolbarTitle = dbHelper.getUsernameById(MainActivity.CurrentUser.userId)
+        toolbar.title = toolbarTitle
         setSupportActionBar(toolbar)
+
+
 
         drawerLayout = findViewById(R.id.drawer_layout)
         val navigationView: NavigationView = findViewById(R.id.nav_view)

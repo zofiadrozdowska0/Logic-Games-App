@@ -22,13 +22,17 @@ class friendinv : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_addfriend)
+        dbHelper = DBHelper(this)
+
         val toolbar: Toolbar = findViewById(R.id.toolbar)
+        val toolbarTitle = dbHelper.getUsernameById(MainActivity.CurrentUser.userId)
+        toolbar.title = toolbarTitle
         setSupportActionBar(toolbar)
 
         drawerLayout = findViewById(R.id.drawer_layout)
         val navigationView: NavigationView = findViewById(R.id.nav_view)
 
-        dbHelper = DBHelper(this)
+
         selectedUserIds = mutableListOf()
 
         toggle = ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close)

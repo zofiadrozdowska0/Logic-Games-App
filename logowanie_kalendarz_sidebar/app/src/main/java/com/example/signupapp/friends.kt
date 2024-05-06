@@ -25,10 +25,13 @@ class friends : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_friends)
+        dbHelper = DBHelper(this) // Zainicjuj dbHelper
         val toolbar: Toolbar = findViewById(R.id.toolbar)
+        val toolbarTitle = dbHelper.getUsernameById(MainActivity.CurrentUser.userId)
+        toolbar.title = toolbarTitle
         setSupportActionBar(toolbar)
 
-        dbHelper = DBHelper(this) // Zainicjuj dbHelper
+
 
         val linearLayout: LinearLayout =  findViewById(R.id.friendsView)
 
