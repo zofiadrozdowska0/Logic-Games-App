@@ -6,17 +6,27 @@
     android:layout_height="match_parent"
     tools:context=".friends">
 
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/bg_skulls" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#33FFFFFF">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:background="#2F1F2B"
+            android:title=""
+            app:layout_constraintTop_toTopOf="parent"
+            app:titleTextColor="#E5BE95" />
 
         <FrameLayout
             android:id="@+id/chartContainer"
@@ -28,7 +38,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar" >
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -42,31 +52,39 @@
             </ScrollView>
         </FrameLayout>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <ImageButton
             android:id="@+id/fab_friendlist"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/tab"
             android:clickable="true"
             android:focusable="true"
-            app:elevation="6dp"
-            app:fabSize="normal"
-            app:srcCompat="@drawable/ic_plus"
+            android:padding="8dp"
+            app:backgroundTint="#2F1F2B"
+            app:backgroundTintMode="src_atop"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintHeight_percent="0.1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintWidth_percent="0.3"
+            app:srcCompat="@drawable/ic_notification_add" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <ImageButton
             android:id="@+id/fab_add_friend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/tab"
             android:clickable="true"
             android:focusable="true"
-            app:elevation="6dp"
-            app:fabSize="normal"
-            app:srcCompat="@drawable/ic_plus"
+            android:padding="8dp"
+            app:backgroundTint="#2F1F2B"
+            app:backgroundTintMode="src_atop"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.1"
+            app:layout_constraintWidth_percent="0.3"
+            app:srcCompat="@drawable/ic_person_add" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -75,6 +93,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:background="#2F1F2B"
+        app:itemTextColor="#E5BE95"
         app:menu="@menu/drawer_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

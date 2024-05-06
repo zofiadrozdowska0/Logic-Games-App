@@ -24,7 +24,8 @@
             android:layout_height="?attr/actionBarSize"
             android:background="#2F1F2B"
             android:title=""
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:titleTextColor="#E5BE95" />
 
         <CalendarView
             android:id="@+id/calendarView"

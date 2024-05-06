@@ -16,8 +16,8 @@ import com.google.android.material.navigation.NavigationView
 
 class friends : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
-    private lateinit var btnadd: FloatingActionButton
-    private lateinit var btnadd2: FloatingActionButton
+    private lateinit var btnadd: android.widget.ImageButton
+    private lateinit var btnadd2: android.widget.ImageButton
 
     private lateinit var dbHelper: DBHelper
 
@@ -67,20 +67,21 @@ class friends : AppCompatActivity() {
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_ryba1)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_ryba_navbar)
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_home -> {
-                    drawerLayout.closeDrawer(GravityCompat.START)
+                    val intent = Intent(applicationContext, succes::class.java)
+                    startActivity(intent)
                 }
                 R.id.nav_rules -> {
                     val intent = Intent(applicationContext, rules::class.java)
                     startActivity(intent)
                 }
                 R.id.nav_friends -> {
-                    // Nie trzeba ponownie uruchamiać tej samej aktywności
-                    drawerLayout.closeDrawer(GravityCompat.START)
+                    val intent = Intent(applicationContext, friends::class.java)
+                    startActivity(intent)
                 }
                 R.id.nav_logout -> {
                     val intent = Intent(applicationContext, MainActivity::class.java)

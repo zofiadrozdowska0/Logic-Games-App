@@ -35,12 +35,13 @@ class checkfriend : AppCompatActivity() {
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_ryba1)  // Ikona menu hamburger (dodaj plik do drawable)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_ryba_navbar)  // Ikona menu hamburger (dodaj plik do drawable)
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_home -> {
-                    drawerLayout.closeDrawer(GravityCompat.START)
+                    val intent = Intent(applicationContext, succes::class.java)
+                    startActivity(intent)
                 }
                 R.id.nav_rules -> {
                     val intent = Intent(applicationContext, rules::class.java)
