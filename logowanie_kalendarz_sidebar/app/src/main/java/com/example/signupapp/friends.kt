@@ -16,8 +16,8 @@ import com.google.android.material.navigation.NavigationView
 
 class friends : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
-    private lateinit var btnadd: FloatingActionButton
-    private lateinit var btnadd2: FloatingActionButton
+    private lateinit var btnadd: android.widget.ImageButton
+    private lateinit var btnadd2: android.widget.ImageButton
 
     private lateinit var dbHelper: DBHelper
 
