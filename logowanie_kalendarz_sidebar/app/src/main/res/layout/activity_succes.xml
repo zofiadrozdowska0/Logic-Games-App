@@ -22,16 +22,9 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-<<<<<<< HEAD
-            android:background="#811E3D"
-            android:title=""
-            app:layout_constraintTop_toTopOf="parent"/>
-
-
-=======
             android:background="#2F1F2B"
+            android:title=""
             app:layout_constraintTop_toTopOf="parent" />
->>>>>>> c5e80ec4b12a7919bc7d759a33f48b5163975bde
 
         <CalendarView
             android:id="@+id/calendarView"
