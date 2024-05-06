@@ -39,6 +39,14 @@ class signup : AppCompatActivity() {
                 if (pwordtext.equals(cpwordtext)) {
                     if (savedata == true) {
                         Toast.makeText(this, "Signup Succesful", Toast.LENGTH_SHORT).show()
+
+                        val userId = db.getUserIdByUsername(unametext)
+
+                        if (userId != null) {
+                            db.fillPointsHistory(db, userId)
+                        }
+
+
                         val intent = Intent(applicationContext, login::class.java)
                         startActivity(intent)
                     }

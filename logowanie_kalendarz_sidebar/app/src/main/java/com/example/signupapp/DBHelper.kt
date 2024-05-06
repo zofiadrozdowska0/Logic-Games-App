@@ -4,6 +4,9 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class DBHelper(context: Context) : SQLiteOpenHelper(context, "Userdata", null, 1) {
     override fun onCreate(db: SQLiteDatabase?) {
@@ -205,8 +208,6 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "Userdata", null, 1
 
 
 
-
-
     fun getUserIdByUsernameAndPassword(username: String, password: String): Int {
         val db = this.readableDatabase
         val query = "SELECT user_id FROM Users WHERE username = ? AND password = ?"
@@ -220,6 +221,28 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "Userdata", null, 1
             }
         }
         return userId
+    }
+
+    fun fillPointsHistory(dbHelper: DBHelper, userId: Int) {
+        val calendar = Calendar.getInstance()
+        val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+
+        val today = calendar.time
+        calendar.add(Calendar.DAY_OF_YEAR, -29) // odejmujemy 29 dni, aby uzyskać 30 dni wstecz
+        val startDate = calendar.time
+
+        while (startDate <= today) {
+            val date = sdf.format(startDate)
+            val reflexPoints = (0..10).random() // losujemy punkty dla różnych kategorii
+            val memoryPoints = (0..10).random()
+            val concentrationPoints = (0..10).random()
+            val logicPoints = (0..10).random()
+
+            dbHelper.insertPoints(userId, date, reflexPoints, memoryPoints, concentrationPoints, logicPoints)
+
+            calendar.add(Calendar.DAY_OF_YEAR, 1) // przechodzimy do kolejnego dnia
+            startDate.time = calendar.timeInMillis
+        }
     }
 
 }
