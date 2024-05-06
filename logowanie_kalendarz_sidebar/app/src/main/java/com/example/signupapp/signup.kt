@@ -41,6 +41,10 @@ class signup : AppCompatActivity() {
                         val savedata = db.insertUser(unametext, pwordtext)
                         if (savedata) {
                             Toast.makeText(this, "Signup Successful", Toast.LENGTH_SHORT).show()
+                            val userId = db.getUserIdByUsername(unametext)
+                            if (userId != null) {
+                                db.fillPointsHistory(db, userId)
+                            }
                             val intent = Intent(applicationContext, login::class.java)
                             startActivity(intent)
                         } else {
