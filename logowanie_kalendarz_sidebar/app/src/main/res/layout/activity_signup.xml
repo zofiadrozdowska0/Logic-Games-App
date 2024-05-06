@@ -5,109 +5,87 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E6D9A2"
+    android:background="@drawable/bg_map"
+    android:backgroundTint="#60FFFFFF"
+    android:backgroundTintMode="src_atop"
     tools:context=".signup">
 
-    <ImageView
-        android:id="@+id/imageViewBackground"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="33dp"
-        android:layout_marginBottom="20dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/logo_butelka"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/button3" />
-
-    <TextView
-        android:id="@+id/textView2"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="User sign up"
-        android:textColor="#5F2A24"
-        android:textSize="50sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:gravity="center|center_horizontal|center_vertical"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <EditText
-        android:id="@+id/editTextText3"
-        android:layout_width="300dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/bg"
-        android:ems="10"
-        android:hint="Username"
-        android:inputType="textPersonName"
-        android:paddingLeft="20dp"
-        android:textColor="#E6D9A2"
-        android:textColorHint="#E6D9A2"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rejestracja"
+            android:textColor="#5F2A24"
+            android:textSize="50sp"
+            android:textStyle="bold" />
 
-    <EditText
-        android:id="@+id/editTextText4"
-        android:layout_width="300dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/bg"
-        android:ems="10"
-        android:hint="Password"
-        android:inputType="text"
-        android:paddingLeft="20dp"
-        android:textColor="#E6D9A2"
-        android:textColorHint="#E6D9A2"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText3" />
+        <EditText
+            android:id="@+id/editTextText3"
+            android:layout_width="300dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg"
+            android:ems="10"
+            android:hint="Nazwa użytkownika"
+            android:inputType="textPersonName"
+            android:paddingLeft="20dp"
+            android:textColor="#5F2A24"
+            android:textColorHint="#E6D9A2"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-    <EditText
-        android:id="@+id/editTextText5"
-        android:layout_width="300dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/bg"
-        android:ems="10"
-        android:hint="Confirm Password"
-        android:inputType="text"
-        android:paddingLeft="20dp"
-        android:textColor="#E6D9A2"
-        android:textColorHint="#E6D9A2"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText4" />
+        <EditText
+            android:id="@+id/editTextText4"
+            android:layout_width="300dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg"
+            android:ems="10"
+            android:hint="Hasło"
+            android:inputType="text"
+            android:paddingLeft="20dp"
+            android:textColor="#5F2A24"
+            android:textColorHint="#E6D9A2"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="250dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/tab"
-        android:backgroundTint="#F25F2A24"
-        android:backgroundTintMode="multiply"
-        android:text="SIGN UP"
-        android:textColor="#E6D9A2"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText5" />
+        <EditText
+            android:id="@+id/editTextText5"
+            android:layout_width="300dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg"
+            android:ems="10"
+            android:hint="Powtórz hasło"
+            android:inputType="text"
+            android:paddingLeft="20dp"
+            android:textColor="#5F2A24"
+            android:textColorHint="#E6D9A2"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/tab"
+            android:backgroundTint="#F25F2A24"
+            android:backgroundTintMode="multiply"
+            android:text="ZAREJESTRUJ"
+            android:textColor="#E6D9A2"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

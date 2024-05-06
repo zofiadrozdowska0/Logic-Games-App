@@ -40,7 +40,7 @@ class succes : AppCompatActivity() {
         toggle.syncState()
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_ryba1)  // Ikona menu hamburger (dodaj plik do drawable)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_ryba_navbar)  // Ikona menu hamburger (dodaj plik do drawable)
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
