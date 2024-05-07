@@ -34,32 +34,46 @@ class signup : AppCompatActivity() {
 
             if (email.isNotEmpty() && username.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty()) {
                 if (password == confirmPassword) {
-                    auth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener { task ->
-                            if (task.isSuccessful) {
-                                val user = auth.currentUser
-                                val uid = user?.uid
+                    // Sprawdź, czy nazwa użytkownika już istnieje
+                    firestore.collection("users").whereEqualTo("username", username)
+                        .get()
+                        .addOnSuccessListener { documents ->
+                            if (documents.isEmpty) {
+                                // Nie znaleziono istniejącej nazwy użytkownika, można tworzyć nowe konto
+                                auth.createUserWithEmailAndPassword(email, password)
+                                    .addOnCompleteListener { task ->
+                                        if (task.isSuccessful) {
+                                            val user = auth.currentUser
+                                            val uid = user?.uid
 
-                                val userData = hashMapOf(
-                                    "username" to username,
-                                    "email" to email
-                                )
+                                            val userData = hashMapOf(
+                                                "username" to username,
+                                                "email" to email
+                                            )
 
-                                if (uid != null) {
-                                    firestore.collection("users").document(uid).set(userData)
-                                        .addOnSuccessListener {
-                                            // Przejdź do `activity_success`
-                                            val succesIntent = Intent(this, succes::class.java)
-                                            startActivity(succesIntent)
-                                            finish()
+                                            if (uid != null) {
+                                                firestore.collection("users").document(uid).set(userData)
+                                                    .addOnSuccessListener {
+                                                        // Przejdź do `activity_success`
+                                                        val succesIntent = Intent(this, succes::class.java)
+                                                        startActivity(succesIntent)
+                                                        finish()
+                                                    }
+                                                    .addOnFailureListener { e ->
+                                                        Toast.makeText(this, "Błąd zapisu danych: ${e.message}", Toast.LENGTH_SHORT).show()
+                                                    }
+                                            }
+                                        } else {
+                                            Toast.makeText(this, "Rejestracja nieudana: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                                         }
-                                        .addOnFailureListener { e ->
-                                            Toast.makeText(this, "Błąd zapisu danych: ${e.message}", Toast.LENGTH_SHORT).show()
-                                        }
-                                }
+                                    }
                             } else {
-                                Toast.makeText(this, "Rejestracja nieudana: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                                // Nazwa użytkownika już istnieje
+                                Toast.makeText(this, "Nazwa użytkownika jest już zajęta", Toast.LENGTH_SHORT).show()
                             }
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(this, "Błąd podczas sprawdzania nazwy użytkownika: ${e.message}", Toast.LENGTH_SHORT).show()
                         }
                 } else {
                     Toast.makeText(this, "Hasła nie pasują!", Toast.LENGTH_SHORT).show()
