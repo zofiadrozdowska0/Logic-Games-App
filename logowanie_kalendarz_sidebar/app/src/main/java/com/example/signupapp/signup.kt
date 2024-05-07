@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import java.util.Calendar
 
 class signup : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
@@ -82,5 +83,37 @@ class signup : AppCompatActivity() {
                 Toast.makeText(this, "Wprowadź wszystkie pola!", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+    private fun addRandomPointsInFuture(uid: String?) {
+        if (uid != null) {
+            val calendar = Calendar.getInstance()
+
+            for (i in 0 until 5) {
+                val currentDate = calendar.time
+                val randomPoints = generateRandomPoints() // Wygeneruj losowe punkty
+
+                val userPoints = hashMapOf(
+                    "memory_points" to randomPoints,
+                    "reflex_points" to randomPoints,
+                    "observation_points" to randomPoints,
+                    "sobriety_points" to randomPoints,
+                    "date" to currentDate
+                )
+
+                // Dodaj punkty do bazy danych
+                firestore.collection("user_points").document(uid).collection("points").add(userPoints)
+                    .addOnFailureListener { e ->
+                        Toast.makeText(this, "Błąd zapisu punktów: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
+
+                // Odejmij jeden dzień od aktualnej daty
+                calendar.add(Calendar.DAY_OF_MONTH, -1)
+            }
+        }
+    }
+
+    // Metoda generująca losowe punkty
+    private fun generateRandomPoints(): Int {
+        return (1..10).random() // Zakres punktów: 1-10
     }
 }
