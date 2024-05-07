@@ -67,7 +67,8 @@ class succes : AppCompatActivity() {
                     this.drawerLayout.closeDrawers()
                 }
                 R.id.nav_rules -> {
-                    this.drawerLayout.closeDrawers()
+                    val intent = Intent(applicationContext, rules::class.java)
+                    startActivity(intent)
                 }
                 R.id.nav_friends -> {
                     this.drawerLayout.closeDrawers()
