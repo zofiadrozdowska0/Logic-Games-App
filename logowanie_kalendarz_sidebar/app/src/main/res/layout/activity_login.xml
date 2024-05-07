@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="LOGOWANIE"
-            android:textColor="#5F2A24"
+            android:textColor="#2F1F2B"
             android:textSize="50sp"
             android:textStyle="bold" />
 
@@ -43,8 +43,8 @@
             android:hint="Nazwa użytkownika"
             android:inputType="text"
             android:paddingLeft="20dp"
-            android:textColor="#5F2A24"
-            android:textColorHint="#E6D9A2 "
+            android:textColor="#2E1E2A"
+            android:textColorHint="#E5BE94 "
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -58,8 +58,8 @@
             android:hint="Hasło"
             android:inputType="textPassword"
             android:paddingLeft="20dp"
-            android:textColor="#5F2A24"
-            android:textColorHint="#E6D9A2 "
+            android:textColor="#2E1E2A"
+            android:textColorHint="#E5BE94 "
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -70,10 +70,10 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="40dp"
             android:background="@drawable/tab"
-            android:backgroundTint="#F25F2A24"
-            android:backgroundTintMode="multiply"
+            android:backgroundTint="#2F1F2B"
+            android:backgroundTintMode="src_atop"
             android:text="ZALOGUJ"
-            android:textColor="#E6D9A2 "
+            android:textColor="#E5BE94 "
             android:textSize="30sp"
             android:textStyle="bold" />
     </LinearLayout>
