@@ -7,18 +7,17 @@ import android.database.sqlite.SQLiteOpenHelper
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
-
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 class DBHelper(context: Context) : SQLiteOpenHelper(context, "Userdata", null, 1) {
+    private val firestore = FirebaseFirestore.getInstance()
+
     override fun onCreate(db: SQLiteDatabase?) {
-        db?.execSQL(
-            "create table Users (user_id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT)"
-        )
-        db?.execSQL(
-            "create table PointsHistory (user_id INTEGER, date TEXT, reflex_points INTEGER, memory_points INTEGER, concentration_points INTEGER, logic_points INTEGER, PRIMARY KEY(user_id, date))"
-        )
-        db?.execSQL(
-            "create table Friends (user_id INTEGER, friend_id INTEGER, PRIMARY KEY(user_id, friend_id))"
-        )
+        db?.execSQL("create table Users (user_id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT)")
+        db?.execSQL("create table PointsHistory (user_id INTEGER, date TEXT, reflex_points INTEGER, memory_points INTEGER, concentration_points INTEGER, logic_points INTEGER, PRIMARY KEY(user_id, date))")
+        db?.execSQL("create table Friends (user_id INTEGER, friend_id INTEGER, PRIMARY KEY(user_id, friend_id))")
+
+
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -29,12 +28,25 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "Userdata", null, 1
 
     fun insertUser(username: String, password: String): Boolean {
         val db = this.writableDatabase
-        val cv = ContentValues()
-        cv.put("username", username)
-        cv.put("password", password)
+        val cv = ContentValues().apply {
+            put("username", username)
+            put("password", password)
+        }
         val result = db.insert("Users", null, cv)
+
+// Firebase: Zapisanie danych użytkownika do kolekcji "users" w bazie danych Firebase Firestore
+        val userMap = mapOf("username" to username, "password" to password)
+        firestore.collection("users")
+            .add(userMap)
+            .addOnSuccessListener { documentReference ->
+                println("DocumentSnapshot added with ID: ${documentReference.id}")
+            }
+            .addOnFailureListener { e ->
+                println("Error adding document: $e")
+            }
         return result != -1L
     }
+
 
     fun checkuserpass(username: String, password: String): Boolean{
         val p0 = this.writableDatabase
@@ -64,7 +76,16 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "Userdata", null, 1
         cv.put("memory_points", memoryPoints)
         cv.put("concentration_points", concentrationPoints)
         cv.put("logic_points", logicPoints)
-        val result = db.insert("PointsHistory", null, cv)
+        val result = db.insert("pointsHistory", null, cv)
+        val pointsMap = mapOf(
+            "userId" to userId,
+            "date" to date,
+            "reflex_points" to reflexPoints,
+            "memory_points" to memoryPoints,
+            "concentration_points" to concentrationPoints,
+            "logic_points" to logicPoints
+        )
+
         return result != -1L
     }
 
@@ -263,4 +284,3 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "Userdata", null, 1
         }
     }
 }
-
