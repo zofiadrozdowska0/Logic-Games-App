@@ -1,19 +1,86 @@
-//package com.example.signupapp
-//
-//import android.content.Intent
-//import android.os.Bundle
-//import android.widget.LinearLayout
-//import com.google.android.material.floatingactionbutton.FloatingActionButton
-//
-//import android.widget.Button
-//import android.widget.TextView
-//import androidx.appcompat.app.ActionBarDrawerToggle
-//import androidx.appcompat.app.AppCompatActivity
-//import androidx.appcompat.widget.Toolbar
-//import androidx.core.view.GravityCompat
-//import androidx.drawerlayout.widget.DrawerLayout
-//import com.google.android.material.navigation.NavigationView
-//
+package com.example.signupapp
+
+import android.content.Intent
+import android.os.Bundle
+import android.widget.LinearLayout
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.TextView
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+
+class friends : AppCompatActivity() {
+
+    private lateinit var friendsView: LinearLayout
+    private lateinit var fabAddFriend: ImageButton
+
+    private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var currentUserUid: String
+    private lateinit var friendsReference: DatabaseReference
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_friends)
+
+        friendsView = findViewById(R.id.friendsView)
+        fabAddFriend = findViewById(R.id.fab_add_friend)
+
+        firebaseAuth = FirebaseAuth.getInstance()
+        currentUserUid = firebaseAuth.currentUser?.uid ?: ""
+
+        friendsReference = FirebaseDatabase.getInstance().reference.child("friends").child(currentUserUid)
+
+        fabAddFriend.setOnClickListener {
+            startActivity(Intent(this, addfriend::class.java))
+        }
+
+        // Pobierz listę znajomych
+        retrieveFriends()
+    }
+
+    private fun retrieveFriends() {
+        friendsReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                friendsView.removeAllViews()
+
+                for (friendSnapshot in snapshot.children) {
+                    val friendUid = friendSnapshot.key
+                    val mutualRelation = friendSnapshot.child("mutualRelation").getValue(Boolean::class.java)
+
+                    // Sprawdź czy istnieje podwójna relacja
+                    if (mutualRelation != null && mutualRelation) {
+                        // Wyświetl znajomego
+                        displayFriend(friendUid)
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Obsługa błędu
+            }
+        })
+    }
+
+    private fun displayFriend(friendUid: String?) {
+        // Tutaj można dodać logikę wyświetlania znajomego w interfejsie użytkownika
+        // Na przykład, utworzyć widok dla każdego znajomego i dodać go do LinearLayout (friendsView)
+    }
+}
+
+
+
+
 //class friends : AppCompatActivity() {
 //    private lateinit var drawerLayout: DrawerLayout
 //    private lateinit var btnadd: android.widget.ImageButton

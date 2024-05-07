@@ -1,18 +1,149 @@
-//package com.example.signupapp
-//
-//import android.content.Intent
-//import android.os.Bundle
-//import android.view.MenuItem
-//import android.widget.Button
-//import android.widget.CheckBox
-//import android.widget.LinearLayout
-//import androidx.appcompat.app.ActionBarDrawerToggle
-//import androidx.appcompat.app.AppCompatActivity
-//import androidx.appcompat.widget.Toolbar
-//import androidx.core.view.GravityCompat
-//import androidx.drawerlayout.widget.DrawerLayout
-//import com.google.android.material.navigation.NavigationView
-//
+package com.example.signupapp
+
+import android.content.Intent
+import android.os.Bundle
+import android.view.MenuItem
+import android.widget.Button
+import android.widget.CheckBox
+import android.widget.LinearLayout
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
+import com.google.android.material.navigation.NavigationView
+
+class addfriend : AppCompatActivity() {
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var toggle: ActionBarDrawerToggle
+    private lateinit var selectedUserIds: MutableList<String> // Lista przechowująca ID zaznaczonych użytkowników
+
+    private lateinit var firestore: FirebaseFirestore
+    private lateinit var currentUserId: String
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_addfriend)
+
+        firestore = FirebaseFirestore.getInstance()
+        currentUserId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+
+        selectedUserIds = mutableListOf()
+
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
+        drawerLayout = findViewById(R.id.drawer_layout)
+        val navigationView: NavigationView = findViewById(R.id.nav_view)
+
+        toggle = ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close)
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_ryba_navbar)
+
+        val linearLayout: LinearLayout = findViewById(R.id.addfriendView)
+
+        fetchUsersFromFirestore(linearLayout)
+
+        val addButton: Button = findViewById(R.id.button5)
+        addButton.setOnClickListener {
+            addSelectedFriendsToFirestore() // Wywołaj metodę dodawania wybranych znajomych do bazy danych Firebase
+        }
+
+        navigationView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_home -> {
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                }
+                R.id.nav_rules -> {
+                    val intent = Intent(applicationContext, rules::class.java)
+                    startActivity(intent)
+                }
+                R.id.nav_friends -> {
+                    // Nie trzeba ponownie uruchamiać tej samej aktywności
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                }
+                R.id.nav_logout -> {
+                    FirebaseAuth.getInstance().signOut()
+                    val intent = Intent(applicationContext, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+            }
+            drawerLayout.closeDrawer(GravityCompat.START)
+            true
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (toggle.onOptionsItemSelected(item)) {
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun fetchUsersFromFirestore(linearLayout: LinearLayout) {
+        firestore.collection("users")
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    val userId = document.id
+                    val userName = document.getString("username")
+
+                    if (userId != currentUserId && userName != null) {
+                        val checkBox = CheckBox(this@addfriend)
+                        checkBox.text = userName
+                        checkBox.setTextColor(resources.getColor(R.color.purple_500))
+                        checkBox.setOnCheckedChangeListener { _, isChecked ->
+                            if (isChecked) {
+                                selectedUserIds.add(userId)
+                            } else {
+                                selectedUserIds.remove(userId)
+                            }
+                        }
+                        linearLayout.addView(checkBox)
+                    }
+                }
+            }
+            .addOnFailureListener { exception ->
+                // Obsługa błędu
+            }
+    }
+
+    private fun addSelectedFriendsToFirestore() {
+        val currentUserDocRef = firestore.collection("users").document(currentUserId)
+        currentUserDocRef.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    val currentUserFriends = document.get("friends") as? List<String> ?: listOf()
+                    val updatedFriends = currentUserFriends.toMutableList()
+                    updatedFriends.addAll(selectedUserIds)
+
+                    currentUserDocRef.update("friends", updatedFriends)
+                        .addOnSuccessListener {
+                            navigateToFriendsActivity()
+                        }
+                        .addOnFailureListener { exception ->
+                            // Obsługa błędu
+                        }
+                }
+            }
+            .addOnFailureListener { exception ->
+                // Obsługa błędu
+            }
+    }
+
+    private fun navigateToFriendsActivity() {
+        val intent = Intent(applicationContext, friends::class.java)
+        startActivity(intent)
+        finish()
+    }
+}
+
 //class addfriend : AppCompatActivity() {
 //    private lateinit var drawerLayout: DrawerLayout
 //    private lateinit var toggle: ActionBarDrawerToggle
@@ -114,3 +245,4 @@
 //        finish() // Zakończ bieżącą aktywność, aby użytkownik nie mógł wrócić do niej po przejściu do widoku znajomych
 //    }
 //}
+
