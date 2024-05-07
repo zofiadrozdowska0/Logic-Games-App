@@ -53,10 +53,7 @@
             app:layout_constraintTop_toBottomOf="@id/calendarView"
             app:layout_constraintWidth_percent="0.9" >
 
-            <com.example.signupapp.LineChartView
-                android:id="@+id/lineChart"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+
 
         </FrameLayout>
 

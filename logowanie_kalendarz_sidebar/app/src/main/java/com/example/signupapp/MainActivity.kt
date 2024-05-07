@@ -26,7 +26,5 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    object CurrentUser {
-        var userId: Int = -1
-    }
 }
+
