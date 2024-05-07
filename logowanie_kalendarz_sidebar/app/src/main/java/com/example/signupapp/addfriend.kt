@@ -1,6 +1,7 @@
 package com.example.signupapp
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Button
@@ -97,7 +98,7 @@ class addfriend : AppCompatActivity() {
                     if (userId != currentUserId && userName != null) {
                         val checkBox = CheckBox(this@addfriend)
                         checkBox.text = userName
-                        checkBox.setTextColor(resources.getColor(R.color.purple_500))
+                        checkBox.setTextColor(Color.rgb(47, 31, 43))
                         checkBox.setOnCheckedChangeListener { _, isChecked ->
                             if (isChecked) {
                                 selectedUserIds.add(userId)
