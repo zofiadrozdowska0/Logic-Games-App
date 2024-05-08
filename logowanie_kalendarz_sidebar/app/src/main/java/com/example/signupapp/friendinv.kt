@@ -28,7 +28,7 @@ class friendinv : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_addfriend)
+        setContentView(R.layout.activity_friendinv)
 
         firestore = FirebaseFirestore.getInstance()
         currentUserId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
@@ -48,11 +48,11 @@ class friendinv : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_ryba_navbar)
 
-        val linearLayout: LinearLayout = findViewById(R.id.addfriendView)
+        val linearLayout: LinearLayout = findViewById(R.id.friendinvView)
 
         fetchInvitersFromFirestore(linearLayout)
 
-        val addButton: Button = findViewById(R.id.button5)
+        val addButton: Button = findViewById(R.id.button6)
         addButton.setOnClickListener {
             sendFriendInvitations() // Wywołaj metodę wysyłania zaproszeń do znajomych
         }
