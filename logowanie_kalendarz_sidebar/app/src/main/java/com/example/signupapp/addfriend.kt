@@ -16,11 +16,13 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.firestore.SetOptions
 
 class addfriend : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var selectedUserIds: MutableList<String> // Lista przechowująca ID zaznaczonych użytkowników
+    private lateinit var invitedUserIds: MutableList<String> // Lista przechowująca ID użytkowników już zaproszonych
 
     private lateinit var firestore: FirebaseFirestore
     private lateinit var currentUserId: String
@@ -33,6 +35,7 @@ class addfriend : AppCompatActivity() {
         currentUserId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
 
         selectedUserIds = mutableListOf()
+        invitedUserIds = mutableListOf()
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -52,7 +55,7 @@ class addfriend : AppCompatActivity() {
 
         val addButton: Button = findViewById(R.id.button5)
         addButton.setOnClickListener {
-            addSelectedFriendsToFirestore() // Wywołaj metodę dodawania wybranych znajomych do bazy danych Firebase
+            sendFriendInvitations() // Wywołaj metodę wysyłania zaproszeń do znajomych
         }
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
@@ -91,29 +94,45 @@ class addfriend : AppCompatActivity() {
         firestore.collection("users")
             .get()
             .addOnSuccessListener { documents ->
-                for (document in documents) {
-                    val userId = document.id
-                    val userName = document.getString("username")
-
-                    if (userId != currentUserId && userName != null) {
-                        val checkBox = CheckBox(this@addfriend)
-                        checkBox.text = userName
-                        checkBox.setTextColor(Color.rgb(47, 31, 43))
-                        checkBox.setOnCheckedChangeListener { _, isChecked ->
-                            if (isChecked) {
-                                selectedUserIds.add(userId)
-                            } else {
-                                selectedUserIds.remove(userId)
+                val invitedUsers = mutableListOf<String>()
+                firestore.collection("friends")
+                    .whereEqualTo("Inviter", currentUserId)
+                    .get()
+                    .addOnSuccessListener { invitations ->
+                        for (invitation in invitations) {
+                            val inviteeId = invitation.getString("Invitee")
+                            if (inviteeId != null) {
+                                invitedUsers.add(inviteeId)
                             }
                         }
-                        linearLayout.addView(checkBox)
+                        for (document in documents) {
+                            val userId = document.id
+                            val userName = document.getString("username")
+
+                            if (userId != currentUserId && userName != null && userId !in invitedUsers) {
+                                val checkBox = CheckBox(this@addfriend)
+                                checkBox.text = userName
+                                checkBox.setTextColor(Color.rgb(47, 31, 43))
+                                checkBox.setOnCheckedChangeListener { _, isChecked ->
+                                    if (isChecked) {
+                                        selectedUserIds.add(userId)
+                                    } else {
+                                        selectedUserIds.remove(userId)
+                                    }
+                                }
+                                linearLayout.addView(checkBox)
+                            }
+                        }
                     }
-                }
+                    .addOnFailureListener { exception ->
+                        // Obsługa błędu
+                    }
             }
             .addOnFailureListener { exception ->
                 // Obsługa błędu
             }
     }
+
 
     private fun addSelectedFriendsToFirestore() {
         val currentUserDocRef = firestore.collection("users").document(currentUserId)
@@ -138,12 +157,37 @@ class addfriend : AppCompatActivity() {
             }
     }
 
+    private fun sendFriendInvitations() {
+        val inviterId = currentUserId
+
+        for (inviteeId in selectedUserIds) {
+            val invitationData = hashMapOf(
+                "Inviter" to inviterId,
+                "Invitee" to inviteeId
+            )
+
+            // Dodaj zaproszenie do kolekcji "friends" dla każdego zaproszonego użytkownika
+            firestore.collection("friends").document()
+                .set(invitationData, SetOptions.merge())
+                .addOnSuccessListener {
+                    // Sukces - zaproszenie zostało wysłane
+                    invitedUserIds.add(inviteeId)
+                }
+                .addOnFailureListener { exception ->
+                    // Obsługa błędu
+                }
+        }
+
+        navigateToFriendsActivity() // Przejdź do widoku znajomych po wysłaniu zaproszeń
+    }
+
     private fun navigateToFriendsActivity() {
         val intent = Intent(applicationContext, friends::class.java)
         startActivity(intent)
         finish()
     }
 }
+
 
 //class addfriend : AppCompatActivity() {
 //    private lateinit var drawerLayout: DrawerLayout

@@ -2,10 +2,9 @@ package com.example.signupapp
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.LinearLayout
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import android.widget.Button
+import android.view.MenuItem
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -14,70 +13,177 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
+import com.google.firebase.firestore.FirebaseFirestore
 
 class friends : AppCompatActivity() {
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var btnadd: ImageButton
+    private lateinit var btnadd2: ImageButton
 
-    private lateinit var friendsView: LinearLayout
-    private lateinit var fabAddFriend: ImageButton
+    private lateinit var firestore: FirebaseFirestore
+    private lateinit var auth: FirebaseAuth
+    private lateinit var currentUserID: String
 
-    private lateinit var firebaseAuth: FirebaseAuth
-    private lateinit var currentUserUid: String
-    private lateinit var friendsReference: DatabaseReference
+    private lateinit var toggle: ActionBarDrawerToggle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_friends)
 
-        friendsView = findViewById(R.id.friendsView)
-        fabAddFriend = findViewById(R.id.fab_add_friend)
+        firestore = FirebaseFirestore.getInstance()
+        auth = FirebaseAuth.getInstance()
+        currentUserID = auth.currentUser?.uid ?: ""
 
-        firebaseAuth = FirebaseAuth.getInstance()
-        currentUserUid = firebaseAuth.currentUser?.uid ?: ""
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
 
-        friendsReference = FirebaseDatabase.getInstance().reference.child("friends").child(currentUserUid)
+        val linearLayout: LinearLayout = findViewById(R.id.friendsView)
 
-        fabAddFriend.setOnClickListener {
-            startActivity(Intent(this, addfriend::class.java))
-        }
+        fetchUserFriendsFromFirestore(linearLayout)
 
-        // Pobierz listę znajomych
-        retrieveFriends()
-    }
+        btnadd = findViewById(R.id.fab_add_friend)
+        btnadd2 = findViewById(R.id.fab_friendlist)
 
-    private fun retrieveFriends() {
-        friendsReference.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                friendsView.removeAllViews()
+        drawerLayout = findViewById(R.id.drawer_layout)
+        val navigationView: NavigationView = findViewById(R.id.nav_view)
 
-                for (friendSnapshot in snapshot.children) {
-                    val friendUid = friendSnapshot.key
-                    val mutualRelation = friendSnapshot.child("mutualRelation").getValue(Boolean::class.java)
+        toggle = ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close)
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_ryba_navbar)
 
-                    // Sprawdź czy istnieje podwójna relacja
-                    if (mutualRelation != null && mutualRelation) {
-                        // Wyświetl znajomego
-                        displayFriend(friendUid)
-                    }
+        navigationView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_home -> {
+                    val intent = Intent(applicationContext, succes::class.java)
+                    startActivity(intent)
+                }
+                R.id.nav_rules -> {
+                    val intent = Intent(applicationContext, rules::class.java)
+                    startActivity(intent)
+                }
+                R.id.nav_friends -> {
+                    // Nie trzeba ponownie uruchamiać tej samej aktywności
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                }
+                R.id.nav_logout -> {
+                    FirebaseAuth.getInstance().signOut()
+                    val intent = Intent(applicationContext, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
                 }
             }
+            drawerLayout.closeDrawer(GravityCompat.START)
+            true
+        }
+        btnadd.setOnClickListener{
+            val intent = Intent(this, addfriend::class.java)
+            startActivity(intent)
+        }
+        btnadd2.setOnClickListener{
+            val intent = Intent(this, friendinv::class.java)
+            startActivity(intent)
+        }
+    }
 
-            override fun onCancelled(error: DatabaseError) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (toggle.onOptionsItemSelected(item)) {
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun fetchUserFriendsFromFirestore(linearLayout: LinearLayout) {
+        firestore.collection("friends")
+            .whereEqualTo("Inviter", currentUserID)
+            .get()
+            .addOnSuccessListener { documents ->
+                val invitationsSent = mutableListOf<String>()
+                for (document in documents) {
+                    val inviteeID = document.getString("Invitee")
+                    if (inviteeID != null) {
+                        invitationsSent.add(inviteeID)
+                    }
+                }
+                fetchAcceptedFriendsFromFirestore(invitationsSent, linearLayout)
+            }
+            .addOnFailureListener { exception ->
                 // Obsługa błędu
             }
-        })
     }
 
-    private fun displayFriend(friendUid: String?) {
-        // Tutaj można dodać logikę wyświetlania znajomego w interfejsie użytkownika
-        // Na przykład, utworzyć widok dla każdego znajomego i dodać go do LinearLayout (friendsView)
+    private fun fetchAcceptedFriendsFromFirestore(invitationsSent: List<String>, linearLayout: LinearLayout) {
+        firestore.collection("friends")
+            .whereEqualTo("Invitee", currentUserID)
+            .get()
+            .addOnSuccessListener { documents ->
+                val invitationsReceived = mutableListOf<String>()
+                for (document in documents) {
+                    val inviterID = document.getString("Inviter")
+                    if (inviterID != null) {
+                        invitationsReceived.add(inviterID)
+                    }
+                }
+                val mutualFriends = invitationsSent.intersect(invitationsReceived)
+                val invitationsNotMutual = invitationsSent.subtract(invitationsReceived)
+                fetchUserNamesFromFirestore(mutualFriends.toList(), linearLayout)
+                displayInvitationsNotMutual(invitationsNotMutual.toList(), linearLayout)
+            }
+            .addOnFailureListener { exception ->
+                // Obsługa błędu
+            }
+    }
+
+    private fun displayInvitationsNotMutual(invitationsNotMutual: List<String>, linearLayout: LinearLayout) {
+        for (userID in invitationsNotMutual) {
+            firestore.collection("users").document(userID)
+                .get()
+                .addOnSuccessListener { document ->
+                    val userName = document.getString("username")
+                    if (userName != null) {
+                        val textView = TextView(this)
+                        textView.text = "[$userName] - zaproszenie wysłane"
+                        textView.textSize = 22f
+                        textView.setPadding(18, 18, 16, 16)
+                        linearLayout.addView(textView)
+                        textView.setOnClickListener {
+                            // Możesz dodać obsługę kliknięcia tutaj
+                        }
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    // Obsługa błędu
+                }
+        }
+    }
+
+
+    private fun fetchUserNamesFromFirestore(userIDs: List<String>, linearLayout: LinearLayout) {
+        for (userID in userIDs) {
+            firestore.collection("users").document(userID)
+                .get()
+                .addOnSuccessListener { document ->
+                    val userName = document.getString("username")
+                    if (userName != null) {
+                        val textView = TextView(this)
+                        textView.text = userName
+                        textView.textSize = 22f
+                        textView.setPadding(18, 18, 16, 16)
+                        linearLayout.addView(textView)
+                        textView.setOnClickListener {
+                            //val intent = Intent(applicationContext, checkfriend::class.java)
+                            //startActivity(intent)
+                        }
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    // Obsługa błędu
+                }
+        }
     }
 }
-
 
 
 
