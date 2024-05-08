@@ -15,6 +15,7 @@ class succes : AppCompatActivity() {
     private lateinit var navView: NavigationView
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
+    private lateinit var lineChartView: LineChartView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +41,9 @@ class succes : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_ryba_navbar)
+        lineChartView = findViewById(R.id.lineChart)
+
+        // Pobranie bieżącego użytkownika i jego UID
 
         val currentUser = auth.currentUser
         if (currentUser != null) {
@@ -52,6 +56,7 @@ class succes : AppCompatActivity() {
                         if (username != null) {
                             // Ustaw tytuł ToolBar
                             supportActionBar?.title = "Witaj $username!"
+                            fetchPointsFromFirestore(uid)
                         }
                     }
                 }
@@ -86,5 +91,36 @@ class succes : AppCompatActivity() {
             drawerLayout.closeDrawers()
             true
         }
+    }
+    private fun fetchPointsFromFirestore(uid: String) {
+        val pointsList = mutableListOf<List<Pair<Float, Float>>>()
+        val categories = listOf("memory_points", "reflex_points", "observation_points", "sobriety_points")
+
+        // Inicjalizacja pustych list dla każdej kategorii
+        val categoryPoints = List(categories.size) { mutableListOf<Pair<Float, Float>>() }
+
+        firestore.collection("user_points").document(uid).collection("points")
+            .orderBy("date", com.google.firebase.firestore.Query.Direction.DESCENDING)
+            .limit(7) // Pobranie ostatnich 7 dni
+            .get()
+            .addOnSuccessListener { documents ->
+                var dayIndex = 0f
+
+                for (document in documents) {
+                    for ((index, category) in categories.withIndex()) {
+                        val points = document.getLong(category)?.toFloat() ?: 0f
+                        categoryPoints[index].add(Pair(dayIndex, points))
+                    }
+                    dayIndex += 1f
+                }
+
+                pointsList.addAll(categoryPoints)
+
+                // Ustawienie danych na wykresie
+                lineChartView.setDataPointsList(pointsList)
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Błąd podczas pobierania punktów: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 }
