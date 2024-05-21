@@ -10,8 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 
 class signup : AppCompatActivity() {
 
-    private lateinit var uname:EditText
-    private lateinit var pword:EditText
+    private lateinit var uname: EditText
+    private lateinit var pword: EditText
     private lateinit var cpword: EditText
     private lateinit var signupbtn: Button
     private lateinit var db: DBHelper
@@ -26,28 +26,33 @@ class signup : AppCompatActivity() {
         signupbtn = findViewById(R.id.button3)
         db = DBHelper(this)
 
-        signupbtn.setOnClickListener{
+        signupbtn.setOnClickListener {
             val unametext = uname.text.toString()
             val pwordtext = pword.text.toString()
             val cpwordtext = cpword.text.toString()
-            val savedata = db.insertdata(unametext, pwordtext)
 
-            if (TextUtils.isEmpty(unametext) || TextUtils.isEmpty(pwordtext) || TextUtils.isEmpty(cpwordtext)){
+            if (TextUtils.isEmpty(unametext) || TextUtils.isEmpty(pwordtext) || TextUtils.isEmpty(cpwordtext)) {
                 Toast.makeText(this, "Add Username, Password & Confirm Password", Toast.LENGTH_SHORT).show()
-            }
-            else{
-                if (pwordtext.equals(cpwordtext)) {
-                    if (savedata == true) {
-                        Toast.makeText(this, "Signup Succesful", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(applicationContext, login::class.java)
-                        startActivity(intent)
+            } else {
+                if (pwordtext == cpwordtext) {
+                    if (db.checkUsernameExists(unametext)) {
+                        Toast.makeText(this, "Username already exists", Toast.LENGTH_SHORT).show()
+                    } else {
+                        val savedata = db.insertUser(unametext, pwordtext)
+                        if (savedata) {
+                            Toast.makeText(this, "Signup Successful", Toast.LENGTH_SHORT).show()
+                            val userId = db.getUserIdByUsername(unametext)
+                            if (userId != null) {
+                                db.fillPointsHistory(db, userId)
+                            }
+                            val intent = Intent(applicationContext, login::class.java)
+                            startActivity(intent)
+                        } else {
+                            Toast.makeText(this, "Signup Failed", Toast.LENGTH_SHORT).show()
+                        }
                     }
-                    else{
-                        Toast.makeText(this, "User Exists", Toast.LENGTH_SHORT).show()
-                    }
-                }
-                else{
-                    Toast.makeText(this,"Password Not Match",Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
                 }
             }
         }

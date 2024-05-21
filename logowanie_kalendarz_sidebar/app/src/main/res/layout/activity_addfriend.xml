@@ -6,16 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".addfriend">
 
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/bg_skulls" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#33FFFFFF">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="#2F1F2B"
+            android:title=""
             app:layout_constraintTop_toTopOf="parent" />
 
         <ScrollView
@@ -53,17 +62,23 @@
 
         <Button
             android:id="@+id/button5"
-            android:layout_width="161dp"
-            android:layout_height="51dp"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="6dp"
-            android:layout_marginEnd="25dp"
-            android:layout_marginBottom="10dp"
-            android:text="Dodaj znajomego"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/tab"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="8dp"
+            android:text="Wyślij zaproszenie do znajomych"
+            android:textColor="#E5BE95"
+            android:textSize="16sp"
+            app:backgroundTint="#2F1F2B"
+            app:backgroundTintMode="src_atop"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
+            app:layout_constraintHeight_percent="0.1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintWidth_percent="0.7" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -72,6 +87,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:background="#2F1F2B"
+        app:itemTextColor="#E5BE95"
         app:menu="@menu/drawer_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

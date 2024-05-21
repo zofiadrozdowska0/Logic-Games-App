@@ -25,4 +25,8 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
+    object CurrentUser {
+        var userId: Int = -1
+    }
 }

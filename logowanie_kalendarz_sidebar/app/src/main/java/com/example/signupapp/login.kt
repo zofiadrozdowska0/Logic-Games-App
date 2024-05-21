@@ -6,8 +6,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.signupapp.R
-import com.example.signupapp.succes
 
 class login : AppCompatActivity() {
 
@@ -19,6 +17,7 @@ class login : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
         loginbtn = findViewById(R.id.button4)
         edituser = findViewById(R.id.editTextText)
         editpword = findViewById(R.id.editTextTextPassword)
@@ -32,18 +31,17 @@ class login : AppCompatActivity() {
             if (useredtx.isEmpty() || passedtx.isEmpty()) {
                 Toast.makeText(this, "Add Username & Password", Toast.LENGTH_SHORT).show()
             } else {
-                val checkuser = dbh.checkuserpass(useredtx, passedtx)
-                if (checkuser) {
+                val userId = dbh.getUserIdByUsernameAndPassword(useredtx, passedtx)
+                if (userId != -1) {
                     Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show()
                     val intent = Intent(applicationContext, succes::class.java)
+                    MainActivity.CurrentUser.userId = userId
+                    println(MainActivity.CurrentUser.userId)
                     startActivity(intent)
-                }
-                else{
-                    Toast.makeText(this,"Wrong Username & Password",Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Wrong Username & Password", Toast.LENGTH_SHORT).show()
                 }
             }
         }
     }
-
-
 }
