@@ -2,13 +2,16 @@ package com.example.signupapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.CalendarView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.android.material.navigation.NavigationView
+import java.util.Calendar
+
 
 class succes : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
@@ -16,6 +19,7 @@ class succes : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
     private lateinit var lineChartView: LineChartView
+    private lateinit var calendarView: CalendarView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +32,18 @@ class succes : AppCompatActivity() {
         // Inicjalizacja DrawerLayout i NavigationView
         drawerLayout = findViewById(R.id.drawer_layout)
         navView = findViewById(R.id.nav_view)
+        calendarView = findViewById(R.id.calendarView)
+        calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
+            val calendar = Calendar.getInstance()
+            val currentYear = calendar.get(Calendar.YEAR)
+            val currentMonth = calendar.get(Calendar.MONTH)
+            val currentDayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
 
+            if (year == currentYear && month == currentMonth && dayOfMonth == currentDayOfMonth) {
+                val intent = Intent(applicationContext, games::class.java)
+                startActivity(intent)
+            }
+        }
         // Ustaw Toolbar i dodaj Toggle
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)

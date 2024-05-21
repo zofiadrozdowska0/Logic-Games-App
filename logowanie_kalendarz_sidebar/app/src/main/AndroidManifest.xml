@@ -22,6 +22,9 @@
             android:name=".friendinv"
             android:exported="false" />
         <activity
+            android:name=".games"
+            android:exported="false" />
+        <activity
             android:name=".checkfriend"
             android:exported="false" />
         <activity
