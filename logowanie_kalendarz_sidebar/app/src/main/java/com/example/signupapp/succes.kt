@@ -2,53 +2,74 @@ package com.example.signupapp
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.core.view.GravityCompat
+import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.android.material.navigation.NavigationView
-import androidx.appcompat.widget.Toolbar
-
 
 class succes : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
-    private lateinit var toggle: ActionBarDrawerToggle
-    private lateinit var lineChartView: LineChartView // Dodaj deklarację zmiennej lineChartView
-    private lateinit var dbHelper: DBHelper // Deklarujesz obiekt klasy DBHelper
-
-    private val categories = listOf("reflex_points", "memory_points", "concentration_points", "logic_points")
-
+    private lateinit var navView: NavigationView
+    private lateinit var auth: FirebaseAuth
+    private lateinit var firestore: FirebaseFirestore
+    private lateinit var lineChartView: LineChartView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_succes)
 
-        dbHelper = DBHelper(this)
+        // Inicjalizacja Firebase Authentication
+        auth = FirebaseAuth.getInstance()
+        firestore = FirebaseFirestore.getInstance()
 
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        val toolbarTitle = dbHelper.getUsernameById(MainActivity.CurrentUser.userId)
-        toolbar.title = toolbarTitle
+        // Inicjalizacja DrawerLayout i NavigationView
+        drawerLayout = findViewById(R.id.drawer_layout)
+        navView = findViewById(R.id.nav_view)
+
+        // Ustaw Toolbar i dodaj Toggle
+        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        drawerLayout = findViewById(R.id.drawer_layout)
-        val navigationView: NavigationView = findViewById(R.id.nav_view)
-
-        toggle = ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close)
+        val toggle = ActionBarDrawerToggle(
+            this, drawerLayout, toolbar, R.string.open, R.string.close
+        )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_ryba_navbar)
+        lineChartView = findViewById(R.id.lineChart)
 
-        navigationView.setNavigationItemSelectedListener { menuItem ->
+        // Pobranie bieżącego użytkownika i jego UID
+
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            val uid = currentUser.uid
+            firestore.collection("users").document(uid)
+                .get()
+                .addOnSuccessListener { document ->
+                    if (document != null && document.exists()) {
+                        val username = document.getString("username")
+                        if (username != null) {
+                            // Ustaw tytuł ToolBar
+                            supportActionBar?.title = "Witaj $username!"
+                            fetchPointsFromFirestore(uid)
+                        }
+                    }
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "Nie udało się pobrać danych użytkownika: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+        }
+
+        // Obsługa elementów NavigationView
+        navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_home -> {
-                    val intent = Intent(applicationContext, succes::class.java)
-                    startActivity(intent)
+                    this.drawerLayout.closeDrawers()
                 }
                 R.id.nav_rules -> {
                     val intent = Intent(applicationContext, rules::class.java)
@@ -59,86 +80,47 @@ class succes : AppCompatActivity() {
                     startActivity(intent)
                 }
                 R.id.nav_logout -> {
-                    val intent = Intent(applicationContext, MainActivity::class.java)
+                    // Wyloguj użytkownika i przekieruj do ekranu logowania
+                    auth.signOut()
+                    val intent = Intent(this, login::class.java)
                     startActivity(intent)
+                    finish()
+                    Toast.makeText(this, "Wylogowano pomyślnie", Toast.LENGTH_SHORT).show()
                 }
             }
-            drawerLayout.closeDrawer(GravityCompat.START)
+            drawerLayout.closeDrawers()
             true
         }
+    }
+    private fun fetchPointsFromFirestore(uid: String) {
+        val pointsList = mutableListOf<List<Pair<Float, Float>>>()
+        val categories = listOf("memory_points", "reflex_points", "observation_points", "sobriety_points")
 
-        lineChartView = findViewById(R.id.lineChart)
+        // Inicjalizacja pustych list dla każdej kategorii
+        val categoryPoints = List(categories.size) { mutableListOf<Pair<Float, Float>>() }
 
-        val userId = MainActivity.CurrentUser.userId
+        firestore.collection("user_points").document(uid).collection("points")
+            .orderBy("date", com.google.firebase.firestore.Query.Direction.DESCENDING)
+            .limit(7) // Pobranie ostatnich 7 dni
+            .get()
+            .addOnSuccessListener { documents ->
+                var dayIndex = 0f
 
-        // Pobieramy dane z bazy danych dla każdej kategorii punktów
-        val reflexPointsHistory = getPointsHistory(userId, "reflex_points")
-        val memoryPointsHistory = getPointsHistory(userId, "memory_points")
-        val concentrationPointsHistory = getPointsHistory(userId, "concentration_points")
-        val logicPointsHistory = getPointsHistory(userId, "logic_points")
+                for (document in documents) {
+                    for ((index, category) in categories.withIndex()) {
+                        val points = document.getLong(category)?.toFloat() ?: 0f
+                        categoryPoints[index].add(Pair(dayIndex, points))
+                    }
+                    dayIndex += 1f
+                }
 
-        // Przekazujemy dane do LineChartView
-        val dataPointsList = mutableListOf<List<Pair<Float, Float>>>()
-        dataPointsList.add(processDataForChart(reflexPointsHistory))
-        dataPointsList.add(processDataForChart(memoryPointsHistory))
-        dataPointsList.add(processDataForChart(concentrationPointsHistory))
-        dataPointsList.add(processDataForChart(logicPointsHistory))
+                pointsList.addAll(categoryPoints)
 
-        // Dodajemy printowanie punktów
-        for ((index, points) in dataPointsList.withIndex()) {
-            println("Kategoria punktów: ${categories[index]}")
-            for (point in points) {
-                println("Punkt: ${point.first}, ${point.second}")
+                // Ustawienie danych na wykresie
+                lineChartView.setDataPointsList(pointsList)
             }
-        }
-
-        lineChartView.setDataPointsList(dataPointsList)
-    }
-
-
-    override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {
-        if (toggle.onOptionsItemSelected(item)) {
-            return true
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-    private fun processDataForChart(pointsHistory: List<Pair<String, Int>>): List<Pair<Float, Float>> {
-        // Przetwarzamy datę na float, aby można ją było wyświetlić na osi X
-        // Tworzymy listę par (dataFloat, punkty) dla wykresu
-        val dataPoints = mutableListOf<Pair<Float, Float>>()
-        var count = 0f
-        for (entry in pointsHistory) {
-            dataPoints.add(count to entry.second.toFloat())
-            count += 1f
-        }
-        return dataPoints
-    }
-
-    private fun getPointsHistory(userId: Int, category: String): List<Pair<String, Int>> {
-        val pointsHistory = mutableListOf<Pair<String, Int>>()
-        val db = dbHelper.writableDatabase
-
-        // Tworzymy zapytanie SQL w zależności od kategorii
-        val query = "SELECT date, $category FROM PointsHistory WHERE user_id = $userId"
-
-        // Wykonujemy zapytanie i pobieramy wyniki
-        val cursor = db.rawQuery(query, null)
-        cursor.use {
-            // Sprawdzamy, czy wyniki są niepuste
-            if (it.moveToFirst()) {
-                val dateIndex = it.getColumnIndex("date")
-                val pointsIndex = it.getColumnIndex(category)
-
-                do {
-                    val date = it.getString(dateIndex)
-                    val points = it.getInt(pointsIndex)
-                    pointsHistory.add(date to points)
-                } while (it.moveToNext())
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Błąd podczas pobierania punktów: ${e.message}", Toast.LENGTH_SHORT).show()
             }
-        }
-
-        return pointsHistory
     }
-
 }

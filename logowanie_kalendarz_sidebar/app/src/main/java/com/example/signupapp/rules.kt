@@ -4,55 +4,89 @@ import android.os.Bundle
 import android.view.View
 import android.widget.RelativeLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class rules : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toggle: ActionBarDrawerToggle
-    private lateinit var dbHelper: DBHelper
+    private lateinit var navView: NavigationView
+    private lateinit var auth: FirebaseAuth
+    private lateinit var firestore: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rules)
-        dbHelper = DBHelper(this) // Zainicjuj dbHelper
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        val toolbarTitle = dbHelper.getUsernameById(MainActivity.CurrentUser.userId)
-        toolbar.title = toolbarTitle
-        setSupportActionBar(toolbar)
-        drawerLayout = findViewById(R.id.drawer_layout)
-        val navigationView: NavigationView = findViewById(R.id.nav_view)
 
-        toggle = ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close)
+        // Inicjalizacja Firebase Authentication
+        auth = FirebaseAuth.getInstance()
+        firestore = FirebaseFirestore.getInstance()
+
+        // Inicjalizacja DrawerLayout i NavigationView
+        drawerLayout = findViewById(R.id.drawer_layout)
+        navView = findViewById(R.id.nav_view)
+
+        // Ustaw Toolbar i dodaj Toggle
+        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
+        val toggle = ActionBarDrawerToggle(
+            this, drawerLayout, toolbar, R.string.open, R.string.close
+        )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_ryba_navbar)
-        navigationView.setNavigationItemSelectedListener { menuItem ->
+
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            val uid = currentUser.uid
+            firestore.collection("users").document(uid)
+                .get()
+                .addOnSuccessListener { document ->
+                    if (document != null && document.exists()) {
+                        val username = document.getString("username")
+                        if (username != null) {
+                            // Ustaw tytuł ToolBar
+                            supportActionBar?.title = "Witaj $username!"
+                        }
+                    }
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "Nie udało się pobrać danych użytkownika: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+        }
+        // Obsługa elementów NavigationView
+        navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_home -> {
                     val intent = Intent(applicationContext, succes::class.java)
                     startActivity(intent)
                 }
                 R.id.nav_rules -> {
-                    val intent = Intent(applicationContext, rules::class.java)
-                    startActivity(intent)
+                    this.drawerLayout.closeDrawers()
                 }
                 R.id.nav_friends -> {
-                    val intent = Intent(applicationContext, friends::class.java)
-                    startActivity(intent)
+                    this.drawerLayout.closeDrawers()
                 }
                 R.id.nav_logout -> {
-                    val intent = Intent(applicationContext, MainActivity::class.java)
+                    // Wyloguj użytkownika i przekieruj do ekranu logowania
+                    auth.signOut()
+                    val intent = Intent(this, login::class.java)
                     startActivity(intent)
+                    finish()
+                    Toast.makeText(this, "Wylogowano pomyślnie", Toast.LENGTH_SHORT).show()
                 }
             }
-            drawerLayout.closeDrawer(GravityCompat.START)
+            drawerLayout.closeDrawers()
             true
         }
         val dropdown1 = findViewById<RelativeLayout>(R.id.dropdown1)

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "70720805661",
+    "project_id": "samogon-data-base-26736",
+    "storage_bucket": "samogon-data-base-26736.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:70720805661:android:292befddada25f7cc95ff4",
+        "android_client_info": {
+          "package_name": "com.example.signupapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9HJvi3tVDa7ZXObBp9aT0I7mEh2JmE50"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

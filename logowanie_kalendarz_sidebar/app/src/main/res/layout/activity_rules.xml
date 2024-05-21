@@ -145,6 +145,7 @@ Przez minutę gracz obserwuje wyświetlające się kolorowe napisy. Kiedy kolor 
                 android:padding="16dp"
                 android:text="MEMORY\n\n
 Na ekranie zostaje wyświetlona plansza z kart. Gracz, klikając na kart, ma za zadanie znaleźć pasujące do siebie pary.\n\n
+Za każdą odkrytą parę +5\n
 Każdą kartę można odkryć 2 razy. Za każde dodatkowe -1 \n\n
 ZAPAMIĘTYWANIE SEKWENCJI\n\n
 Na ekranie wyświetlana jest plansza przycisków. Graczowi zostaje przedstawiona sekwencja - podświetlane zostają w kolejności przyciski. Gracz musi powtórzyć sekwencję klikając w odpowiedniej kolejności na przyciski. Po poprawnym odgadnięciu sekwencji zostaje przedstawiona następna o jeden dłuższa\n\n
@@ -269,11 +270,11 @@ czerwony - element nie występuje w równaniu\n
 Gracz zapełnia następny rząd.Gra kończy się kiedy wszystkie elementy zaznaczone są na zielono albo kiedy skończy się dostępne miejsce.\n\n
 Rozwiązanie równania w:\n
 2 pierwsze rzędy : +10\n
-3 rzęd: +8\n
+3 rząd: +8\n
 4 rząd: +6\n
 5 rząd: +4\n
 6 rząd: +2\n
-Nie rozwiązanie równania: 0\n\n
+Nierozwiązanie równania: 0\n\n
 SAPER\n\n
 Gracz ma za zadanie przejść klasyczną grę saper. Zmianę flaga/bomba odbywa się poprzez klikanie przycisku u góry ekranu po prawej stronie. Gracz zobowiązany jest do zaznaczania bomb.\n\n
 Na podstawie % zaznaczonych bomb w momencie przegranej/końca gry:\n
