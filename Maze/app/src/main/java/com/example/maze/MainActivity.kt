@@ -2,24 +2,19 @@ package com.example.maze
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
 import android.widget.TextView
-import java.util.*
 import android.widget.Button
+import java.util.*
 import java.util.concurrent.TimeUnit
 import android.os.CountDownTimer
-
 
 class MainActivity : Activity() {
 
     private lateinit var mazeView: MazeView
     private lateinit var ballView: View
-    private lateinit var restartButton: Button
     private lateinit var exitButton: Button
     private lateinit var timerTextView: TextView
     private var offsetX = 0f
@@ -38,14 +33,11 @@ class MainActivity : Activity() {
         setContentView(R.layout.main_activity)
         findViewById<TextView>(R.id.scoreTextView).visibility = View.GONE
 
-
         mazeView = findViewById(R.id.mazeView)
         ballView = findViewById(R.id.ballView)
-        restartButton = findViewById(R.id.restartButton)
         exitButton = findViewById(R.id.exitButton)
         timerTextView = findViewById(R.id.timerTextView)
 
-        restartButton.visibility = View.GONE
         exitButton.visibility = View.GONE
 
         // Pozostała wartość czasu, jeśli została przekazana
@@ -56,26 +48,7 @@ class MainActivity : Activity() {
 
         generateNewMaze()
 
-        timer = object : CountDownTimer(timeLeftInMillis, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                timeLeftInMillis = millisUntilFinished
-                updateCountdownText()
-            }
-
-            override fun onFinish() {
-                timeLeftInMillis = 0
-                timerRunning = false
-                gameOver = true
-                findViewById<TextView>(R.id.gameOverTextView).visibility = View.VISIBLE
-                findViewById<TextView>(R.id.gameOverTextView).visibility = View.VISIBLE
-                findViewById<TextView>(R.id.scoreTextView).apply {
-                    visibility = View.VISIBLE
-                    text = getString(R.string.score_message, level)
-                }
-                restartButton.visibility = View.VISIBLE
-                exitButton.visibility = View.VISIBLE
-            }
-        }
+        timer = createCountDownTimer(timeLeftInMillis)
 
         mazeView.setOnTouchListener { _, event ->
             if (!gameOver) {
@@ -92,19 +65,12 @@ class MainActivity : Activity() {
                             ballView.y = newY
                             checkForNewMaze(newX, newY, timeLeftInMillis) // Przekazujemy timeLeftInMillis
                         } else {
-
                             restartGame()
-
-
                         }
                     }
                 }
             }
             true
-        }
-
-        restartButton.setOnClickListener {
-            resetGame()
         }
 
         exitButton.setOnClickListener {
@@ -114,21 +80,10 @@ class MainActivity : Activity() {
         startTimer()
     }
 
-
-
     private fun disableGameInteraction() {
         mazeView.setOnTouchListener(null) // Dezaktywacja onTouchListener
-        restartButton.isEnabled = false
         exitButton.isEnabled = false
     }
-
-
-
-
-
-
-
-
 
     private fun generateNewMaze() {
         val maze = generateMaze(8, 8)
@@ -144,10 +99,9 @@ class MainActivity : Activity() {
         }
     }
 
-
     private fun checkForNewMaze(newX: Float, newY: Float, timeLeftInMillis: Long) {
-        // Sprawdź czy kula wejdzie wejdzie w prostokat
-        if (mazeView.isBallOnRedRectangle(newX, newY) && !isNewMazeChecked) {
+        // Sprawdź czy kula wejdzie w skarb
+        if (mazeView.isBallOnTreasure(newX, newY) && !isNewMazeChecked) {
             // Zwiększ poziom
             level++
             isNewMazeChecked = true // Ustaw flagę na true, aby uniknąć wielokrotnego sprawdzania w jednym ruchu
@@ -156,7 +110,6 @@ class MainActivity : Activity() {
             restartActivity(level, timeLeftInMillis)
         }
     }
-
 
     private fun restartGame() {
         disableGameInteraction()
@@ -167,10 +120,30 @@ class MainActivity : Activity() {
         finish() // Zamknij bieżącą aktywność
     }
 
-
     private fun startTimer() {
         timerRunning = true
         timer.start()
+    }
+
+    private fun createCountDownTimer(timeLeft: Long): CountDownTimer {
+        return object : CountDownTimer(timeLeft, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                timeLeftInMillis = millisUntilFinished
+                updateCountdownText()
+            }
+
+            override fun onFinish() {
+                timeLeftInMillis = 0
+                timerRunning = false
+                gameOver = true
+                findViewById<TextView>(R.id.gameOverTextView).visibility = View.VISIBLE
+                findViewById<TextView>(R.id.scoreTextView).apply {
+                    visibility = View.VISIBLE
+                    text = getString(R.string.score_message, level)
+                }
+                exitButton.visibility = View.VISIBLE
+            }
+        }
     }
 
     private fun updateCountdownText() {
@@ -187,31 +160,13 @@ class MainActivity : Activity() {
         intent.putExtra("LEVEL", level)
         startActivity(intent)
         finish()
-
     }
-
 
     private fun isInBounds(newX: Float, newY: Float): Boolean {
-        val ballLeft = newX.toInt()
-        val ballTop = newY.toInt()
-        val ballRight = ballLeft + ballView.width
-        val ballBottom = ballTop + ballView.height
-
-        val mazeBitmap = createBitmapFromView(mazeView)
-        val ballBitmap = createBitmapFromView(ballView)
-
-        for (x in ballLeft until ballRight) {
-            for (y in ballTop until ballBottom) {
-                if (mazeBitmap.getPixel(x, y) != Color.WHITE
-                    && mazeBitmap.getPixel(x, y) != Color.RED // Ignoruj kolizję z prostokątem
-                    && ballBitmap.getPixel(x - ballLeft, y - ballTop) != Color.TRANSPARENT) {
-                    return false
-                }
-            }
-        }
-        return true
+        val ballCenterX = newX + ballView.width / 2
+        val ballCenterY = newY + ballView.height / 2
+        return mazeView.checkCollision(ballCenterX, ballCenterY)
     }
-
 
     private fun convertToBooleanArray(maze: Array<IntArray>): Array<BooleanArray> {
         val booleanMaze = Array(maze.size) { BooleanArray(maze[0].size) }
@@ -222,8 +177,6 @@ class MainActivity : Activity() {
         }
         return booleanMaze
     }
-
-
 
     private fun generateMaze(width: Int, height: Int): Array<IntArray>? {
         val maze: Array<IntArray> = Array(width) { IntArray(height) }
@@ -262,7 +215,7 @@ class MainActivity : Activity() {
         }
 
         // Sprawdź warunki na ilość wolnych pól z jednym sąsiadem
-        if (freeSpaceCount >= 5 && singleNeighborCount == 2) {
+        if (freeSpaceCount >= 6 && singleNeighborCount == 2) {
             // Jeśli spełnione, zwróć wygenerowany labirynt
             return maze
         } else {
@@ -280,64 +233,44 @@ class MainActivity : Activity() {
         return count
     }
 
-
-
-
-
     private fun generateMazeRecursive(maze: Array<IntArray>, x: Int, y: Int) {
-        maze[x][y] = EMPTY
+        val directions = arrayOf(
+            intArrayOf(-1, 0), // lewo
+            intArrayOf(1, 0),  // prawo
+            intArrayOf(0, -1), // góra
+            intArrayOf(0, 1)   // dół
+        )
 
-        // Wygeneruj losową permutację kierunków (lewo, prawo, góra, dół)
-        val directions = mutableListOf(Direction.LEFT, Direction.RIGHT, Direction.UP, Direction.DOWN)
+        // Przetasuj kierunki
         directions.shuffle()
 
-        // Sprawdź każdy kierunek
         for (direction in directions) {
-            val (dx, dy) = direction.getDelta()
-            val newX = x + dx * 2
-            val newY = y + dy * 2
+            val newX = x + direction[0]
+            val newY = y + direction[1]
 
-            // Sprawdź czy nowe współrzędne są w granicach labiryntu
+            // Sprawdź czy nowa pozycja jest w granicach i czy jest ścianą
             if (newX in 1 until maze.size - 1 && newY in 1 until maze[0].size - 1 && maze[newX][newY] == WALL) {
-                maze[x + dx][y + dy] = EMPTY
-                generateMazeRecursive(maze, newX, newY)
+                // Sprawdź czy sąsiadujące komórki są ścianami
+                val surroundingWalls = countSurroundingWalls(maze, newX, newY)
+                if (surroundingWalls >= 3) {
+                    maze[newX][newY] = EMPTY
+                    generateMazeRecursive(maze, newX, newY)
+                }
             }
         }
     }
 
-    private fun createBitmapFromView(view: View): Bitmap {
-        val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(bitmap)
-        view.draw(canvas)
-        return bitmap
-    }
-
-    private enum class Direction(val dx: Int, val dy: Int) {
-        LEFT(-1, 0),
-        RIGHT(1, 0),
-        UP(0, -1),
-        DOWN(0, 1);
-
-        fun getDelta() = Pair(dx, dy)
+    private fun countSurroundingWalls(maze: Array<IntArray>, x: Int, y: Int): Int {
+        var count = 0
+        if (maze[x - 1][y] == WALL) count++ // lewo
+        if (maze[x + 1][y] == WALL) count++ // prawo
+        if (maze[x][y - 1] == WALL) count++ // góra
+        if (maze[x][y + 1] == WALL) count++ // dół
+        return count
     }
 
     companion object {
-        const val WALL = 1
-        const val EMPTY = 0
+        private const val WALL = 1
+        private const val EMPTY = 0
     }
-
-    private fun resetGame() {
-        // Zatrzymaj timer
-        timer.cancel()
-        // Resetuj wartości
-        level = 1
-        timeLeftInMillis = 60000
-        // Odśwież etykietę poziomu
-        findViewById<TextView>(R.id.levelTextView).text = "Level: $level"
-        // Ukryj TextView z wynikiem
-        findViewById<TextView>(R.id.scoreTextView).visibility = View.INVISIBLE
-        // Rozpocznij nową grę
-        restartActivity(level, timeLeftInMillis)
-    }
-
-    }
+}
