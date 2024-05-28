@@ -1,7 +1,10 @@
 package com.example.signupapp
+import android.content.ActivityNotFoundException
+import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -32,6 +35,16 @@ class games : AppCompatActivity() {
         // Inicjalizacja DrawerLayout i NavigationView
         drawerLayout = findViewById(R.id.drawer_layout)
         navView = findViewById(R.id.nav_view)
+
+        // działanie przycisków
+
+        val button = findViewById<Button>(R.id.textView6)
+        button.setOnClickListener {
+            // Tworzenie zamiaru celującego w inną aplikację
+            val intent = Intent(this, refleks_i_koordynacja::class.java)
+            startActivity(intent)
+        }
+
 
         // Ustaw Toolbar i dodaj Toggle
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
@@ -64,6 +77,8 @@ class games : AppCompatActivity() {
                     Toast.makeText(this, "Nie udało się pobrać danych użytkownika: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
         }
+
+
         // Obsługa elementów NavigationView
         navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
