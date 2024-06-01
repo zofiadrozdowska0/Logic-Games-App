@@ -35,7 +35,7 @@ class MainActivity : ComponentActivity() {
         val chosenImages = DEFAULT_ICONS.shuffled()
         val randomizedImages = (chosenImages + chosenImages).shuffled()
 
-        rvBoard.adapter = MemoryBoard(this, boardSize, randomizedImages,rvBoard)
+        rvBoard.adapter = MemoryBoard(this, boardSize, randomizedImages)
         rvBoard.setHasFixedSize(true)
         rvBoard.layoutManager = GridLayoutManager(this, boardSize.getWidth())
     }
