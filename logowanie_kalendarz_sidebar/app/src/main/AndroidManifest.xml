@@ -22,6 +22,9 @@
             android:name=".friendinv"
             android:exported="false" />
         <activity
+            android:name=".zap_sekwencja_MainActivity"
+            android:exported="false" />
+        <activity
             android:name=".Ufoludki_MainActivity"
             android:exported="false" />
         <activity

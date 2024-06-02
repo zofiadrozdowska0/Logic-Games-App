@@ -34,7 +34,7 @@ class succes : AppCompatActivity() {
         val przygodaButton = findViewById<Button>(R.id.przygodaButton)
 
         przygodaButton.setOnClickListener{
-            val intent = Intent(applicationContext, zap_el_zb_MainActivity::class.java)
+            val intent = Intent(applicationContext, zap_sekwencja_MainActivity::class.java)
             startActivity(intent)
         }
 

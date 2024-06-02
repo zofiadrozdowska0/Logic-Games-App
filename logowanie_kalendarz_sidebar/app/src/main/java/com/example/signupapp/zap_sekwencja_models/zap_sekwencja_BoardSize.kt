@@ -1,6 +1,6 @@
-package com.example.tutorial.models
+package com.example.signupapp
 
-enum class BoardSize(val numCards: Int){
+enum class zap_sekwencja_BoardSize(val numCards: Int){
     Easy(4),
     Medium(8),
     Hard(12);

@@ -1,4 +1,4 @@
-package com.example.tutorial
+package com.example.signupapp
 
 import android.content.Context
 import android.os.Handler
@@ -13,18 +13,16 @@ import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tutorial.models.BoardSize
 import kotlin.math.min
-import kotlin.random.Random
 
-class MemoryAdapter(
+class zap_sekwencja_MemoryAdapter(
     private val context: Context,
-    private val boardSize: BoardSize,
-    private val memoryGame: MemoryGame,
+    private val boardSize: zap_sekwencja_BoardSize,
+    private val memoryGame: zap_sekwencja_MemoryGame,
     private val rvBoard: RecyclerView,
     private val tvNumElements: TextView,
     private val tvText: TextView
-) : RecyclerView.Adapter<MemoryAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<zap_sekwencja_MemoryAdapter.ViewHolder>() {
 
     companion object {
         private const val MARGIN_SIZE = 10
@@ -40,7 +38,7 @@ class MemoryAdapter(
         val cardWidth = parent.width / boardSize.getWidth() - (2 * MARGIN_SIZE)
         val cardHeight = parent.height / boardSize.getHeight() - (2 * MARGIN_SIZE)
         val cardSideLength = min(cardWidth, cardHeight)
-        val view = LayoutInflater.from(context).inflate(R.layout.memory_card, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.zap_sekwencja_memory_card, parent, false)
         val layoutParams =
             view.findViewById<CardView>(R.id.cardView).layoutParams as ViewGroup.MarginLayoutParams
         layoutParams.width = cardSideLength
@@ -116,21 +114,6 @@ class MemoryAdapter(
 
 
 
-    val graphics_items = listOf(
-        R.drawable.ic_armata2,
-        R.drawable.ic_czaszka2,
-        R.drawable.ic_kotwica2,
-        R.drawable.ic_krab2,
-        R.drawable.ic_orka2,
-        R.drawable.ic_palma2,
-        R.drawable.ic_papuga2,
-        R.drawable.ic_raczek2,
-        R.drawable.ic_rafa2,
-        R.drawable.ic_ryba2,
-        R.drawable.ic_statek2,
-        R.drawable.ic_woda2,
-        R.drawable.ic_wyspa2
-    )
     fun startGame() {
         // Sprawdź, czy sekwencja została już wygenerowana
         sequence = memoryGame.getSequence()

@@ -1,9 +1,9 @@
 package com.example.tutorial
 
-import com.example.tutorial.models.BoardSize
+import com.example.tutorial.zap_sekwencja_models.zap_sekwencja_BoardSize
 import kotlin.random.Random
 
-class MemoryGame(private val boardSize: BoardSize) {
+class zap_sekwencja_MemoryGame(private val boardSize: zap_sekwencja_BoardSize) {
     private val allCards: List<Int>
     private var numCardsFlipped = 0
     private var indexOfSingleSelectedCard: Int? = null
