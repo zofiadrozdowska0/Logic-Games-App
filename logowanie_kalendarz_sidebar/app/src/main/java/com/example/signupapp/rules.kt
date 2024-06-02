@@ -75,7 +75,8 @@ class rules : AppCompatActivity() {
                     this.drawerLayout.closeDrawers()
                 }
                 R.id.nav_friends -> {
-                    this.drawerLayout.closeDrawers()
+                    val intent = Intent(applicationContext, friends::class.java)
+                    startActivity(intent)
                 }
                 R.id.nav_logout -> {
                     // Wyloguj użytkownika i przekieruj do ekranu logowania
