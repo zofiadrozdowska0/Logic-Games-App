@@ -1,4 +1,4 @@
-package com.example.memory.models
+package com.example.signupapp.memory_models
 
 enum class BoardSize(val numCards: Int){
     EASY(8),

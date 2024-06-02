@@ -1,21 +1,16 @@
-package com.example.memory
+package com.example.signupapp
 
 import android.os.Bundle
 import android.widget.TextView
 import androidx.activity.ComponentActivity
-import androidx.compose.material3.Snackbar
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet.Constraint
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.memory.models.BoardSize
-import com.example.memory.models.MemoryCard
-import com.example.memory.models.MemoryGame
-import com.example.memory.utils.DEFAULT_ICONS
+import com.example.signupapp.memory_models.BoardSize
+import com.example.signupapp.memory_models.MemoryGame
 
-class MainActivity : ComponentActivity() {
+class Memory_MainActivity : ComponentActivity() {
 
-    private lateinit var adapter: MemoryBoardAdapter
+    private lateinit var adapter: Memory_MemoryBoardAdapter
     private lateinit var memoryGame: MemoryGame
     // private lateinit var clRoot: ConstraintLayout
     private lateinit var board: RecyclerView
@@ -25,7 +20,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.memory_activity_main)
 
         board = findViewById(R.id.rvBoard)
         //clRoot = findViewById(R.id.clRoot)
@@ -34,7 +29,7 @@ class MainActivity : ComponentActivity() {
         memoryGame = MemoryGame(boardSize)
 
         board.layoutManager = GridLayoutManager(this, boardSize.getWidth())
-        adapter = MemoryBoardAdapter(this, boardSize, memoryGame.cards, object: MemoryBoardAdapter.CardClickListener {
+        adapter = Memory_MemoryBoardAdapter(this, boardSize, memoryGame.cards, object: Memory_MemoryBoardAdapter.CardClickListener {
             override fun onCardClicked(position: Int) {
                 updateGameWithFlip(position)
             }

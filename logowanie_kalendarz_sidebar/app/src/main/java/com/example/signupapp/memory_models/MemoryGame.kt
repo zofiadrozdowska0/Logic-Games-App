@@ -1,6 +1,6 @@
-package com.example.memory.models
+package com.example.signupapp.memory_models
 
-import com.example.memory.utils.DEFAULT_ICONS
+import com.example.signupapp.memory_utils.DEFAULT_ICONS
 
 class MemoryGame(private val boardSize: BoardSize) {
 

@@ -25,6 +25,9 @@
             android:name=".Ufoludki_MainActivity"
             android:exported="false" />
         <activity
+            android:name=".Memory_MainActivity"
+            android:exported="false" />
+        <activity
             android:name=".games"
             android:exported="false" />
         <activity

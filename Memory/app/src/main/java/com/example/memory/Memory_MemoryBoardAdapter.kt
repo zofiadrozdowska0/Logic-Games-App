@@ -9,16 +9,16 @@ import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.example.memory.models.BoardSize
-import com.example.memory.models.MemoryCard
+import com.example.memory.memory_models.BoardSize
+import com.example.memory.memory_models.MemoryCard
 import kotlin.math.min
 
-class MemoryBoardAdapter(
+class Memory_MemoryBoardAdapter(
     private val context: Context,
     private val boardSize: BoardSize,
     private val randomizedCards: List<MemoryCard>,
     private val cardClickListener: CardClickListener
-) : RecyclerView.Adapter<MemoryBoardAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<Memory_MemoryBoardAdapter.ViewHolder>() {
     companion object{
         private const val MARGIN_SIZE = 10
         private const val TAG = "MemoryBoardAdapter"
@@ -32,7 +32,7 @@ class MemoryBoardAdapter(
         val cardWidth = parent.width / boardSize.getWidth() - (2 * MARGIN_SIZE)
         val cardHeight = parent.height / boardSize.getHeight() - (2 * MARGIN_SIZE)
         val cardSideLength = min(cardHeight, cardWidth)
-        val view = LayoutInflater.from(context).inflate(R.layout.memory_card, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.memory_memory_card, parent, false)
         val layoutParams = view.findViewById<CardView>(R.id.cardView).layoutParams as ViewGroup.MarginLayoutParams
         layoutParams.width = cardSideLength
         layoutParams.height = cardSideLength
@@ -50,7 +50,7 @@ class MemoryBoardAdapter(
 
         fun bind(position: Int) {
             val card = randomizedCards[position]
-            imageButton.setImageResource(if (card.isFaceUp) card.identifier else R.drawable.skrzynia)
+            imageButton.setImageResource(if (card.isFaceUp) card.identifier else R.drawable.memory_skrzynia)
             imageButton.alpha = if (card.isMatched) .4f else 1.0f
             val colorStateList = if (card.isMatched) ContextCompat.getColorStateList(context, R.color.color_gray) else null
             ViewCompat.setBackgroundTintList(imageButton, colorStateList)

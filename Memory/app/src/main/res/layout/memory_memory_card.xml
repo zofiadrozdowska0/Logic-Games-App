@@ -22,8 +22,8 @@
             android:background="#E3C57C"
             android:contentDescription="TODO"
             android:scaleType="centerCrop"
-            android:src="@drawable/skrzynia"
+            android:src="@drawable/memory_skrzynia"
             tools:ignore="ContentDescription,HardcodedText,SpeakableTextPresentCheck"
-            tools:src="@drawable/skrzynia" />
+            tools:src="@drawable/memory_skrzynia" />
     </androidx.cardview.widget.CardView>
 </LinearLayout>
