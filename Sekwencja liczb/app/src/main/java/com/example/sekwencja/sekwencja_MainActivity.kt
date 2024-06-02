@@ -4,13 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Chronometer
-import android.widget.Toast
 import androidx.activity.ComponentActivity
-import androidx.appcompat.app.AppCompatActivity
-import kotlin.math.pow
 import kotlin.random.Random
 
-class MainActivity : ComponentActivity() {
+class sekwencja_MainActivity : ComponentActivity() {
 
     private lateinit var btn1: Button
     private lateinit var btn2: Button
@@ -20,7 +17,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var button13: Button
     private lateinit var button14: Button
 
-    private val randomFunction = random_func()
+    private val randomFunction = sekwencja_random_func()
     private var bufor = 0
     private var bufor2 = 0
     private var bufor3 = 0
@@ -31,7 +28,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.sekwencja_activity_main)
 
         chronometer = findViewById(R.id.timer)
         chronometer.start()
@@ -89,7 +86,7 @@ class MainActivity : ComponentActivity() {
                 // Ustawienie słuchacza kliknięcia na przycisku
                 button.setOnClickListener {
                     // Tworzenie intencji i uruchomienie nowej aktywności 'wrong'
-                    val intent2 = Intent(this, wrong::class.java)
+                    val intent2 = Intent(this, sekwencja_wrong::class.java)
                     intent2.putExtra("TIME", chronometer.text.toString())
                     chronometer.stop() // Zatrzymaj chronometr
                     intent2.putExtra("button11Value", buttonValuesMap["button11"])
@@ -108,7 +105,7 @@ class MainActivity : ComponentActivity() {
         // Obsługa kliknięcia przycisku z poprawną odpowiedzią
         randomButton.setOnClickListener {
             // Tworzenie intencji i uruchomienie nowej aktywności 'correct'
-            val intent1 = Intent(this, correct::class.java)
+            val intent1 = Intent(this, sekwencja_correct::class.java)
             intent1.putExtra("TIME", chronometer.text.toString())
             chronometer.stop() // Zatrzymaj chronometr
             intent1.putExtra("button11Value", buttonValuesMap["button11"])

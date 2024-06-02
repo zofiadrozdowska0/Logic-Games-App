@@ -16,4 +16,12 @@
     <style name="Theme.MyApplication" parent="Base.Theme.MyApplication" />
 
     <style name="Theme.Saper_pirat" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <style name="Theme.Sekwencja" parent="android:Theme.Material.Light.NoActionBar" />
+
 </resources>

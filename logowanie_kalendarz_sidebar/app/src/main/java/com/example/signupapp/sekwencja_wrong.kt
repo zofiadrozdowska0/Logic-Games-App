@@ -1,22 +1,15 @@
-package com.example.sekwencja
+package com.example.signupapp
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 
-class correct : AppCompatActivity() {
+class sekwencja_wrong : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_correct)
-
-        val timeTextView = findViewById<TextView>(R.id.text_time)
-        val time = intent.getStringExtra("TIME")
-        timeTextView.text = "Your time: $time"
+        setContentView(R.layout.sekwencja_activity_wrong)
 
         // Odbieranie przekazanych wartości z obiektu 'Intent'
         val button11Value = intent.getStringExtra("button11Value")
@@ -49,10 +42,19 @@ class correct : AppCompatActivity() {
         val btn3 = findViewById<Button>(R.id.button3)
         btn3.text = btn3Text
 
-        val nextButton = findViewById<Button>(R.id.nextB)
+        // Odczytanie przekazanej wartości bufor4 z intentu
+        val correctAnswer = intent.getStringExtra("bufor4Value")
+
+        val textViewCorrectAnswer = findViewById<TextView>(R.id.textView2)
+
+        textViewCorrectAnswer.text = "Correct Answer: $correctAnswer"
+
+        val nextButton = findViewById<Button>(R.id.next)
         nextButton.setOnClickListener{
-            val intent1 = Intent(this, MainActivity::class.java)
+            val intent1 = Intent(this, sekwencja_MainActivity::class.java)
             startActivity(intent1)
         }
+
     }
+
 }

@@ -1,10 +1,9 @@
 package com.example.sekwencja
 
-import androidx.appcompat.app.AppCompatActivity
 import kotlin.math.pow
 import kotlin.random.Random
 
-class random_func {
+class sekwencja_random_func {
     private var storedNumber = 0
 
     fun mnozeniePrzezLosowaWartosc(liczba: Int): Int {
