@@ -38,8 +38,12 @@ class games : AppCompatActivity() {
 
         // działanie przycisków
 
-        val button = findViewById<Button>(R.id.textView6)
-        button.setOnClickListener {
+        val refleksbutton = findViewById<Button>(R.id.textView6)
+        val pamiecksbutton = findViewById<Button>(R.id.textView7)
+        val spostrzbutton = findViewById<Button>(R.id.textView8)
+        val logikabutton = findViewById<Button>(R.id.textView9)
+
+        refleksbutton.setOnClickListener {
             // Tworzenie zamiaru celującego w inną aplikację
             val intent = Intent(this, refleks_i_koordynacja::class.java)
             startActivity(intent)

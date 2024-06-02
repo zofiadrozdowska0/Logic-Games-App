@@ -25,6 +25,12 @@
             android:name=".Ufoludki_MainActivity"
             android:exported="false" />
         <activity
+            android:name=".MatematyczneWorlde_MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Kolor_MainActivity"
+            android:exported="false" />
+        <activity
             android:name=".games"
             android:exported="false" />
         <activity
