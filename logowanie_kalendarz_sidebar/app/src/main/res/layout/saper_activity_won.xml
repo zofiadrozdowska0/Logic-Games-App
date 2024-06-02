@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".won_activity">
+    tools:context=".saper_won_activity">
 
     <LinearLayout
         android:orientation="vertical"
@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="454dp"
 
-            android:src="@drawable/won_game" />
+            android:src="@drawable/saper_won_game" />
 
         <TextView
             android:id="@+id/your_time"

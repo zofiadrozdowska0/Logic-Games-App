@@ -14,4 +14,6 @@
     </style>
 
     <style name="Theme.MyApplication" parent="Base.Theme.MyApplication" />
+
+    <style name="Theme.Saper_pirat" parent="android:Theme.Material.Light.NoActionBar" />
 </resources>

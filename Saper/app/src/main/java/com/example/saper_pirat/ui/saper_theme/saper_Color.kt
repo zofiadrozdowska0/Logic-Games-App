@@ -1,4 +1,4 @@
-package com.example.saper_pirat.ui.theme
+package com.example.saper_pirat.ui.saper_theme
 
 import androidx.compose.ui.graphics.Color
 
