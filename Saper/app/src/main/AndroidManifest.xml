@@ -13,17 +13,17 @@
         android:theme="@style/Theme.AppCompat"
         tools:targetApi="31">
         <activity
-            android:name=".won_activity"
+            android:name=".saper_won_activity"
             android:exported="false" />
         <activity
-            android:name=".lost_activity"
+            android:name=".saper_lost_activity"
             android:exported="false" />
         <activity
-            android:name=".minefield"
+            android:name=".saper_minefield"
             android:exported="false"
             android:theme="@style/Theme.AppCompat" />
         <activity
-            android:name=".MainActivity"
+            android:name=".saper_MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Saper_pirat">

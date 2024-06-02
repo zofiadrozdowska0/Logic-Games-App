@@ -28,6 +28,33 @@
             android:name=".Memory_MainActivity"
             android:exported="false" />
         <activity
+            android:name=".saper_won_activity"
+            android:exported="false" />
+        <activity
+            android:name=".saper_lost_activity"
+            android:exported="false" />
+        <activity
+            android:name=".saper_minefield"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat" />
+        <activity
+            android:name=".saper_MainActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Saper_pirat"/>
+        <activity
+            android:name=".sekwencja_wrong"
+            android:exported="false"
+            android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".sekwencja_correct"
+            android:exported="false"
+            android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".sekwencja_MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Sekwencja"/>
+        <activity
             android:name=".games"
             android:exported="false" />
         <activity
