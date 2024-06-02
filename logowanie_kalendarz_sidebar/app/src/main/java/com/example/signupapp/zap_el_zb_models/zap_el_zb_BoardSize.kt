@@ -1,8 +1,8 @@
-package com.example.remembersequence.models
+package com.example.signupapp
 
 
 
-enum class BoardSize(val numCards: Int) {
+enum class zap_el_zb_BoardSize(val numCards: Int) {
     EASY(8),
     MEDIUM(18),
     HARD(24);

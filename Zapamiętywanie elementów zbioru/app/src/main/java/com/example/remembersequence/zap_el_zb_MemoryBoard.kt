@@ -9,16 +9,16 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.remembersequence.models.BoardSize
+import com.example.remembersequence.zap_el_zb_models.zap_el_zb_BoardSize
 import kotlin.math.min
 import android.util.Log
 import android.widget.Toast
 
-class MemoryBoard(
+class zap_el_zb_MemoryBoard(
     private val context: Context,
-    private val boardSize: BoardSize,
+    private val boardSize: zap_el_zb_BoardSize,
     private val cardImages: List<Int>
-) : RecyclerView.Adapter<MemoryBoard.ViewHolder>() {
+) : RecyclerView.Adapter<zap_el_zb_MemoryBoard.ViewHolder>() {
 
     companion object {
         private const val TAG = "MemoryBoard"
@@ -34,7 +34,7 @@ class MemoryBoard(
         val cardWidth = parent.width / 2 - 2 * MARGIN_SIZE
         val cardHeight = parent.height / 4 - 2 * MARGIN_SIZE
         val cardSideLength = min(cardWidth, cardHeight)
-        val view = LayoutInflater.from(context).inflate(R.layout.activity_memory_card, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.zap_el_zb_activity_memory_card, parent, false)
         val layoutParams = view.findViewById<CardView>(R.id.cardView).layoutParams as ViewGroup.MarginLayoutParams
         layoutParams.width = cardSideLength
         layoutParams.height = cardSideLength
@@ -56,7 +56,7 @@ class MemoryBoard(
             if (position < sequence.size) {
                 imageButton.setImageResource(sequence[position])
             } else {
-                imageButton.setImageResource(R.drawable.ic_launcher_background)
+                imageButton.setImageResource(R.drawable.zap_el_zb_ic_launcher_background)
             }
 
             // Hide images after delay
@@ -66,7 +66,7 @@ class MemoryBoard(
                     val secondHalfPosition = position - sequence.size
                     imageButton.setImageResource(secondHalfImages.first[secondHalfPosition])
                 } else {
-                    imageButton.setImageResource(R.drawable.ic_launcher_background)
+                    imageButton.setImageResource(R.drawable.zap_el_zb_ic_launcher_background)
                 }
             }, DELAY_BEFORE_HIDING_UPPER_CARDS)
 

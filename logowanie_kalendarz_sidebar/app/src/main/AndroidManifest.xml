@@ -25,15 +25,16 @@
             android:name=".Ufoludki_MainActivity"
             android:exported="false" />
         <activity
-<<<<<<< HEAD
             android:name=".MatematyczneWorlde_MainActivity"
             android:exported="false" />
         <activity
             android:name=".Kolor_MainActivity"
             android:exported="false" />
         <activity
-=======
             android:name=".Memory_MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".zap_el_zb_MainActivity"
             android:exported="false" />
         <activity
             android:name=".saper_won_activity"
@@ -63,7 +64,6 @@
             android:exported="true"
             android:theme="@style/Theme.Sekwencja"/>
         <activity
->>>>>>> 4ad74b1b8a1355c91a476e900a14f802bdd90d44
             android:name=".games"
             android:exported="false" />
         <activity
