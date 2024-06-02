@@ -32,7 +32,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="#52FFFFFF"
-            app:layout_constraintBottom_toTopOf="@+id/chartContainer"
+            app:layout_constraintBottom_toTopOf="@+id/przygodaButton"
             app:layout_constraintHeight_percent="0.42"
             app:layout_constraintHorizontal_bias="0.491"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -40,23 +40,27 @@
             app:layout_constraintTop_toBottomOf="@id/toolbar"
             app:layout_constraintWidth_percent="0.9" />
 
-        <FrameLayout
-            android:id="@+id/chartContainer"
+        <Button
+            android:id="@+id/przygodaButton"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="#52FFFFFF"
+            android:layout_margin="16dp"
+            android:background="@drawable/tab"
+            android:backgroundTint="#2F1F2B"
+            android:backgroundTintMode="src_atop"
+            android:gravity="center"
+            android:text="WYRUSZ NA PRZYGODE"
+            android:textColor="#E5BE94"
+            android:textSize="20sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHeight_percent="0.42"
+            app:layout_constraintHeight_percent="0.1"
             app:layout_constraintHorizontal_bias="0.49"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/calendarView"
-            app:layout_constraintWidth_percent="0.9" >
-            <com.example.signupapp.LineChartView
-                android:id="@+id/lineChart"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-        </FrameLayout>
+            app:layout_constraintWidth_percent="0.9" />
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

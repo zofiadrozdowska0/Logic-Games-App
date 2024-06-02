@@ -2,6 +2,7 @@ package com.example.signupapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.CalendarView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -18,7 +19,7 @@ class succes : AppCompatActivity() {
     private lateinit var navView: NavigationView
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
-    private lateinit var lineChartView: LineChartView
+    //private lateinit var lineChartView: LineChartView
     private lateinit var calendarView: CalendarView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,6 +29,14 @@ class succes : AppCompatActivity() {
         // Inicjalizacja Firebase Authentication
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
+
+        // przycisk do rozpoczecia gier
+        val przygodaButton = findViewById<Button>(R.id.przygodaButton)
+
+        przygodaButton.setOnClickListener{
+            val intent = Intent(applicationContext, friends::class.java)
+            startActivity(intent)
+        }
 
         // Inicjalizacja DrawerLayout i NavigationView
         drawerLayout = findViewById(R.id.drawer_layout)
@@ -56,7 +65,8 @@ class succes : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_ryba_navbar)
-        lineChartView = findViewById(R.id.lineChart)
+        //lineChartView = findViewById(R.id.lineChart)
+
 
         // Pobranie bieżącego użytkownika i jego UID
 
@@ -132,7 +142,7 @@ class succes : AppCompatActivity() {
                 pointsList.addAll(categoryPoints)
 
                 // Ustawienie danych na wykresie
-                lineChartView.setDataPointsList(pointsList)
+                //lineChartView.setDataPointsList(pointsList)
             }
             .addOnFailureListener { e ->
                 Toast.makeText(this, "Błąd podczas pobierania punktów: ${e.message}", Toast.LENGTH_SHORT).show()
