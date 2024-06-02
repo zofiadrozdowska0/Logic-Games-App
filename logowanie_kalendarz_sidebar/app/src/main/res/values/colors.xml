@@ -6,7 +6,14 @@
     <color name="purple_200">#E1BEE7</color>
     <color name="teal_200">#80CBC4</color>
     <color name="teal_700">#00796B</color>
+<<<<<<< HEAD
     <color name="red">#FF0000</color>
     <color name="green">#00FF00</color>
     <color name="yellow">#FFFF00</color>
+=======
+    <color name="color_gray">#E0E0E0</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+>>>>>>> 4ad74b1b8a1355c91a476e900a14f802bdd90d44
 </resources>
