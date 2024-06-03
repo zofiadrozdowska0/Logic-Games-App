@@ -21,8 +21,8 @@ class Maze_MazeView : View {
     private var ballPositionY = 0
     private var treasurePositionX = 0
     private var treasurePositionY = 0
-    private lateinit var treasureBitmap: Bitmap
-    private lateinit var backgroundBitmap: Bitmap
+    private var treasureBitmap: Bitmap? = null
+    private var backgroundBitmap: Bitmap? = null
 
     private val passagePaint = Paint().apply {
         color = Color.WHITE // Kolor ścieżek
@@ -48,6 +48,22 @@ class Maze_MazeView : View {
         treasureBitmap = BitmapFactory.decodeResource(resources, R.drawable.maze_treasure)
         // Załaduj obrazek tła
         backgroundBitmap = BitmapFactory.decodeResource(resources, R.drawable.maze_background_texture)
+
+        if (treasureBitmap == null) {
+            // Handle the error gracefully if the resource is not found
+            treasureBitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(treasureBitmap!!)
+            val paint = Paint().apply { color = Color.YELLOW }
+            canvas.drawRect(0f, 0f, 100f, 100f, paint)
+        }
+
+        if (backgroundBitmap == null) {
+            // Handle the error gracefully if the resource is not found
+            backgroundBitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(backgroundBitmap!!)
+            val paint = Paint().apply { color = Color.GRAY }
+            canvas.drawRect(0f, 0f, 100f, 100f, paint)
+        }
     }
 
     fun setMaze(maze: Array<BooleanArray>, ballView: View) {
@@ -62,7 +78,9 @@ class Maze_MazeView : View {
         if (!::maze.isInitialized) return
 
         // Narysuj tło
-        canvas.drawBitmap(backgroundBitmap, null, RectF(0f, 0f, width.toFloat(), height.toFloat()), null)
+        backgroundBitmap?.let {
+            canvas.drawBitmap(it, null, RectF(0f, 0f, width.toFloat(), height.toFloat()), null)
+        }
 
         for (i in maze.indices) {
             for (j in maze[i].indices) {
@@ -86,7 +104,9 @@ class Maze_MazeView : View {
             val top = treasurePositionX * cellHeight
             val right = left + cellWidth
             val bottom = top + cellHeight
-            canvas.drawBitmap(treasureBitmap, null, RectF(left, top, right, bottom), null)
+            treasureBitmap?.let {
+                canvas.drawBitmap(it, null, RectF(left, top, right, bottom), null)
+            }
         }
     }
 

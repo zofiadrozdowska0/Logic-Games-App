@@ -10,12 +10,12 @@ import android.widget.Button
 import java.util.*
 import java.util.concurrent.TimeUnit
 import android.os.CountDownTimer
+import androidx.appcompat.app.AlertDialog
 
 class Maze_MainActivity : Activity() {
 
     private lateinit var mazeView: Maze_MazeView
     private lateinit var ballView: View
-    private lateinit var exitButton: Button
     private lateinit var timerTextView: TextView
     private var offsetX = 0f
     private var offsetY = 0f
@@ -35,10 +35,7 @@ class Maze_MainActivity : Activity() {
 
         mazeView = findViewById(R.id.mazeView)
         ballView = findViewById(R.id.ballView)
-        exitButton = findViewById(R.id.exitButton)
         timerTextView = findViewById(R.id.timerTextView)
-
-        exitButton.visibility = View.GONE
 
         // Pozostała wartość czasu, jeśli została przekazana
         timeLeftInMillis = intent.getLongExtra("TIME_LEFT", 60000)
@@ -73,16 +70,11 @@ class Maze_MainActivity : Activity() {
             true
         }
 
-        exitButton.setOnClickListener {
-            finishAffinity()
-        }
-
         startTimer()
     }
 
     private fun disableGameInteraction() {
         mazeView.setOnTouchListener(null) // Dezaktywacja onTouchListener
-        exitButton.isEnabled = false
     }
 
     private fun generateNewMaze() {
@@ -141,7 +133,9 @@ class Maze_MainActivity : Activity() {
                     visibility = View.VISIBLE
                     text = getString(R.string.score_message, level)
                 }
-                exitButton.visibility = View.VISIBLE
+                if (!isFinishing) {
+                    showCompletionDialog()
+                }
             }
         }
     }
@@ -267,6 +261,20 @@ class Maze_MainActivity : Activity() {
         if (maze[x][y - 1] == WALL) count++ // góra
         if (maze[x][y + 1] == WALL) count++ // dół
         return count
+    }
+
+    private fun showCompletionDialog() {
+        if (!isFinishing) {
+            AlertDialog.Builder(this)
+                .setTitle("Level Completed")
+                .setMessage("You completed level $level!")
+                .setPositiveButton("Next Game") { _, _ ->
+                    val intent = Intent(this, WhacAPirateMainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+                .show()
+        }
     }
 
     companion object {
