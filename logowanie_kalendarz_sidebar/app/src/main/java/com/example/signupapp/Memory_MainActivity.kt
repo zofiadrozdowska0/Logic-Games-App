@@ -1,5 +1,6 @@
 package com.example.signupapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import androidx.activity.ComponentActivity
@@ -49,7 +50,8 @@ class Memory_MainActivity : ComponentActivity() {
         if (memoryGame.flipCard(position)) {
 
             if (memoryGame.isWon()) {
-                //dodaj ikone restartu
+                val intent = Intent(applicationContext, zap_sekwencja_MainActivity::class.java)
+                startActivity(intent)
             }
         }
         numMoves.text = "Moves: ${memoryGame.getNumMoves()}"

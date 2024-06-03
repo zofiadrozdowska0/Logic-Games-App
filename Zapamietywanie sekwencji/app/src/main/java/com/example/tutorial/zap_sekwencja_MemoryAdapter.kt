@@ -22,7 +22,8 @@ class zap_sekwencja_MemoryAdapter(
     private val memoryGame: zap_sekwencja_MemoryGame,
     private val rvBoard: RecyclerView,
     private val tvNumElements: TextView,
-    private val tvText: TextView
+    private val tvText: TextView,
+    private val tvNumPoints: TextView
 ) : RecyclerView.Adapter<zap_sekwencja_MemoryAdapter.ViewHolder>() {
 
     companion object {
@@ -33,7 +34,7 @@ class zap_sekwencja_MemoryAdapter(
     }
     private var sequence: List<Int>? = null
     private var isClickable = false
-
+    private var points = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val cardWidth = parent.width / boardSize.getWidth() - (2 * MARGIN_SIZE)
@@ -45,6 +46,7 @@ class zap_sekwencja_MemoryAdapter(
         layoutParams.width = cardSideLength
         layoutParams.height = cardSideLength
         layoutParams.setMargins(MARGIN_SIZE, MARGIN_SIZE, MARGIN_SIZE, MARGIN_SIZE)
+
 
         return ViewHolder(view)
     }
@@ -98,6 +100,8 @@ class zap_sekwencja_MemoryAdapter(
                     Log.d(TAG, "Gracz poprawnie ukończył sekwencję.")
                     memoryGame.level++
                     tvNumElements.text = "Level: ${memoryGame.level-1}" // Aktualizacja TextView z wartością level
+                    points++
+                    tvNumPoints.text = "Points: ${points}"
                     currentSequenceIndex = 0
                     startGame()
                 }
@@ -106,6 +110,8 @@ class zap_sekwencja_MemoryAdapter(
                 Log.d(TAG, "Gracz kliknął nieprawidłową kartę na pozycji: $position")
                 sequence=null
                 currentSequenceIndex=0
+                points = 0
+                tvNumPoints.text = "Points: ${points}"
                 memoryGame.level = 2
                 startGame()
             }
@@ -137,6 +143,7 @@ class zap_sekwencja_MemoryAdapter(
 
         isClickable = false
         tvNumElements.text = "Level: ${memoryGame.level-1}" // Aktualizacja TextView z wartością level
+        tvNumPoints.text = "Points: ${points}"
         showSequence()
 
 

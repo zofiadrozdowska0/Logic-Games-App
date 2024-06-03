@@ -1,5 +1,6 @@
 package com.example.signupapp
 
+import android.content.Intent
 import android.content.res.AssetManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -269,11 +270,15 @@ class MatematyczneWorlde_MainActivity : AppCompatActivity() {
                     compareEquations(equationString, randomEquation, listOfTextViews[currentListIndex])
                     if (checkRowForWin(listOfTextViews[currentListIndex])) {
                         Toast.makeText(this@MatematyczneWorlde_MainActivity, "Gratulacje, wygrałeś!", Toast.LENGTH_SHORT).show()
+                        val intent1 = Intent(applicationContext, saper_minefield::class.java)
+                        startActivity(intent1)
                         disableButtons()
                     } else if (currentListIndex == 5) {
                         // Jeśli to ostatni rząd i nie ma zwycięstwa, wyświetl informację o porażce i poprawne równanie
                         Toast.makeText(this@MatematyczneWorlde_MainActivity, "Niestety przegrałeś. Równanie, którego szukałeś to: $randomEquation", Toast.LENGTH_LONG).show()
                         disableButtons()
+                        val intent = Intent(applicationContext, saper_minefield::class.java)
+                        startActivity(intent)
                     } else {
                         currentListIndex = (currentListIndex + 1) % listOfTextViews.size // Przejdź do następnego rzędu
                     }

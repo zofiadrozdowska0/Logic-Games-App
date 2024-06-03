@@ -12,12 +12,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.remembersequence.zap_el_zb_models.zap_el_zb_BoardSize
 import kotlin.math.min
 import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
 
 class zap_el_zb_MemoryBoard(
     private val context: Context,
     private val boardSize: zap_el_zb_BoardSize,
-    private val cardImages: List<Int>
+    private val cardImages: List<Int>,
+    private val tvNumMoves: TextView,
+    private val tvNumPairs: TextView
+
 ) : RecyclerView.Adapter<zap_el_zb_MemoryBoard.ViewHolder>() {
 
     companion object {
@@ -29,6 +33,7 @@ class zap_el_zb_MemoryBoard(
     private var isClickable = false
     private var sequence: List<Int> = generateRandomSequence()
     private var secondHalfImages: Pair<List<Int>, Int> = generateRandomImagesForSecondHalf(sequence)
+    private var points =0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val cardWidth = parent.width / 2 - 2 * MARGIN_SIZE
@@ -58,9 +63,12 @@ class zap_el_zb_MemoryBoard(
             } else {
                 imageButton.setImageResource(R.drawable.zap_el_zb_ic_launcher_background)
             }
-
+            tvNumMoves.text = "Points: ${points}"
+            tvNumPairs.text = "Your Sequence"
             // Hide images after delay
             Handler(Looper.getMainLooper()).postDelayed({
+
+                tvNumPairs.text = "Your Answear"
                 isClickable = true
                 if (position >= sequence.size) {
                     val secondHalfPosition = position - sequence.size
@@ -69,7 +77,7 @@ class zap_el_zb_MemoryBoard(
                     imageButton.setImageResource(R.drawable.zap_el_zb_ic_launcher_background)
                 }
             }, DELAY_BEFORE_HIDING_UPPER_CARDS)
-
+            tvNumPairs.text = "Your Sequence"
             // Set click listener for second half images
             imageButton.setOnClickListener {
                 if (isClickable && position >= sequence.size) {
@@ -78,9 +86,13 @@ class zap_el_zb_MemoryBoard(
                     val correctImage = secondHalfImages.first[secondHalfImages.second]
 
                     if (clickedImage == correctImage) {
-                        showToast("Masz punkt!")
+                        showToast("Good Anwear!")
+                        points++
+                        tvNumMoves.text = "Points: ${points}"
                     } else {
-                        showToast("Błąd!")
+                        showToast("Wrong Answear!")
+                        points = 0
+                        tvNumMoves.text = "Points: ${points}"
                     }
                     restartGame()
                 }
