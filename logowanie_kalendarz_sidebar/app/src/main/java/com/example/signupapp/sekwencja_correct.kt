@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class sekwencja_correct : AppCompatActivity() {
@@ -14,6 +15,9 @@ class sekwencja_correct : AppCompatActivity() {
         val timeTextView = findViewById<TextView>(R.id.text_time)
         val time = intent.getStringExtra("TIME")
         timeTextView.text = "Your time: $time"
+
+        val correctCount = intent.getIntExtra("CORRECT_COUNT", 0)
+        val wrongCount = intent.getIntExtra("WRONG_COUNT", 0)
 
         // Odbieranie przekazanych wartości z obiektu 'Intent'
         val button11Value = intent.getStringExtra("button11Value")
@@ -46,9 +50,18 @@ class sekwencja_correct : AppCompatActivity() {
         val btn3 = findViewById<Button>(R.id.button3)
         btn3.text = btn3Text
 
+        if (correctCount + wrongCount >= 10) {
+            Toast.makeText(this, "Koniec gier logicznych. Powrót do menu", Toast.LENGTH_LONG).show()
+            val intent = Intent(this, wybor_gry::class.java)
+            startActivity(intent)
+            finish()
+        }
+
         val nextButton = findViewById<Button>(R.id.nextB)
         nextButton.setOnClickListener{
             val intent1 = Intent(this, sekwencja_MainActivity::class.java)
+            intent1.putExtra("CORRECT_COUNT", correctCount)
+            intent1.putExtra("WRONG_COUNT", wrongCount)
             startActivity(intent1)
         }
     }

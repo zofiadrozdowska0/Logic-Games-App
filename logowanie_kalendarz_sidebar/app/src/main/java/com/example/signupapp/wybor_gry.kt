@@ -126,6 +126,7 @@ class wybor_gry : AppCompatActivity() {
 
         val button2 = findViewById<Button>(R.id.button2)
         button2.setOnClickListener {
+            Toast.makeText(this, "Pamięć", Toast.LENGTH_SHORT).show()
             val intent = Intent(applicationContext, Memory_MainActivity::class.java)
             startActivity(intent)
         }
@@ -139,7 +140,9 @@ class wybor_gry : AppCompatActivity() {
         val button4 = findViewById<Button>(R.id.button4)
         button4.setOnClickListener {
             // Akcja po kliknięciu przycisku "Start Game" w sekcji 4
-            Toast.makeText(this, "logika", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Logika i dedukcja", Toast.LENGTH_SHORT).show()
+            val intent = Intent(applicationContext, MatematyczneWorlde_MainActivity::class.java)
+            startActivity(intent)
         }
     }
 

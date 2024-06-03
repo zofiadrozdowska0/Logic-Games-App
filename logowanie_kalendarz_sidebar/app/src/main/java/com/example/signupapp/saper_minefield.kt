@@ -9,6 +9,7 @@ import android.widget.Chronometer
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import kotlin.random.Random
 
@@ -112,8 +113,9 @@ class saper_minefield : AppCompatActivity() {
 
                             // Zaczekaj sekudne przed uruchomieniem lost_activity
                             Handler().postDelayed({
-                                val intent2 = Intent(this, saper_lost_activity::class.java)
-                                startActivity(intent2)
+                                Toast.makeText(this@saper_minefield, "Niestety przegrałeś. Przechodzenie do następnęj gry", Toast.LENGTH_LONG).show()
+                                val intent = Intent(this, sekwencja_MainActivity::class.java)
+                                startActivity(intent)
                             }, 1000) // Czas w milisekundach
                         } else {
                             val bombCount = countAdjacentBombs(mineboard, i, j)
@@ -216,7 +218,8 @@ class saper_minefield : AppCompatActivity() {
         // Sprawdź, czy wszystkie pola z bombami są oflagowane i wszystkie pozostałe pola są odkryte
         if (flaggedMines == mines && checkAllCellsRevealedWithoutBomb(mineboard)) {
             // Jeśli tak, przejdź do won_activity
-            val intent = Intent(this, saper_won_activity::class.java)
+            Toast.makeText(this@saper_minefield, "Brawo, wygrałeś! Przechodzenie do następnęj gry", Toast.LENGTH_LONG).show()
+            val intent = Intent(this, sekwencja_MainActivity::class.java)
             intent.putExtra("TIME", chronometer.text.toString())
             chronometer.stop() // Zatrzymaj chronometr
             startActivity(intent)
