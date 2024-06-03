@@ -3,18 +3,10 @@ package com.example.znajdzroznicewalimy
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
 import android.widget.GridLayout
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 
 class GraRzeczonaActivity : AppCompatActivity() {
     private lateinit var gridLayoutTop: GridLayout
@@ -28,7 +20,7 @@ class GraRzeczonaActivity : AppCompatActivity() {
     private var clickedWrongImages = mutableSetOf<String>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.gra)
+        setContentView(R.layout.roznice_gra)
         gridLayoutTop = findViewById(R.id.gridLayoutTop)
         gridLayoutBottom = findViewById(R.id.gridLayoutBottom)
         startTime = System.currentTimeMillis()
@@ -37,32 +29,32 @@ class GraRzeczonaActivity : AppCompatActivity() {
 
     fun generateAndDisplayImages() {
         val images = listOf(
-            "ic_armata1",
-            "ic_czaszka1",
-            "ic_kotwica1",
-            "ic_krab1",
-            "ic_orka1",
-            "ic_palma1",
-            "ic_papuga1",
-            "ic_raczek1",
-            "ic_rafa1",
-            "ic_ryba1",
-            "ic_statek1",
-            "ic_woda1",
-            "ic_wyspa1",
-            "ic_armata2",
-            "ic_czaszka2",
-            "ic_kotwica2",
-            "ic_krab2",
-            "ic_orka2",
-            "ic_palma2",
-            "ic_papuga2",
-            "ic_raczek2",
-            "ic_rafa2",
-            "ic_ryba2",
-            "ic_statek2",
-            "ic_woda2",
-            "ic_wyspa2"
+            "roznice_ic_armata1",
+            "roznice_ic_czaszka1",
+            "roznice_ic_kotwica1",
+            "roznice_ic_krab1",
+            "roznice_ic_orka1",
+            "roznice_ic_palma1",
+            "roznice_ic_papuga1",
+            "roznice_ic_raczek1",
+            "roznice_ic_rafa1",
+            "roznice_ic_ryba1",
+            "roznice_ic_statek1",
+            "roznice_ic_woda1",
+            "roznice_ic_wyspa1",
+            "roznice_ic_armata2",
+            "roznice_ic_czaszka2",
+            "roznice_ic_kotwica2",
+            "roznice_ic_krab2",
+            "roznice_ic_orka2",
+            "roznice_ic_palma2",
+            "roznice_ic_papuga2",
+            "roznice_ic_raczek2",
+            "roznice_ic_rafa2",
+            "roznice_ic_ryba2",
+            "roznice_ic_statek2",
+            "roznice_ic_woda2",
+            "roznice_ic_wyspa2"
         ) // Lista twoich obrazów
         val shuffledImages = images.shuffled() // Mieszanie obrazów
 
@@ -98,7 +90,7 @@ class GraRzeczonaActivity : AppCompatActivity() {
     // Przykładowa obsługa kliknięcia
     fun onImageClick(imageView: ImageView, imageName: String, isCorrect: Boolean) {
         if (isCorrect) {
-            imageView.setBackgroundResource(R.drawable.changed_image_border)
+            imageView.setBackgroundResource(R.drawable.roznice_changed_image_border)
             correctImagesCount++
             if (correctImagesCount == 3) { // Założenie, że 3 to liczba poprawnych obrazków do znalezienia
                 endTime = System.currentTimeMillis()
@@ -109,7 +101,7 @@ class GraRzeczonaActivity : AppCompatActivity() {
             }
         } else {
             if (!clickedWrongImages.contains(imageName)) { // Sprawdzenie, czy obrazek nie był kliknięty wcześniej
-                imageView.setBackgroundResource(R.drawable.wrong_image_border)
+                imageView.setBackgroundResource(R.drawable.roznice_wrong_image_border)
                 penaltytime += 5000
                 clickedWrongImages.add(imageName) // Dodanie obrazka do zestawu klikniętych błędnie
             }
@@ -127,7 +119,7 @@ class GraRzeczonaActivity : AppCompatActivity() {
                 restartGame()
             }
             setNegativeButton("Nie") { dialog, which ->
-                val intent = Intent(this@GraRzeczonaActivity, MainActivity::class.java)
+                val intent = Intent(this@GraRzeczonaActivity, Roznice_MainActivity::class.java)
                 startActivity(intent)
                 finish()
             }
@@ -152,7 +144,7 @@ class GraRzeczonaActivity : AppCompatActivity() {
             val imageView = ImageView(context).apply {
                 adjustViewBounds = true
                 scaleType = ImageView.ScaleType.FIT_CENTER
-                setBackgroundResource(R.drawable.image_border)
+                setBackgroundResource(R.drawable.roznice_image_border)
 
                 val imgResId = context.resources.getIdentifier(imageName, "drawable", context.packageName)
                 if (imgResId != 0) { // Jeżeli znaleziono zasób

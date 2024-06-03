@@ -34,6 +34,12 @@
             android:name=".Kolor_MainActivity"
             android:exported="false" />
         <activity
+            android:name=".Roznice_MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GraRzeczonaActivity"
+            android:exported="false" />
+        <activity
             android:name=".Memory_MainActivity"
             android:exported="false" />
         <activity
