@@ -22,7 +22,8 @@ class zap_sekwencja_MemoryAdapter(
     private val memoryGame: zap_sekwencja_MemoryGame,
     private val rvBoard: RecyclerView,
     private val tvNumElements: TextView,
-    private val tvText: TextView
+    private val tvText: TextView,
+    private val tvNumPoints: TextView
 ) : RecyclerView.Adapter<zap_sekwencja_MemoryAdapter.ViewHolder>() {
 
     companion object {
@@ -33,6 +34,7 @@ class zap_sekwencja_MemoryAdapter(
     }
     private var sequence: List<Int>? = null
     private var isClickable = false
+    private var points = 0
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -95,17 +97,21 @@ class zap_sekwencja_MemoryAdapter(
                 currentSequenceIndex++
 
                 if (currentSequenceIndex == sequence?.size) {
-                    Log.d(TAG, "Gracz poprawnie ukończył sekwencję.")
+                    //Log.d(TAG, "Sequence correct.")
                     memoryGame.level++
                     tvNumElements.text = "Level: ${memoryGame.level-1}" // Aktualizacja TextView z wartością level
+                    points++
+                    tvNumPoints.text = "Points: ${points}"
                     currentSequenceIndex = 0
                     startGame()
                 }
             } else {
-                Toast.makeText(context, "Błędny wybór!", Toast.LENGTH_SHORT).show()
-                Log.d(TAG, "Gracz kliknął nieprawidłową kartę na pozycji: $position")
+                Toast.makeText(context, "Wrong choice!", Toast.LENGTH_SHORT).show()
+                //Log.d(TAG, "Gracz kliknął nieprawidłową kartę na pozycji: $position")
                 sequence=null
                 currentSequenceIndex=0
+                points = 0
+                tvNumPoints.text = "Points: ${points}"
                 memoryGame.level = 2
                 val intent = Intent(context, zap_el_zb_MainActivity::class.java)
                 context.startActivity(intent)
