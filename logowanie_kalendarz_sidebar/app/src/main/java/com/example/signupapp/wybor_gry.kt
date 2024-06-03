@@ -27,6 +27,9 @@ class wybor_gry : AppCompatActivity() {
         const val REQUEST_ROZNICE = 1
         const val REQUEST_UFOLUDKI = 2
         const val REQUEST_KLOCKI = 3
+        const val REQUEST_WHACAPIRATE = 4
+        const val REQUEST_KOLOR = 5
+        const val REQUEST_MAZE = 6
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -128,7 +131,7 @@ class wybor_gry : AppCompatActivity() {
         // Handle button clicks
         val button1 = findViewById<Button>(R.id.button1)
         button1.setOnClickListener {
-            Toast.makeText(this, "refleks", Toast.LENGTH_SHORT).show()
+            startKolorActivity()
         }
 
         val button2 = findViewById<Button>(R.id.button2)
@@ -181,6 +184,21 @@ class wybor_gry : AppCompatActivity() {
         startActivityForResult(intent, REQUEST_KLOCKI)
     }
 
+    private fun startWhacAPirateActivity() {
+        val intent = Intent(this, WhacAPirateMainActivity::class.java)
+        startActivityForResult(intent, REQUEST_WHACAPIRATE)
+    }
+
+    private fun startKolorActivity() {
+        val intent = Intent(this, Kolor_MainActivity::class.java)
+        startActivityForResult(intent, REQUEST_KOLOR)
+    }
+
+    private fun startMazeActivity() {
+        val intent = Intent(this, Maze_MainActivity::class.java)
+        startActivityForResult(intent, REQUEST_MAZE)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK) {
@@ -192,7 +210,16 @@ class wybor_gry : AppCompatActivity() {
                     startKlockiActivity()
                 }
                 REQUEST_KLOCKI -> {
-                    Toast.makeText(this, "All games completed!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "All logic and deduction games completed!", Toast.LENGTH_SHORT).show()
+                }
+                REQUEST_KOLOR -> {
+                    startMazeActivity()
+                }
+                REQUEST_MAZE -> {
+                    startWhacAPirateActivity()
+                }
+                REQUEST_WHACAPIRATE -> {
+                    Toast.makeText(this, "All reflex and coordination games completed!", Toast.LENGTH_SHORT).show()
                 }
             }
         }
