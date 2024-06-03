@@ -1,6 +1,7 @@
 package com.example.signupapp
 
 import android.content.Context
+import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
@@ -91,7 +92,8 @@ class zap_el_zb_MemoryBoard(
                         showToast("Wrong Answer!")
                         points = 0
                         tvNumMoves.text = "Points: ${points}"
-
+                        val intent = Intent(context, wybor_gry::class.java)
+                        context.startActivity(intent)
                     }
                     restartGame()
                 }
