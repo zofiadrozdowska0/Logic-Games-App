@@ -28,6 +28,15 @@
             android:name=".Ufoludki_MainActivity"
             android:exported="false" />
         <activity
+            android:name=".Maze_MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Maze_MazeGrid"
+            android:exported="false" />
+        <activity
+            android:name=".Maze_MazeView"
+            android:exported="false" />
+        <activity
             android:name=".MatematyczneWorlde_MainActivity"
             android:exported="false" />
         <activity

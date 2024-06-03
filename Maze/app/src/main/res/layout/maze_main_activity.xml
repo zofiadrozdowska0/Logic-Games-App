@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".Maze_MainActivity">
 
-    <com.example.maze.MazeView
+    <com.example.maze.Maze_MazeView
         android:id="@+id/mazeView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -15,7 +15,7 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_centerInParent="true"
-        android:background="@drawable/ball_shape" />
+        android:background="@drawable/maze_ball_shape" />
 
     <TextView
         android:id="@+id/gameOverTextView"

@@ -2,5 +2,6 @@
     <string name="app_name">SIGNUP APP</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string name="score_message">Score: %1$d</string>
 
 </resources>

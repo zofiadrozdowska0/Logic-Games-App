@@ -1,7 +1,7 @@
-package com.example.maze
+package com.example.signupapp
 
 
-class MazeGrid(private val maze: Array<IntArray>, private val redRectanglePosition: Pair<Int, Int>) {
+class Maze_MazeGrid(private val maze: Array<IntArray>, private val redRectanglePosition: Pair<Int, Int>) {
 
     fun getMaze(): Array<IntArray> {
         return maze

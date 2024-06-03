@@ -11,7 +11,7 @@ import android.util.AttributeSet
 import android.view.View
 import kotlin.math.absoluteValue
 
-class MazeView : View {
+class Maze_MazeView : View {
 
     private lateinit var maze: Array<BooleanArray>
     private lateinit var ballView: View
@@ -45,9 +45,9 @@ class MazeView : View {
 
     private fun initialize(context: Context) {
         // Załaduj obrazek skarbu
-        treasureBitmap = BitmapFactory.decodeResource(resources, R.drawable.treasure)
+        treasureBitmap = BitmapFactory.decodeResource(resources, R.drawable.maze_treasure)
         // Załaduj obrazek tła
-        backgroundBitmap = BitmapFactory.decodeResource(resources, R.drawable.background_texture)
+        backgroundBitmap = BitmapFactory.decodeResource(resources, R.drawable.maze_background_texture)
     }
 
     fun setMaze(maze: Array<BooleanArray>, ballView: View) {

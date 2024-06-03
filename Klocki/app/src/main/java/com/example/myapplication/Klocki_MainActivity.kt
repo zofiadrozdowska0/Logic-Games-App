@@ -6,7 +6,6 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.os.Bundle
 import android.os.SystemClock
-import android.os.SystemClock.sleep
 import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.MotionEvent
@@ -17,7 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.databinding.ActivityMainBinding
 import kotlin.random.Random
 
-class MainActivity : AppCompatActivity() {
+class Klocki_MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     private var dx = 0f
     private var dy = 0f
@@ -315,118 +314,118 @@ class MainActivity : AppCompatActivity() {
         prev_task = randomNumber
         when (randomNumber){
             1 -> {
-                binding.imageView2.setImageResource(R.drawable.l)
-                binding.imageView3.setImageResource(R.drawable.i)
-                binding.imageView4.setImageResource(R.drawable.l2)
-                binding.imageView5.setImageResource(R.drawable.o)
+                binding.imageView2.setImageResource(R.drawable.klocki_l)
+                binding.imageView3.setImageResource(R.drawable.klocki_i)
+                binding.imageView4.setImageResource(R.drawable.klocki_l2)
+                binding.imageView5.setImageResource(R.drawable.klocki_o)
                 binding.imageView5.layoutParams.height = dpToPixels(125f).toInt()
                 binding.imageView5.rotated = false
                 binding.imageView5.tag = 'o'
             }
             2 -> {
-                binding.imageView2.setImageResource(R.drawable.z)
-                binding.imageView3.setImageResource(R.drawable.i)
-                binding.imageView4.setImageResource(R.drawable.l2)
-                binding.imageView5.setImageResource(R.drawable.l)
+                binding.imageView2.setImageResource(R.drawable.klocki_z)
+                binding.imageView3.setImageResource(R.drawable.klocki_i)
+                binding.imageView4.setImageResource(R.drawable.klocki_l2)
+                binding.imageView5.setImageResource(R.drawable.klocki_l)
             }
             3 -> {
-                binding.imageView2.setImageResource(R.drawable.s)
-                binding.imageView3.setImageResource(R.drawable.i)
-                binding.imageView4.setImageResource(R.drawable.l2)
-                binding.imageView5.setImageResource(R.drawable.l)
+                binding.imageView2.setImageResource(R.drawable.klocki_s)
+                binding.imageView3.setImageResource(R.drawable.klocki_i)
+                binding.imageView4.setImageResource(R.drawable.klocki_l2)
+                binding.imageView5.setImageResource(R.drawable.klocki_l)
             }
             4 -> {
-                binding.imageView2.setImageResource(R.drawable.t)
-                binding.imageView3.setImageResource(R.drawable.i)
-                binding.imageView4.setImageResource(R.drawable.l)
-                binding.imageView5.setImageResource(R.drawable.t)
+                binding.imageView2.setImageResource(R.drawable.klocki_t)
+                binding.imageView3.setImageResource(R.drawable.klocki_i)
+                binding.imageView4.setImageResource(R.drawable.klocki_l)
+                binding.imageView5.setImageResource(R.drawable.klocki_t)
             }
             5 -> {
-                binding.imageView2.setImageResource(R.drawable.t)
-                binding.imageView3.setImageResource(R.drawable.i)
-                binding.imageView4.setImageResource(R.drawable.l2)
-                binding.imageView5.setImageResource(R.drawable.t)
+                binding.imageView2.setImageResource(R.drawable.klocki_t)
+                binding.imageView3.setImageResource(R.drawable.klocki_i)
+                binding.imageView4.setImageResource(R.drawable.klocki_l2)
+                binding.imageView5.setImageResource(R.drawable.klocki_t)
             }
             6 -> {
-                binding.imageView2.setImageResource(R.drawable.t)
-                binding.imageView3.setImageResource(R.drawable.s)
+                binding.imageView2.setImageResource(R.drawable.klocki_t)
+                binding.imageView3.setImageResource(R.drawable.klocki_s)
                 binding.imageView3.layoutParams.height = dpToPixels(187.5f).toInt()
                 binding.imageView3.layoutParams.width = dpToPixels(125f).toInt()
-                binding.imageView4.setImageResource(R.drawable.l2)
-                binding.imageView5.setImageResource(R.drawable.t)
+                binding.imageView4.setImageResource(R.drawable.klocki_l2)
+                binding.imageView5.setImageResource(R.drawable.klocki_t)
             }
             7 -> {
-                binding.imageView2.setImageResource(R.drawable.l)
-                binding.imageView3.setImageResource(R.drawable.l)
+                binding.imageView2.setImageResource(R.drawable.klocki_l)
+                binding.imageView3.setImageResource(R.drawable.klocki_l)
                 binding.imageView3.layoutParams.height = dpToPixels(187.5f).toInt()
                 binding.imageView3.layoutParams.width = dpToPixels(125f).toInt()
-                binding.imageView4.setImageResource(R.drawable.l2)
-                binding.imageView5.setImageResource(R.drawable.l2)
+                binding.imageView4.setImageResource(R.drawable.klocki_l2)
+                binding.imageView5.setImageResource(R.drawable.klocki_l2)
             }
             8 -> {
-                binding.imageView2.setImageResource(R.drawable.l)
-                binding.imageView3.setImageResource(R.drawable.l)
+                binding.imageView2.setImageResource(R.drawable.klocki_l)
+                binding.imageView3.setImageResource(R.drawable.klocki_l)
                 binding.imageView3.layoutParams.height = dpToPixels(187.5f).toInt()
                 binding.imageView3.layoutParams.width = dpToPixels(125f).toInt()
-                binding.imageView4.setImageResource(R.drawable.o)
+                binding.imageView4.setImageResource(R.drawable.klocki_o)
                 binding.imageView4.layoutParams.height = dpToPixels(125f).toInt()
                 binding.imageView4.rotated = false
                 binding.imageView4.tag = 'o'
-                binding.imageView5.setImageResource(R.drawable.o)
+                binding.imageView5.setImageResource(R.drawable.klocki_o)
                 binding.imageView5.layoutParams.height = dpToPixels(125f).toInt()
                 binding.imageView5.rotated = false
                 binding.imageView5.tag = 'o'
             }
             9 -> {
-                binding.imageView2.setImageResource(R.drawable.l)
-                binding.imageView3.setImageResource(R.drawable.l)
+                binding.imageView2.setImageResource(R.drawable.klocki_l)
+                binding.imageView3.setImageResource(R.drawable.klocki_l)
                 binding.imageView3.layoutParams.height = dpToPixels(187.5f).toInt()
                 binding.imageView3.layoutParams.width = dpToPixels(125f).toInt()
-                binding.imageView4.setImageResource(R.drawable.z)
-                binding.imageView5.setImageResource(R.drawable.z)
+                binding.imageView4.setImageResource(R.drawable.klocki_z)
+                binding.imageView5.setImageResource(R.drawable.klocki_z)
             }
             10 -> {
-                binding.imageView2.setImageResource(R.drawable.l2)
-                binding.imageView3.setImageResource(R.drawable.l2)
+                binding.imageView2.setImageResource(R.drawable.klocki_l2)
+                binding.imageView3.setImageResource(R.drawable.klocki_l2)
                 binding.imageView3.layoutParams.height = dpToPixels(187.5f).toInt()
                 binding.imageView3.layoutParams.width = dpToPixels(125f).toInt()
-                binding.imageView4.setImageResource(R.drawable.s)
-                binding.imageView5.setImageResource(R.drawable.s)
+                binding.imageView4.setImageResource(R.drawable.klocki_s)
+                binding.imageView5.setImageResource(R.drawable.klocki_s)
             }
             11 -> {
-                binding.imageView2.setImageResource(R.drawable.l2)
-                binding.imageView3.setImageResource(R.drawable.i)
-                binding.imageView4.setImageResource(R.drawable.z)
-                binding.imageView5.setImageResource(R.drawable.l2)
+                binding.imageView2.setImageResource(R.drawable.klocki_l2)
+                binding.imageView3.setImageResource(R.drawable.klocki_i)
+                binding.imageView4.setImageResource(R.drawable.klocki_z)
+                binding.imageView5.setImageResource(R.drawable.klocki_l2)
             }
             12 -> {
-                binding.imageView2.setImageResource(R.drawable.l)
-                binding.imageView3.setImageResource(R.drawable.i)
-                binding.imageView4.setImageResource(R.drawable.s)
-                binding.imageView5.setImageResource(R.drawable.l)
+                binding.imageView2.setImageResource(R.drawable.klocki_l)
+                binding.imageView3.setImageResource(R.drawable.klocki_i)
+                binding.imageView4.setImageResource(R.drawable.klocki_s)
+                binding.imageView5.setImageResource(R.drawable.klocki_l)
             }
             13 -> {
-                binding.imageView2.setImageResource(R.drawable.t)
-                binding.imageView3.setImageResource(R.drawable.z)
+                binding.imageView2.setImageResource(R.drawable.klocki_t)
+                binding.imageView3.setImageResource(R.drawable.klocki_z)
                 binding.imageView3.layoutParams.height = dpToPixels(187.5f).toInt()
                 binding.imageView3.layoutParams.width = dpToPixels(125f).toInt()
-                binding.imageView4.setImageResource(R.drawable.t)
-                binding.imageView5.setImageResource(R.drawable.l)
+                binding.imageView4.setImageResource(R.drawable.klocki_t)
+                binding.imageView5.setImageResource(R.drawable.klocki_l)
             }
             14 -> {
-                binding.imageView2.setImageResource(R.drawable.l2)
-                binding.imageView3.setImageResource(R.drawable.i)
-                binding.imageView4.setImageResource(R.drawable.l2)
-                binding.imageView5.setImageResource(R.drawable.o)
+                binding.imageView2.setImageResource(R.drawable.klocki_l2)
+                binding.imageView3.setImageResource(R.drawable.klocki_i)
+                binding.imageView4.setImageResource(R.drawable.klocki_l2)
+                binding.imageView5.setImageResource(R.drawable.klocki_o)
                 binding.imageView5.layoutParams.height = dpToPixels(125f).toInt()
                 binding.imageView5.rotated = false
                 binding.imageView5.tag = 'o'
             }
             15 -> {
-                binding.imageView2.setImageResource(R.drawable.l)
-                binding.imageView3.setImageResource(R.drawable.i)
-                binding.imageView4.setImageResource(R.drawable.l)
-                binding.imageView5.setImageResource(R.drawable.o)
+                binding.imageView2.setImageResource(R.drawable.klocki_l)
+                binding.imageView3.setImageResource(R.drawable.klocki_i)
+                binding.imageView4.setImageResource(R.drawable.klocki_l)
+                binding.imageView5.setImageResource(R.drawable.klocki_o)
                 binding.imageView5.layoutParams.height = dpToPixels(125f).toInt()
                 binding.imageView5.rotated = false
                 binding.imageView5.tag = 'o'

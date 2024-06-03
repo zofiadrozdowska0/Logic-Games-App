@@ -1,4 +1,4 @@
-package com.example.maze
+package com.example.signupapp
 
 import android.app.Activity
 import android.content.Intent
@@ -11,9 +11,9 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import android.os.CountDownTimer
 
-class MainActivity : Activity() {
+class Maze_MainActivity : Activity() {
 
-    private lateinit var mazeView: MazeView
+    private lateinit var mazeView: Maze_MazeView
     private lateinit var ballView: View
     private lateinit var exitButton: Button
     private lateinit var timerTextView: TextView
@@ -30,7 +30,7 @@ class MainActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_activity)
+        setContentView(R.layout.maze_main_activity)
         findViewById<TextView>(R.id.scoreTextView).visibility = View.GONE
 
         mazeView = findViewById(R.id.mazeView)
@@ -113,7 +113,7 @@ class MainActivity : Activity() {
 
     private fun restartGame() {
         disableGameInteraction()
-        val intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, Maze_MainActivity::class.java)
         intent.putExtra("TIME_LEFT", timeLeftInMillis)
         intent.putExtra("LEVEL", level)
         startActivity(intent)
@@ -155,7 +155,7 @@ class MainActivity : Activity() {
 
     private fun restartActivity(level: Int, timeLeftInMillis: Long) {
         disableGameInteraction()
-        val intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, Maze_MainActivity::class.java)
         intent.putExtra("TIME_LEFT", timeLeftInMillis)
         intent.putExtra("LEVEL", level)
         startActivity(intent)
