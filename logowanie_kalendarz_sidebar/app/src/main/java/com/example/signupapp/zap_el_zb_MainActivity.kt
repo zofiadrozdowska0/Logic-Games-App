@@ -22,7 +22,7 @@ class zap_el_zb_MainActivity : ComponentActivity() {
         val chosenImages = DEFAULT_ICONS.shuffled()
         val randomizedImages = (chosenImages + chosenImages).shuffled()
 
-        rvBoard.adapter = zap_el_zb_MemoryBoard(this, boardSize, randomizedImages)
+        rvBoard.adapter = zap_el_zb_MemoryBoard(this, boardSize, randomizedImages,tvNumMoves,tvNumPairs)
         rvBoard.setHasFixedSize(true)
         rvBoard.layoutManager = GridLayoutManager(this, boardSize.getWidth())
     }
