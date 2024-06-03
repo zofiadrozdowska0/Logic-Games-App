@@ -1,10 +1,13 @@
 package com.example.signupapp
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.os.SystemClock
 import android.util.DisplayMetrics
 import android.util.TypedValue
@@ -12,6 +15,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.signupapp.databinding.KlockiActivityMainBinding
 import kotlin.random.Random
@@ -26,7 +30,6 @@ class Klocki_MainActivity : AppCompatActivity() {
     private var startTime: Long = SystemClock.elapsedRealtime()
     private var wins = 0
     private var prev_task = 0
-
 
     private var ImageView.rotated: Boolean
         get() = tag as? Boolean ?: false // Pobiera wartość z tagu, domyślnie false
@@ -51,17 +54,6 @@ class Klocki_MainActivity : AppCompatActivity() {
 
         load_task()
 
-
-        // Przesunięcie pozostałych obrazków
-
-//        moveImageInDp(binding.imageView6, 97f, 565f)
-//        moveImageInDp(binding.imageView7, 200f, 573f)
-//        moveImageInDp(binding.imageView8, 297f, 585f)
-//        binding.imageView8.tag = 'o'
-//        binding.imageView8.setImageResource(R.drawable.aa1)
-//        moveImageInDp(binding.imageView8, 10000f, 10000f)
-
-        // Nasłuchiwanie przesunięcia dotyku dla każdego obrazka (oprócz imageView1)
         val touchListener = View.OnTouchListener { view, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
@@ -86,14 +78,12 @@ class Klocki_MainActivity : AppCompatActivity() {
                         {
                             view.animate().rotationBy(90 - (view.rotation % 90))
                             if (view is ImageView && view.tag != 'o') {
-//                            moveImageInDp(view,pixelsToDp(view.x) - 125/4, pixelsToDp(view.y) + 125/4)
                                 view.rotated = !view.rotated
                             }
                         }
                         dz += 1f
                         view.animate().z(dz)
                         if (view is ImageView && view.tag != 'o') {
-//                            moveImageInDp(view,pixelsToDp(view.x) - 125/4, pixelsToDp(view.y) + 125/4)
                             view.rotated = !view.rotated
                         }
                     }
@@ -109,14 +99,10 @@ class Klocki_MainActivity : AppCompatActivity() {
             true
         }
 
-        // Przypisanie nasłuchiwania przesunięcia dotyku dla każdego obrazka (oprócz imageView1)
         binding.imageView2.setOnTouchListener(touchListener)
         binding.imageView3.setOnTouchListener(touchListener)
         binding.imageView4.setOnTouchListener(touchListener)
         binding.imageView5.setOnTouchListener(touchListener)
-//        binding.imageView6.setOnTouchListener(touchListener)
-//        binding.imageView7.setOnTouchListener(touchListener)
-//        binding.imageView8.setOnTouchListener(touchListener)
     }
 
     fun moveImageInDp(imageView: ImageView, dxInDp: Float, dyInDp: Float) {
@@ -131,7 +117,7 @@ class Klocki_MainActivity : AppCompatActivity() {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, displayMetrics)
     }
 
-    fun grid(view: View){
+    fun grid(view: View) {
         if (view.y < dpToPixels(270f)) {
             if (view is ImageView) {
                 if (!view.rotated) {
@@ -140,15 +126,12 @@ class Klocki_MainActivity : AppCompatActivity() {
                         findNearestValue(pixelsToDp(view.x).toInt()).toFloat(),
                         findNearestValue3(pixelsToDp(view.y).toInt()).toFloat()
                     )
-                    println("P1")
                 } else {
                     moveImageInDp(
                         view,
                         findNearestValue2(pixelsToDp(view.x).toInt()).toFloat(),
                         findNearestValue4(pixelsToDp(view.y).toInt()).toFloat()
                     )
-                    println("P2")
-
                 }
             }
         }
@@ -211,12 +194,28 @@ class Klocki_MainActivity : AppCompatActivity() {
                 binding.imageView3.setOnTouchListener(null)
                 binding.imageView4.setOnTouchListener(null)
                 binding.imageView5.setOnTouchListener(null)
+
+                Handler(Looper.getMainLooper()).postDelayed({
+                    showAllGamesCompletedDialog()
+                }, 2000) // Show the "All games completed!" dialog after 2 seconds
+
                 return true
             } else {
                 load_task()
             }
         }
         return false
+    }
+
+    private fun showAllGamesCompletedDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("All games completed!")
+            .setMessage("Congratulations! You have completed all games.")
+            .setPositiveButton("OK") { _, _ ->
+                finish()
+            }
+            .setCancelable(false)
+            .show()
     }
 
     fun findNearestValue(input: Int): Int {
@@ -279,8 +278,7 @@ class Klocki_MainActivity : AppCompatActivity() {
         return nearestValue
     }
 
-    fun load_task(){
-        // Przesunięcie obrazkow w jednostkach dp
+    fun load_task() {
         moveImageInDp(binding.imageView1, 80f, 16f)
 
         moveImageInDp(binding.imageView2, 31f, 278f)
@@ -308,11 +306,11 @@ class Klocki_MainActivity : AppCompatActivity() {
         binding.imageView5.rotated = false
 
         var randomNumber = Random.nextInt(1, 16)
-        while(randomNumber == prev_task){
+        while (randomNumber == prev_task) {
             randomNumber = Random.nextInt(1, 16)
         }
         prev_task = randomNumber
-        when (randomNumber){
+        when (randomNumber) {
             1 -> {
                 binding.imageView2.setImageResource(R.drawable.klocki_l)
                 binding.imageView3.setImageResource(R.drawable.klocki_i)
@@ -433,4 +431,3 @@ class Klocki_MainActivity : AppCompatActivity() {
         }
     }
 }
-

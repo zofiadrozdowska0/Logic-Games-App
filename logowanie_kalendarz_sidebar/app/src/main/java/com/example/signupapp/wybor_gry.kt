@@ -2,6 +2,7 @@ package com.example.signupapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
@@ -22,19 +23,25 @@ class wybor_gry : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
 
+    companion object {
+        const val REQUEST_ROZNICE = 1
+        const val REQUEST_UFOLUDKI = 2
+        const val REQUEST_KLOCKI = 3
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_wybor_gry)
 
-        // Inicjalizacja Firebase Authentication
+        // Initialize Firebase Authentication
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
-        // Inicjalizacja DrawerLayout i NavigationView
+        // Initialize DrawerLayout and NavigationView
         drawerLayout = findViewById(R.id.drawer_layout)
         navView = findViewById(R.id.nav_view)
 
-        // Ustaw Toolbar i dodaj Toggle
+        // Set Toolbar and add Toggle
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
@@ -56,7 +63,7 @@ class wybor_gry : AppCompatActivity() {
                     if (document != null && document.exists()) {
                         val username = document.getString("username")
                         if (username != null) {
-                            // Ustaw tytuł ToolBar
+                            // Set Toolbar title
                             supportActionBar?.title = "Witaj $username!"
                         }
                     }
@@ -66,7 +73,7 @@ class wybor_gry : AppCompatActivity() {
                 }
         }
 
-        // Obsługa elementów NavigationView
+        // Handle NavigationView items
         navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_home -> {
@@ -81,7 +88,7 @@ class wybor_gry : AppCompatActivity() {
                     startActivity(intent)
                 }
                 R.id.nav_logout -> {
-                    // Wyloguj użytkownika i przekieruj do ekranu logowania
+                    // Sign out the user and redirect to the login screen
                     auth.signOut()
                     val intent = Intent(this, login::class.java)
                     startActivity(intent)
@@ -93,7 +100,7 @@ class wybor_gry : AppCompatActivity() {
             true
         }
 
-        // Inicjalizacja elementów rozwijanych i przycisków
+        // Initialize dropdowns and buttons
         val dropdown1 = findViewById<RelativeLayout>(R.id.dropdown1)
         val content1 = findViewById<LinearLayout>(R.id.content1)
         dropdown1.setOnClickListener {
@@ -105,6 +112,7 @@ class wybor_gry : AppCompatActivity() {
         dropdown2.setOnClickListener {
             toggleContentVisibility(content2)
         }
+
         val dropdown3 = findViewById<RelativeLayout>(R.id.dropdown3)
         val content3 = findViewById<LinearLayout>(R.id.content3)
         dropdown3.setOnClickListener {
@@ -117,10 +125,9 @@ class wybor_gry : AppCompatActivity() {
             toggleContentVisibility(content4)
         }
 
-        // Obsługa kliknięć przycisków
+        // Handle button clicks
         val button1 = findViewById<Button>(R.id.button1)
         button1.setOnClickListener {
-            // Akcja po kliknięciu przycisku "Start Game" w sekcji 1
             Toast.makeText(this, "refleks", Toast.LENGTH_SHORT).show()
         }
 
@@ -133,20 +140,18 @@ class wybor_gry : AppCompatActivity() {
 
         val button3 = findViewById<Button>(R.id.button3)
         button3.setOnClickListener {
-            // Akcja po kliknięciu przycisku "Start Game" w sekcji 3
-            Toast.makeText(this, "koncentracja", Toast.LENGTH_SHORT).show()
+            startRozniceActivity()
         }
 
         val button4 = findViewById<Button>(R.id.button4)
         button4.setOnClickListener {
-            // Akcja po kliknięciu przycisku "Start Game" w sekcji 4
             Toast.makeText(this, "Logika i dedukcja", Toast.LENGTH_SHORT).show()
             val intent = Intent(applicationContext, MatematyczneWorlde_MainActivity::class.java)
             startActivity(intent)
         }
     }
 
-    override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (toggle.onOptionsItemSelected(item)) {
             return true
         }
@@ -158,6 +163,38 @@ class wybor_gry : AppCompatActivity() {
             content.visibility = View.VISIBLE
         } else {
             content.visibility = View.GONE
+        }
+    }
+
+    private fun startRozniceActivity() {
+        val intent = Intent(this, Roznice_MainActivity::class.java)
+        startActivityForResult(intent, REQUEST_ROZNICE)
+    }
+
+    private fun startUfoludkiActivity() {
+        val intent = Intent(this, Ufoludki_MainActivity::class.java)
+        startActivityForResult(intent, REQUEST_UFOLUDKI)
+    }
+
+    private fun startKlockiActivity() {
+        val intent = Intent(this, Klocki_MainActivity::class.java)
+        startActivityForResult(intent, REQUEST_KLOCKI)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == RESULT_OK) {
+            when (requestCode) {
+                REQUEST_ROZNICE -> {
+                    startUfoludkiActivity()
+                }
+                REQUEST_UFOLUDKI -> {
+                    startKlockiActivity()
+                }
+                REQUEST_KLOCKI -> {
+                    Toast.makeText(this, "All games completed!", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 }

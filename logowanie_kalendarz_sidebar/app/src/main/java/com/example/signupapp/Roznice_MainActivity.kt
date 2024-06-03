@@ -1,12 +1,15 @@
 package com.example.signupapp
 
-
 import android.os.Bundle
-import android.widget.Button // Poprawne importowanie klasy Button
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
 
 class Roznice_MainActivity : AppCompatActivity() {
+    companion object {
+        const val REQUEST_GRA_RZECZONA = 1
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.roznice_activity_main)
@@ -14,12 +17,15 @@ class Roznice_MainActivity : AppCompatActivity() {
         val startGameButton: Button = findViewById(R.id.startGameButton)
         startGameButton.setOnClickListener {
             val intent = Intent(this, GraRzeczonaActivity::class.java)
-            startActivity(intent)
+            startActivityForResult(intent, REQUEST_GRA_RZECZONA)
         }
+    }
 
-//        val chooseDifficultyButton: Button = findViewById(R.id.chooseDifficultyButton)
-//        chooseDifficultyButton.setOnClickListener {
-//            // TODO: W przyszłosci zmiana poziomu trudnosci
-//        }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_GRA_RZECZONA && resultCode == RESULT_OK) {
+            setResult(RESULT_OK) // Set the result to OK to pass back to wybor_gry
+            finish() // End this activity to return to wybor_gry
+        }
     }
 }

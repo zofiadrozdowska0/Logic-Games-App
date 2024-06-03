@@ -14,7 +14,7 @@ import kotlin.random.Random
 import android.util.Log
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
-import com.example.signupapp.R
+import android.content.Intent
 
 class Ufoludki_MainActivity : AppCompatActivity() {
     private lateinit var layout: ViewGroup
@@ -73,20 +73,18 @@ class Ufoludki_MainActivity : AppCompatActivity() {
                 czas_pirata_1 = 500
                 czas_pirata_2 = 2000
                 czas_animacji = 1500
-                listaPiratowWchodzacych.addAll(listOf(R.drawable.ufoludki_zielony_pirat,R.drawable.ufoludki_zielony_pirat,R.drawable.ufoludki_zielony_pirat,R.drawable.ufoludki_czerwony_pirat, R.drawable.ufoludki_niebieski_pirat))
+                listaPiratowWchodzacych.addAll(listOf(R.drawable.ufoludki_zielony_pirat, R.drawable.ufoludki_zielony_pirat, R.drawable.ufoludki_zielony_pirat, R.drawable.ufoludki_czerwony_pirat, R.drawable.ufoludki_niebieski_pirat))
                 listaPiratowWychodzacych.addAll(listOf(R.drawable.ufoludki_zielony_pirat, R.drawable.ufoludki_niebieski_pirat))
             }
             "Trudny" -> {
                 czas_pirata_1 = 300
                 czas_pirata_2 = 1000
                 czas_animacji = 1000
-                listaPiratowWchodzacych.addAll(listOf(R.drawable.ufoludki_zielony_pirat,R.drawable.ufoludki_zielony_pirat,R.drawable.ufoludki_zielony_pirat,R.drawable.ufoludki_czerwony_pirat, R.drawable.ufoludki_czerwony_pirat, R.drawable.ufoludki_niebieski_pirat))
-                listaPiratowWychodzacych.addAll(listOf(R.drawable.ufoludki_zielony_pirat,R.drawable.ufoludki_zielony_pirat,R.drawable.ufoludki_niebieski_pirat))
+                listaPiratowWchodzacych.addAll(listOf(R.drawable.ufoludki_zielony_pirat, R.drawable.ufoludki_zielony_pirat, R.drawable.ufoludki_zielony_pirat, R.drawable.ufoludki_czerwony_pirat, R.drawable.ufoludki_czerwony_pirat, R.drawable.ufoludki_niebieski_pirat))
+                listaPiratowWychodzacych.addAll(listOf(R.drawable.ufoludki_zielony_pirat, R.drawable.ufoludki_zielony_pirat, R.drawable.ufoludki_niebieski_pirat))
             }
         }
     }
-
-
 
     private lateinit var przyciskStart: Button
 
@@ -142,6 +140,10 @@ class Ufoludki_MainActivity : AppCompatActivity() {
             .setPositiveButton("OK") { _, _ ->
                 zresetujGre()
             }
+            .setNeutralButton("Następna gra") { _, _ ->
+                setResult(RESULT_OK) // Set the result to OK
+                finish() // Ends current game to start the next one
+            }
             .show()
     }
 
@@ -159,24 +161,21 @@ class Ufoludki_MainActivity : AppCompatActivity() {
         // Możesz także ustawić tutaj wszelkie inne zmienne, które chcesz zresetować do stanu początkowego
     }
 
-
-
     private fun stworzIAnimujPirata(obrazPirata: Int) {
         if (animacjaTrwa) return // Nie rozpoczynaj nowej animacji, jeśli trwa inna
         animacjaTrwa = true
         val pirat = ImageView(this).apply {
             setImageResource(obrazPirata)
-            val wysokoscPirata = statek.height /5
+            val wysokoscPirata = statek.height / 5
             val szerokoscPirata = wysokoscPirata * (drawable.intrinsicWidth.toFloat() / drawable.intrinsicHeight.toFloat())
             layoutParams = ViewGroup.LayoutParams(szerokoscPirata.toInt(), wysokoscPirata)
         }
 
         layout.addView(pirat)
-        pirat.y = statek.y+statek.height/1.5f
-
+        pirat.y = statek.y + statek.height / 1.5f
 
         val rzeczywistaSzerokoscStatku = statek.width * statek.scaleX
-        val koniecX = layout.width / 2 - rzeczywistaSzerokoscStatku/2 - pirat.width
+        val koniecX = layout.width / 2 - rzeczywistaSzerokoscStatku / 2 - pirat.width
 
         val animacja = TranslateAnimation(
             Animation.ABSOLUTE, -pirat.layoutParams.width.toFloat(),
@@ -216,45 +215,44 @@ class Ufoludki_MainActivity : AppCompatActivity() {
         animacjaTrwa = true
         val pirat = ImageView(this).apply {
             setImageResource(obrazPirata)
-            val wysokoscPirata = statek.height /5
+            val wysokoscPirata = statek.height / 5
             val szerokoscPirata = wysokoscPirata * (drawable.intrinsicWidth.toFloat() / drawable.intrinsicHeight.toFloat())
             layoutParams = ViewGroup.LayoutParams(szerokoscPirata.toInt(), wysokoscPirata)
         }
 
         layout.addView(pirat)
         //pirat.y = layout.height / 2f - (pirat.layoutParams.height / 2f) - statek.height
-        pirat.y = statek.y+statek.height/1.5f
+        pirat.y = statek.y + statek.height / 1.5f
 
         val rzeczywistaSzerokoscStatku = statek.width * statek.scaleX
-        val startX = layout.width / 2 + rzeczywistaSzerokoscStatku/4
+        val startX = layout.width / 2 + rzeczywistaSzerokoscStatku / 4
 
         val animacja = TranslateAnimation(
-                Animation.ABSOLUTE, startX, // Start X: obok statku, po jego prawej stronie
-                Animation.ABSOLUTE, layout.width.toFloat() - pirat.x, // Koniec X: koniec ekranu
-                Animation.ABSOLUTE, 0f, // Start Y: bez zmian
-                Animation.ABSOLUTE, 0f  // Koniec Y: bez zmian
-            ).apply {
-                duration = czas_animacji
-                fillAfter = false
+            Animation.ABSOLUTE, startX, // Start X: obok statku, po jego prawej stronie
+            Animation.ABSOLUTE, layout.width.toFloat() - pirat.x, // Koniec X: koniec ekranu
+            Animation.ABSOLUTE, 0f, // Start Y: bez zmian
+            Animation.ABSOLUTE, 0f  // Koniec Y: bez zmian
+        ).apply {
+            duration = czas_animacji
+            fillAfter = false
 
-                setAnimationListener(object : Animation.AnimationListener {
-                    override fun onAnimationStart(animation: Animation?) {}
-                    override fun onAnimationEnd(animation: Animation?) {
-                        layout.removeView(pirat) // Usunięcie widoku pirata po zakończeniu animacji
-                        animacjaTrwa = false // Ustawienie flagi na false, aby umożliwić kolejne animacje
-                        if (obrazPirata == R.drawable.ufoludki_zielony_pirat) {
-                            wartoscLicznika -= 1
-                        } else if (obrazPirata == R.drawable.ufoludki_niebieski_pirat) {
-                            liczbaNiebieskichPiratow -= 1 // Dekrementacja dla niebieskiego pirata
-                        }
-                        Log.d("LicznikPiratow", "Aktualna wartość licznika: $wartoscLicznika, Niebieskich Piratów: $liczbaNiebieskichPiratow")
+            setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationStart(animation: Animation?) {}
+                override fun onAnimationEnd(animation: Animation?) {
+                    layout.removeView(pirat) // Usunięcie widoku pirata po zakończeniu animacji
+                    animacjaTrwa = false // Ustawienie flagi na false, aby umożliwić kolejne animacje
+                    if (obrazPirata == R.drawable.ufoludki_zielony_pirat) {
+                        wartoscLicznika -= 1
+                    } else if (obrazPirata == R.drawable.ufoludki_niebieski_pirat) {
+                        liczbaNiebieskichPiratow -= 1 // Dekrementacja dla niebieskiego pirata
                     }
-                    override fun onAnimationRepeat(animation: Animation?) {}
-                })
-            }
-            pirat.startAnimation(animacja)
+                    Log.d("LicznikPiratow", "Aktualna wartość licznika: $wartoscLicznika, Niebieskich Piratów: $liczbaNiebieskichPiratow")
+                }
+                override fun onAnimationRepeat(animation: Animation?) {}
+            })
         }
-
+        pirat.startAnimation(animacja)
+    }
 
     override fun onDestroy() {
         super.onDestroy()

@@ -13,11 +13,12 @@ class GraRzeczonaActivity : AppCompatActivity() {
     private lateinit var gridLayoutBottom: GridLayout
     private lateinit var modifiedImages: List<String>
     private var startTime: Long = 0
-    private var takes=20
+    private var takes = 20
     private var correctImagesCount = 0
     private var endTime: Long = 0
     private var penaltytime: Long = 0
     private var clickedWrongImages = mutableSetOf<String>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.roznice_gra)
@@ -58,10 +59,8 @@ class GraRzeczonaActivity : AppCompatActivity() {
         ) // Lista twoich obrazów
         val shuffledImages = images.shuffled() // Mieszanie obrazów
 
-
         // Generowanie pierwszego zestawu obrazów
         generateImagesSet(gridLayoutTop, shuffledImages.take(takes), isPreview = true, clickable = false)
-
 
         // Generowanie drugiego zestawu z trzema zmienionymi obrazami
         val modifiedImages = shuffledImages.take(takes).toMutableList()
@@ -84,8 +83,6 @@ class GraRzeczonaActivity : AppCompatActivity() {
         val modifiedImagesIndexes = toReplace.map { shuffledImages.indexOf(it) }
         this.modifiedImages = modifiedImagesIndexes.map { modifiedImages[it] }
     }
-
-    // Funkcja do dodawania obrazów do GridLayout
 
     // Przykładowa obsługa kliknięcia
     fun onImageClick(imageView: ImageView, imageName: String, isCorrect: Boolean) {
@@ -123,18 +120,21 @@ class GraRzeczonaActivity : AppCompatActivity() {
                 startActivity(intent)
                 finish()
             }
+            setNeutralButton("Następna gra") { dialog, which ->
+                setResult(RESULT_OK) // Set the result to OK
+                finish() // Ends current game to start the next one
+            }
             setCancelable(false) // Zapobiega zamknięciu dialogu przez kliknięcie poza jego obszarem
             show()
         }
     }
+
     fun restartGame() {
         correctImagesCount = 0
         startTime = System.currentTimeMillis()
-        penaltytime= 0
+        penaltytime = 0
         generateAndDisplayImages()
     }
-
-
 
     // Funkcja do dodawania obrazów do GridLayout
     fun generateImagesSet(gridLayout: GridLayout, imageNames: List<String>, isPreview: Boolean, clickable: Boolean = true) {
@@ -185,7 +185,6 @@ class GraRzeczonaActivity : AppCompatActivity() {
         }
     }
 
-
     fun isImageCorrect(imageName: String): Boolean {
         return modifiedImages.contains(imageName)
     }
@@ -193,9 +192,4 @@ class GraRzeczonaActivity : AppCompatActivity() {
     fun dpToPx(dp: Int, context: Context): Int {
         return (dp * context.resources.displayMetrics.density).toInt()
     }
-
-
 }
-
-
-
