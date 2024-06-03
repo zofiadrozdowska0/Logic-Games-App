@@ -49,6 +49,9 @@
             android:name=".GraRzeczonaActivity"
             android:exported="false" />
         <activity
+            android:name=".Klocki_MainActivity"
+            android:exported="false" />
+        <activity
             android:name=".Memory_MainActivity"
             android:exported="false" />
         <activity

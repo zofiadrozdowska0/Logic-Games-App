@@ -34,7 +34,7 @@ class succes : AppCompatActivity() {
         val przygodaButton = findViewById<Button>(R.id.przygodaButton)
 
         przygodaButton.setOnClickListener{
-            val intent = Intent(applicationContext, Maze_MainActivity::class.java)
+            val intent = Intent(applicationContext, Klocki_MainActivity::class.java)
             startActivity(intent)
         }
 
