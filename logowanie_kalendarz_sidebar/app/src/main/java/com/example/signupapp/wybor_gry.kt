@@ -2,57 +2,38 @@ package com.example.signupapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
-import android.widget.CalendarView
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import java.util.Calendar
 
-
-class succes : AppCompatActivity() {
+class wybor_gry : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
+    private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var navView: NavigationView
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
-    //private lateinit var lineChartView: LineChartView
-    private lateinit var calendarView: CalendarView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_succes)
+        setContentView(R.layout.activity_wybor_gry)
 
         // Inicjalizacja Firebase Authentication
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
-        // przycisk do rozpoczecia gier
-        val przygodaButton = findViewById<Button>(R.id.przygodaButton)
-
-        przygodaButton.setOnClickListener{
-            val intent = Intent(applicationContext, wybor_gry::class.java)
-            startActivity(intent)
-        }
-
         // Inicjalizacja DrawerLayout i NavigationView
         drawerLayout = findViewById(R.id.drawer_layout)
         navView = findViewById(R.id.nav_view)
-        calendarView = findViewById(R.id.calendarView)
-        calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
-            val calendar = Calendar.getInstance()
-            val currentYear = calendar.get(Calendar.YEAR)
-            val currentMonth = calendar.get(Calendar.MONTH)
-            val currentDayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
 
-            if (year == currentYear && month == currentMonth && dayOfMonth == currentDayOfMonth) {
-                val intent = Intent(applicationContext, games::class.java)
-                startActivity(intent)
-            }
-        }
         // Ustaw Toolbar i dodaj Toggle
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -65,10 +46,6 @@ class succes : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_ryba_navbar)
-        //lineChartView = findViewById(R.id.lineChart)
-
-
-        // Pobranie bieżącego użytkownika i jego UID
 
         val currentUser = auth.currentUser
         if (currentUser != null) {
@@ -81,7 +58,6 @@ class succes : AppCompatActivity() {
                         if (username != null) {
                             // Ustaw tytuł ToolBar
                             supportActionBar?.title = "Witaj $username!"
-                            fetchPointsFromFirestore(uid)
                         }
                     }
                 }
@@ -94,11 +70,11 @@ class succes : AppCompatActivity() {
         navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_home -> {
-                    this.drawerLayout.closeDrawers()
+                    val intent = Intent(applicationContext, succes::class.java)
+                    startActivity(intent)
                 }
                 R.id.nav_rules -> {
-                    val intent = Intent(applicationContext, rules::class.java)
-                    startActivity(intent)
+                    this.drawerLayout.closeDrawers()
                 }
                 R.id.nav_friends -> {
                     val intent = Intent(applicationContext, friends::class.java)
@@ -116,36 +92,70 @@ class succes : AppCompatActivity() {
             drawerLayout.closeDrawers()
             true
         }
+
+        // Inicjalizacja elementów rozwijanych i przycisków
+        val dropdown1 = findViewById<RelativeLayout>(R.id.dropdown1)
+        val content1 = findViewById<LinearLayout>(R.id.content1)
+        dropdown1.setOnClickListener {
+            toggleContentVisibility(content1)
+        }
+
+        val dropdown2 = findViewById<RelativeLayout>(R.id.dropdown2)
+        val content2 = findViewById<LinearLayout>(R.id.content2)
+        dropdown2.setOnClickListener {
+            toggleContentVisibility(content2)
+        }
+
+        val dropdown3 = findViewById<RelativeLayout>(R.id.dropdown3)
+        val content3 = findViewById<LinearLayout>(R.id.content3)
+        dropdown3.setOnClickListener {
+            toggleContentVisibility(content3)
+        }
+
+        val dropdown4 = findViewById<RelativeLayout>(R.id.dropdown4)
+        val content4 = findViewById<LinearLayout>(R.id.content4)
+        dropdown4.setOnClickListener {
+            toggleContentVisibility(content4)
+        }
+
+        // Obsługa kliknięć przycisków
+        val button1 = findViewById<Button>(R.id.button1)
+        button1.setOnClickListener {
+            // Akcja po kliknięciu przycisku "Start Game" w sekcji 1
+            Toast.makeText(this, "refleks", Toast.LENGTH_SHORT).show()
+        }
+
+        val button2 = findViewById<Button>(R.id.button2)
+        button2.setOnClickListener {
+            // Akcja po kliknięciu przycisku "Start Game" w sekcji 2
+            Toast.makeText(this, "pamiec", Toast.LENGTH_SHORT).show()
+        }
+
+        val button3 = findViewById<Button>(R.id.button3)
+        button3.setOnClickListener {
+            // Akcja po kliknięciu przycisku "Start Game" w sekcji 3
+            Toast.makeText(this, "koncentracja", Toast.LENGTH_SHORT).show()
+        }
+
+        val button4 = findViewById<Button>(R.id.button4)
+        button4.setOnClickListener {
+            // Akcja po kliknięciu przycisku "Start Game" w sekcji 4
+            Toast.makeText(this, "logika", Toast.LENGTH_SHORT).show()
+        }
     }
-    private fun fetchPointsFromFirestore(uid: String) {
-        val pointsList = mutableListOf<List<Pair<Float, Float>>>()
-        val categories = listOf("memory_points", "reflex_points", "observation_points", "sobriety_points")
 
-        // Inicjalizacja pustych list dla każdej kategorii
-        val categoryPoints = List(categories.size) { mutableListOf<Pair<Float, Float>>() }
+    override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {
+        if (toggle.onOptionsItemSelected(item)) {
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
-        firestore.collection("user_points").document(uid).collection("points")
-            .orderBy("date", com.google.firebase.firestore.Query.Direction.DESCENDING)
-            .limit(7) // Pobranie ostatnich 7 dni
-            .get()
-            .addOnSuccessListener { documents ->
-                var dayIndex = 0f
-
-                for (document in documents) {
-                    for ((index, category) in categories.withIndex()) {
-                        val points = document.getLong(category)?.toFloat() ?: 0f
-                        categoryPoints[index].add(Pair(dayIndex, points))
-                    }
-                    dayIndex += 1f
-                }
-
-                pointsList.addAll(categoryPoints)
-
-                // Ustawienie danych na wykresie
-                //lineChartView.setDataPointsList(pointsList)
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Błąd podczas pobierania punktów: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
+    private fun toggleContentVisibility(content: LinearLayout) {
+        if (content.visibility == View.GONE) {
+            content.visibility = View.VISIBLE
+        } else {
+            content.visibility = View.GONE
+        }
     }
 }
