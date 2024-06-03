@@ -105,7 +105,6 @@ class wybor_gry : AppCompatActivity() {
         dropdown2.setOnClickListener {
             toggleContentVisibility(content2)
         }
-
         val dropdown3 = findViewById<RelativeLayout>(R.id.dropdown3)
         val content3 = findViewById<LinearLayout>(R.id.content3)
         dropdown3.setOnClickListener {
@@ -127,8 +126,8 @@ class wybor_gry : AppCompatActivity() {
 
         val button2 = findViewById<Button>(R.id.button2)
         button2.setOnClickListener {
-            // Akcja po kliknięciu przycisku "Start Game" w sekcji 2
-            Toast.makeText(this, "pamiec", Toast.LENGTH_SHORT).show()
+            val intent = Intent(applicationContext, Memory_MainActivity::class.java)
+            startActivity(intent)
         }
 
         val button3 = findViewById<Button>(R.id.button3)

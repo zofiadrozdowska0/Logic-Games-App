@@ -1,6 +1,7 @@
 package com.example.signupapp
 
 import android.content.Context
+import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -101,12 +102,13 @@ class zap_sekwencja_MemoryAdapter(
                     startGame()
                 }
             } else {
-                Toast.makeText(context, "Błędny wybór! Gra zostanie zresetowana.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Błędny wybór!", Toast.LENGTH_SHORT).show()
                 Log.d(TAG, "Gracz kliknął nieprawidłową kartę na pozycji: $position")
                 sequence=null
                 currentSequenceIndex=0
                 memoryGame.level = 2
-                startGame()
+                val intent = Intent(context, zap_el_zb_MainActivity::class.java)
+                context.startActivity(intent)
             }
         }
     }
@@ -122,8 +124,6 @@ class zap_sekwencja_MemoryAdapter(
         isClickable = false
         tvNumElements.text = "Level: ${memoryGame.level-1}" // Aktualizacja TextView z wartością level
         showSequence()
-
-
     }
 
     private fun showSequence() {
