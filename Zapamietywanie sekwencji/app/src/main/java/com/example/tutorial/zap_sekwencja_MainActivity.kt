@@ -25,7 +25,7 @@ class zap_sekwencja_MainActivity : ComponentActivity() {
         tvNumPoints = findViewById(R.id.tvNumPoints)
         tvText = findViewById(R.id.tvText)
         memoryGame = zap_sekwencja_MemoryGame(boardSize)
-        memoryAdapter = zap_sekwencja_MemoryAdapter(this, boardSize, memoryGame, rvBoard, tvNumElements, tvText)
+        memoryAdapter = zap_sekwencja_MemoryAdapter(this, boardSize, memoryGame, rvBoard, tvNumElements, tvText, tvNumPoints)
 
         rvBoard.adapter = memoryAdapter
         rvBoard.setHasFixedSize(true)
