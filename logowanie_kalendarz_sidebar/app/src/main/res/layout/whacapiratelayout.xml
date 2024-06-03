@@ -6,9 +6,9 @@
     android:id="@+id/Glowny"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
-    android:orientation="horizontal">
-
+    android:background="@drawable/whacapiratebackground"
+    android:orientation="horizontal"
+    tools:context=".WhacAPirateMainActivity">
 
     <TextView
         android:id="@+id/textView6"
@@ -34,12 +34,8 @@
         android:textSize="34sp"
         android:textStyle="bold"
         android:visibility="visible"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="0dp"
-        tools:visibility="visible"
         tools:ignore="MissingConstraints" />
 
-    <!-- Pierwszy rzrrrrrrrrrrrrrrrrrrrrrrrrrąd przycisków -->
     <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
@@ -59,16 +55,14 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@android:color/transparent"
-        android:backgroundTint="#00FFFFFF"
         android:contentDescription="pirat"
         android:scaleType="fitCenter"
-        android:src="@drawable/pirat"
+        android:src="@drawable/whacapiratepirat"
         app:layout_constraintEnd_toStartOf="@id/imageButton2"
         app:layout_constraintHeight_percent="0.25"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textView5"
         app:layout_constraintWidth_percent="0.25" />
-
 
     <ImageView
         android:id="@+id/boat1"
@@ -76,7 +70,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="44dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/boat"
+        android:src="@drawable/whacapirateboat"
         app:layout_constraintEnd_toEndOf="@id/imageButton1"
         app:layout_constraintHeight_percent="0.25"
         app:layout_constraintHorizontal_bias="0.0"
@@ -89,16 +83,14 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@android:color/transparent"
-        android:backgroundTint="#00FFFFFF"
         android:contentDescription="pirat"
         android:scaleType="fitCenter"
-        android:src="@drawable/pirat"
+        android:src="@drawable/whacapiratepirat"
         app:layout_constraintStart_toEndOf="@id/imageButton1"
         app:layout_constraintTop_toTopOf="@id/imageButton1"
         app:layout_constraintEnd_toStartOf="@id/imageButton3"
         app:layout_constraintWidth_percent="0.25"
         app:layout_constraintHeight_percent="0.25" />
-
 
     <ImageView
         android:id="@+id/boat2"
@@ -106,7 +98,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="44dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/boat"
+        android:src="@drawable/whacapirateboat"
         app:layout_constraintEnd_toEndOf="@id/imageButton2"
         app:layout_constraintHeight_percent="0.25"
         app:layout_constraintHorizontal_bias="1.0"
@@ -119,16 +111,14 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@android:color/transparent"
-        android:backgroundTint="#00FFFFFF"
         android:contentDescription="pirat"
         android:scaleType="fitCenter"
-        android:src="@drawable/pirat"
+        android:src="@drawable/whacapiratepirat"
         app:layout_constraintStart_toEndOf="@id/imageButton2"
         app:layout_constraintTop_toTopOf="@id/imageButton2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintWidth_percent="0.25"
         app:layout_constraintHeight_percent="0.25" />
-
 
     <ImageView
         android:id="@+id/boat3"
@@ -136,7 +126,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="44dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/boat"
+        android:src="@drawable/whacapirateboat"
         app:layout_constraintEnd_toEndOf="@id/imageButton3"
         app:layout_constraintHeight_percent="0.25"
         app:layout_constraintHorizontal_bias="1.0"
@@ -144,14 +134,12 @@
         app:layout_constraintTop_toBottomOf="@id/imageButton1"
         app:layout_constraintWidth_percent="0.25" />
 
-    <!-- Drugi rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrząd przycisków -->
-
     <ImageView
         android:id="@+id/boat4"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/boat"
+        android:src="@drawable/whacapirateboat"
         app:layout_constraintEnd_toEndOf="@id/imageButton4"
         app:layout_constraintHeight_percent="0.25"
         app:layout_constraintHorizontal_bias="0.0"
@@ -164,10 +152,9 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@android:color/transparent"
-        android:backgroundTint="#00FFFFFF"
         android:contentDescription="pirat"
         android:scaleType="fitCenter"
-        android:src="@drawable/pirat"
+        android:src="@drawable/whacapiratepirat"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imageButton1"
         app:layout_constraintEnd_toStartOf="@id/imageButton5"
@@ -179,7 +166,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/boat"
+        android:src="@drawable/whacapirateboat"
         app:layout_constraintEnd_toEndOf="@id/imageButton5"
         app:layout_constraintHeight_percent="0.25"
         app:layout_constraintHorizontal_bias="0.0"
@@ -195,24 +182,21 @@
         android:backgroundTint="#00FFFFFF"
         android:contentDescription="pirat"
         android:scaleType="fitCenter"
-        android:src="@drawable/pirat"
+        android:src="@drawable/whacapiratepirat"
         app:layout_constraintStart_toEndOf="@id/imageButton4"
         app:layout_constraintTop_toTopOf="@id/imageButton4"
         app:layout_constraintEnd_toStartOf="@id/imageButton6"
         app:layout_constraintWidth_percent="0.25"
         app:layout_constraintHeight_percent="0.25" />
 
-
-
     <ImageButton
         android:id="@+id/imageButton6"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@android:color/transparent"
-        android:backgroundTint="#00FFFFFF"
         android:contentDescription="pirat"
         android:scaleType="fitCenter"
-        android:src="@drawable/pirat"
+        android:src="@drawable/whacapiratepirat"
         app:layout_constraintStart_toEndOf="@id/imageButton5"
         app:layout_constraintTop_toTopOf="@id/imageButton5"
         app:layout_constraintEnd_toEndOf="parent"
@@ -224,7 +208,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/boat"
+        android:src="@drawable/whacapirateboat"
         app:layout_constraintEnd_toEndOf="@id/imageButton6"
         app:layout_constraintHeight_percent="0.25"
         app:layout_constraintHorizontal_bias="0.0"
@@ -232,25 +216,19 @@
         app:layout_constraintTop_toBottomOf="@+id/boat1"
         app:layout_constraintWidth_percent="0.25" />
 
-
-    <!-- Trzeci rząd przycisków -->
-
-
     <ImageButton
         android:id="@+id/imageButton7"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@android:color/transparent"
-        android:backgroundTint="#00FFFFFF"
         android:contentDescription="pirat"
         android:scaleType="fitCenter"
-        android:src="@drawable/pirat"
+        android:src="@drawable/whacapiratepirat"
         app:layout_constraintEnd_toStartOf="@id/imageButton8"
         app:layout_constraintHeight_percent="0.25"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imageButton4"
         app:layout_constraintWidth_percent="0.25" />
-
 
     <ImageView
         android:id="@+id/boat7"
@@ -258,7 +236,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="44dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/boat"
+        android:src="@drawable/whacapirateboat"
         app:layout_constraintEnd_toEndOf="@id/imageButton7"
         app:layout_constraintHeight_percent="0.25"
         app:layout_constraintHorizontal_bias="0.0"
@@ -271,16 +249,14 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@android:color/transparent"
-        android:backgroundTint="#00FFFFFF"
         android:contentDescription="pirat"
         android:scaleType="fitCenter"
-        android:src="@drawable/pirat"
+        android:src="@drawable/whacapiratepirat"
         app:layout_constraintStart_toEndOf="@id/imageButton7"
         app:layout_constraintTop_toTopOf="@id/imageButton7"
         app:layout_constraintEnd_toStartOf="@id/imageButton9"
         app:layout_constraintWidth_percent="0.25"
         app:layout_constraintHeight_percent="0.25" />
-
 
     <ImageView
         android:id="@+id/boat8"
@@ -288,7 +264,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="44dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/boat"
+        android:src="@drawable/whacapirateboat"
         app:layout_constraintEnd_toEndOf="@id/imageButton8"
         app:layout_constraintHeight_percent="0.25"
         app:layout_constraintHorizontal_bias="0.0"
@@ -301,10 +277,9 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@android:color/transparent"
-        android:backgroundTint="#00FFFFFF"
         android:contentDescription="pirat"
         android:scaleType="fitCenter"
-        android:src="@drawable/pirat"
+        android:src="@drawable/whacapiratepirat"
         app:layout_constraintStart_toEndOf="@id/imageButton8"
         app:layout_constraintTop_toTopOf="@id/imageButton8"
         app:layout_constraintEnd_toEndOf="parent"
@@ -317,7 +292,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="44dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/boat"
+        android:src="@drawable/whacapirateboat"
         app:layout_constraintEnd_toEndOf="@id/imageButton9"
         app:layout_constraintHeight_percent="0.25"
         app:layout_constraintHorizontal_bias="0.0"
@@ -330,7 +305,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/heart"
+        android:src="@drawable/whacapirateheart"
         app:layout_constraintEnd_toEndOf="@id/textView6"
         app:layout_constraintHeight_percent="0.06"
         app:layout_constraintHorizontal_bias="0.287"
@@ -343,7 +318,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/heart"
+        android:src="@drawable/whacapirateheart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.06"
         app:layout_constraintHorizontal_bias="0.0"
@@ -356,13 +331,12 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/heart"
+        android:src="@drawable/whacapirateheart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.06"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@id/textView4"
         app:layout_constraintTop_toTopOf="@+id/serce2"
         app:layout_constraintWidth_percent="0.25" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
