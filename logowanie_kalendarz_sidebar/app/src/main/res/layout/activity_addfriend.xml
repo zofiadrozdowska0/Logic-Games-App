@@ -29,8 +29,8 @@
 
         <ScrollView
             android:id="@+id/scrollView2"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="360dp"
+            android:layout_height="500dp"
             android:background="#7EE5BE95"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_percent="0.8"
@@ -47,8 +47,9 @@
 
         <SearchView
             android:id="@+id/searchView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_width="360dp"
+            android:layout_height="50dp"
             android:background="#E5BE95"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
