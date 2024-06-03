@@ -24,29 +24,37 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="#2F1F2B"
-            app:layout_constraintBottom_toTopOf="@+id/scrollView2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:titleTextColor="#E5BE95" />
 
-        <ScrollView
-            android:id="@+id/scrollView2"
-            android:layout_width="412dp"
-            android:layout_height="607dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="7dp"
-            app:layout_constraintBottom_toTopOf="@+id/button6"
+        <FrameLayout
+            android:id="@+id/chartContainer"
+            android:layout_width="403dp"
+            android:layout_height="668dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.5"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar">
+            <ScrollView
+                android:id="@+id/scrollView2"
+                android:layout_width="360dp"
+                android:layout_height="550dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="30dp"
+                android:background="#7EE5BE95">
+                <LinearLayout
+                    android:id="@+id/friendinvView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+            </ScrollView>
 
-            <LinearLayout
-                android:id="@+id/friendinvView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
-        </ScrollView>
+        </FrameLayout>
 
         <Button
             android:id="@+id/button6"
