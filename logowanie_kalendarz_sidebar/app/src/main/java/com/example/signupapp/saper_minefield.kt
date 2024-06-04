@@ -47,12 +47,6 @@ class saper_minefield : AppCompatActivity() {
             val nextImageResource = imageResources[currentIndex]
             imageButton.setImageResource(nextImageResource)
         }
-        val resetButton = findViewById<Button>(R.id.button_reset)
-        resetButton.setOnClickListener {
-            isFirstMove = true
-            val intent1 = Intent(this, saper_minefield::class.java)
-            startActivity(intent1)
-        }
 
         // Ustawienie początkowej wartości TextView how_many_left na liczbę min
         val minesLeftTextView = findViewById<TextView>(R.id.how_many_left)
