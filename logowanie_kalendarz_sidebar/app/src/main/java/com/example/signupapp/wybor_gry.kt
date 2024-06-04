@@ -101,7 +101,8 @@ class wybor_gry : AppCompatActivity() {
                     startActivity(intent)
                 }
                 R.id.nav_rules -> {
-                    this.drawerLayout.closeDrawers()
+                    val intent = Intent(applicationContext, rules::class.java)
+                    startActivity(intent)
                 }
                 R.id.nav_friends -> {
                     val intent = Intent(applicationContext, friends::class.java)
