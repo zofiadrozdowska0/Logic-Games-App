@@ -16,7 +16,7 @@ import kotlin.random.Random
 class saper_minefield : AppCompatActivity() {
     private var rows=12
     private var columns=8
-    private var mines=16
+    private var mines=1
     private var flaggedMines = 0  // Licznik oflagowanych min
     private val imageResources = listOf(
         R.drawable.saper_bomb,

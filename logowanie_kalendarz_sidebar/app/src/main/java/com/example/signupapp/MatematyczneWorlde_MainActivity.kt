@@ -14,6 +14,7 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat
+import android.os.Handler
 
 
 class MatematyczneWorlde_MainActivity : AppCompatActivity() {
@@ -257,7 +258,7 @@ class MatematyczneWorlde_MainActivity : AppCompatActivity() {
         button15.setOnClickListener {
             var equationString = ""
             val checklist = listOfTextViews[currentListIndex]
-            Toast.makeText(this@MatematyczneWorlde_MainActivity, randomEquation, Toast.LENGTH_LONG).show()
+
 
             for (text in checklist) {
                 equationString += text.text // Append the text content of each TextView
@@ -272,16 +273,20 @@ class MatematyczneWorlde_MainActivity : AppCompatActivity() {
                     compareEquations(equationString, randomEquation, listOfTextViews[currentListIndex])
                     if (checkRowForWin(listOfTextViews[currentListIndex])) {
                         Toast.makeText(this@MatematyczneWorlde_MainActivity, "Gratulacje, wygrałeś!", Toast.LENGTH_SHORT).show()
-
                         disableButtons()
-                        val intent = Intent(applicationContext, saper_minefield::class.java)
-                        startActivity(intent)
+                        Handler().postDelayed({
+                            val intent = Intent(applicationContext, saper_minefield::class.java)
+                            startActivity(intent)
+                        }, 1000)
+
                     } else if (currentListIndex == 5) {
                         // Jeśli to ostatni rząd i nie ma zwycięstwa, wyświetl informację o porażce i poprawne równanie
                         Toast.makeText(this@MatematyczneWorlde_MainActivity, "Niestety przegrałeś. Równanie, którego szukałeś to: $randomEquation", Toast.LENGTH_LONG).show()
                         disableButtons()
-                        val intent = Intent(applicationContext, saper_minefield::class.java)
-                        startActivity(intent)
+                        Handler().postDelayed({
+                            val intent = Intent(applicationContext, saper_minefield::class.java)
+                            startActivity(intent)
+                        }, 1000)
                     } else {
                         currentListIndex = (currentListIndex + 1) % listOfTextViews.size // Przejdź do następnego rzędu
                     }
