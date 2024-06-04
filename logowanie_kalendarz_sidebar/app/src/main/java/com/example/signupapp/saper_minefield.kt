@@ -117,14 +117,14 @@ class saper_minefield : AppCompatActivity() {
                             } else if (points <= 15) {
                                 scaledPoints = 9
                             }
-                            Toast.makeText(this@saper_minefield, "dupa $scaledPoints", Toast.LENGTH_LONG).show()
+                            //Toast.makeText(this@saper_minefield, "jjj $scaledPoints", Toast.LENGTH_LONG).show()
 
                             // Odslon wszystkie pola z bombami
                             revealAllBombFields(mineboard)
 
                             // Zaczekaj sekudne przed uruchomieniem lost_activity
                             Handler().postDelayed({
-                                //Toast.makeText(this@saper_minefield, "Niestety przegrałeś. Przechodzenie do następnęj gry", Toast.LENGTH_LONG).show()
+                                Toast.makeText(this@saper_minefield, "Niestety przegrałeś. Przechodzenie do następnęj gry", Toast.LENGTH_LONG).show()
                                 val intent = Intent(this, sekwencja_MainActivity::class.java)
                                 startActivity(intent)
                             }, 1000) // Czas w milisekundach
@@ -229,9 +229,9 @@ class saper_minefield : AppCompatActivity() {
         // Sprawdź, czy wszystkie pola z bombami są oflagowane i wszystkie pozostałe pola są odkryte
         if (flaggedMines == mines && checkAllCellsRevealedWithoutBomb(mineboard)) {
             scaledPoints = 10
-            Toast.makeText(this@saper_minefield, "text $scaledPoints", Toast.LENGTH_LONG).show()
+            //Toast.makeText(this@saper_minefield, "text $scaledPoints", Toast.LENGTH_LONG).show()
             // Jeśli tak, przejdź do won_activity
-            //Toast.makeText(this@saper_minefield, "Brawo, wygrałeś! Przechodzenie do następnęj gry", Toast.LENGTH_LONG).show()
+            Toast.makeText(this@saper_minefield, "Brawo, wygrałeś! Przechodzenie do następnęj gry", Toast.LENGTH_LONG).show()
             val intent = Intent(this, sekwencja_MainActivity::class.java)
             intent.putExtra("TIME", chronometer.text.toString())
             chronometer.stop() // Zatrzymaj chronometr

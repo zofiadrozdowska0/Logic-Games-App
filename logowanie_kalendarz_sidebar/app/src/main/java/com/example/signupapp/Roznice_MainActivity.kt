@@ -18,6 +18,7 @@ class Roznice_MainActivity : AppCompatActivity() {
     private var endTime: Long = 0
     private var penaltytime: Long = 0
     private var clickedWrongImages = mutableSetOf<String>()
+    private var points = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -108,9 +109,32 @@ class Roznice_MainActivity : AppCompatActivity() {
 
     fun showCompletionDialog(totalTime: Long) {
         val totalTimeSeconds = totalTime / 1000
+        if (totalTimeSeconds <= 10) {
+            points = 10
+        } else if (totalTimeSeconds <= 12) {
+            points = 9
+        } else if (totalTimeSeconds <= 14) {
+            points = 8
+        } else if (totalTimeSeconds <= 16) {
+            points = 7
+        } else if (totalTimeSeconds <= 18) {
+            points = 6
+        } else if (totalTimeSeconds <= 20) {
+            points = 5
+        } else if (totalTimeSeconds <= 22) {
+            points = 4
+        } else if (totalTimeSeconds <= 24) {
+            points = 3
+        } else if (totalTimeSeconds <= 26) {
+            points = 2
+        } else if (totalTimeSeconds <= 28) {
+            points = 1
+        } else if (totalTimeSeconds > 28) {
+            points = 0
+        }
         AlertDialog.Builder(this).apply {
             setTitle("Gra zakończona!")
-            setMessage("Twój czas: $totalTimeSeconds sekund.")
+            setMessage("Zdobyłeś: $points punktów")
             setNeutralButton("Następna gra") { dialog, which ->
                 setResult(RESULT_OK) // Set the result to OK
                 finish() // Ends current game to start the next one
@@ -119,6 +143,7 @@ class Roznice_MainActivity : AppCompatActivity() {
             show()
         }
     }
+
 
     fun restartGame() {
         correctImagesCount = 0
