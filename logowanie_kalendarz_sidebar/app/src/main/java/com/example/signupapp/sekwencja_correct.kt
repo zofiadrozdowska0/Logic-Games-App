@@ -2,9 +2,12 @@ package com.example.signupapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 
 class sekwencja_correct : AppCompatActivity() {
@@ -51,10 +54,13 @@ class sekwencja_correct : AppCompatActivity() {
         btn3.text = btn3Text
 
         if (correctCount + wrongCount >= 10) {
-            Toast.makeText(this, "Koniec gier logicznych. Powrót do menu", Toast.LENGTH_LONG).show()
-            val intent = Intent(this, wybor_gry::class.java)
-            startActivity(intent)
-            finish()
+            showAllGamesCompletedDialog()
+            Handler().postDelayed({
+                val intent = Intent(this, wybor_gry::class.java)
+                startActivity(intent)
+                finish()
+            }, 2000) // Show the "All games completed!" dialog after 2 seconds
+
         }
 
         val nextButton = findViewById<Button>(R.id.nextB)
@@ -64,5 +70,17 @@ class sekwencja_correct : AppCompatActivity() {
             intent1.putExtra("WRONG_COUNT", wrongCount)
             startActivity(intent1)
         }
+
+    }
+
+    private fun showAllGamesCompletedDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("All games completed!")
+            .setMessage("Congratulations! You have completed all games.")
+            .setPositiveButton("OK") { _, _ ->
+                finish()
+            }
+            .setCancelable(false)
+            .show()
     }
 }

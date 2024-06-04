@@ -270,9 +270,9 @@ class MatematyczneWorlde_MainActivity : AppCompatActivity() {
                     compareEquations(equationString, randomEquation, listOfTextViews[currentListIndex])
                     if (checkRowForWin(listOfTextViews[currentListIndex])) {
                         Toast.makeText(this@MatematyczneWorlde_MainActivity, "Gratulacje, wygrałeś!", Toast.LENGTH_SHORT).show()
-                        val intent1 = Intent(applicationContext, saper_minefield::class.java)
-                        startActivity(intent1)
                         disableButtons()
+                        val intent = Intent(applicationContext, saper_minefield::class.java)
+                        startActivity(intent)
                     } else if (currentListIndex == 5) {
                         // Jeśli to ostatni rząd i nie ma zwycięstwa, wyświetl informację o porażce i poprawne równanie
                         Toast.makeText(this@MatematyczneWorlde_MainActivity, "Niestety przegrałeś. Równanie, którego szukałeś to: $randomEquation", Toast.LENGTH_LONG).show()
@@ -363,5 +363,4 @@ class MatematyczneWorlde_MainActivity : AppCompatActivity() {
         }
         return true // Jeśli wszystkie pola są zielone, zwróć true
     }
-
 }

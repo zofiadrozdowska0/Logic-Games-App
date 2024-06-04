@@ -137,9 +137,6 @@ class Ufoludki_MainActivity : AppCompatActivity() {
         AlertDialog.Builder(this)
             .setTitle("Wynik")
             .setMessage(wiadomosc)
-            .setPositiveButton("OK") { _, _ ->
-                zresetujGre()
-            }
             .setNeutralButton("Następna gra") { _, _ ->
                 setResult(RESULT_OK) // Set the result to OK
                 finish() // Ends current game to start the next one
