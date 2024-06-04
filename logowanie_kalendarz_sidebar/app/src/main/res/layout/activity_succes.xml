@@ -29,8 +29,8 @@
 
         <FrameLayout
             android:id="@+id/chartContainer"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="371dp"
+            android:layout_height="476dp"
             android:background="#52FFFFFF"
             app:layout_constraintBottom_toTopOf="@+id/przygodaButton"
             app:layout_constraintHeight_percent="0.42"
@@ -41,9 +41,9 @@
             app:layout_constraintWidth_percent="0.9">
 
             <com.example.signupapp.LineChartView
+                android:id="@+id/lineChartView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/lineChartView" />
+                android:layout_height="match_parent" />
         </FrameLayout>
 
         <Button
