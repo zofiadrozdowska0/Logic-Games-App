@@ -1,5 +1,6 @@
 package com.example.signupapp
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -56,7 +57,12 @@ class saper_minefield : AppCompatActivity() {
 
         drawMineboard(fieldLayout, mineboard)
     }
-
+    private fun savePointsToSharedPreferences(key: String, points: Int) {
+        val sharedPreferences = getSharedPreferences("game_scores", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putInt(key, points)
+        editor.apply()
+    }
     private fun drawMineboard(fieldLayout: LinearLayout, mineboard: Array<Array<saper_MineCell>>) {
         var cell_id = 1
 
@@ -117,6 +123,7 @@ class saper_minefield : AppCompatActivity() {
                             } else if (points <= 15) {
                                 scaledPoints = 9
                             }
+                            savePointsToSharedPreferences("druga", scaledPoints)
                             //Toast.makeText(this@saper_minefield, "jjj $scaledPoints", Toast.LENGTH_LONG).show()
 
                             // Odslon wszystkie pola z bombami
@@ -269,5 +276,6 @@ class saper_minefield : AppCompatActivity() {
         }
         return discoveredBombs
     }
+
 
 }
