@@ -97,8 +97,6 @@ class LineChartView(context: Context, attrs: AttributeSet?) : View(context, attr
             }
     }
 
-
-    @RequiresApi(Build.VERSION_CODES.N)
     private fun updatePointsMap(
         pointsMap: MutableMap<String, MutableList<Pair<Date, Float>>>,
         formattedDate: String,
@@ -113,13 +111,7 @@ class LineChartView(context: Context, attrs: AttributeSet?) : View(context, attr
             pointsMap[formattedDate] = mutableListOf(Pair(dateObj, pointsValue / 3))
         } else {
             // Jeśli są już wpisy dla tej daty i kategorii
-            val existingEntry = currentEntries.firstOrNull { it.first.after(dateObj) }
-            if (existingEntry == null) {
-                // Brak wpisu z datą starszą niż aktualna, nadpisujemy istniejący wpis
-                currentEntries.removeIf { it.first == dateObj } // Usuwamy istniejącą parę z tą samą datą
-                currentEntries.add(Pair(dateObj, pointsValue / 3)) // Dodajemy nową parę
-            }
-            // Jeśli istnieje wpis z datą starszą niż aktualna, nie robimy nic
+            currentEntries.add(Pair(dateObj, pointsValue)) // Dodajemy nową parę
         }
     }
 
