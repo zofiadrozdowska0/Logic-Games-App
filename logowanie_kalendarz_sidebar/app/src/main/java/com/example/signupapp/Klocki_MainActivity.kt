@@ -31,6 +31,7 @@ class Klocki_MainActivity : AppCompatActivity() {
     private var startTime: Long = SystemClock.elapsedRealtime()
     private var wins = 0
     private var prev_task = 0
+    private var earnedPoints = 0
 
     private var ImageView.rotated: Boolean
         get() = tag as? Boolean ?: false // Pobiera wartość z tagu, domyślnie false
@@ -183,8 +184,32 @@ class Klocki_MainActivity : AppCompatActivity() {
                 val seconds = (elapsedTime / 1000).toInt()
                 val tenthsseconds = (elapsedTime / 100).toInt()
                 val timeString = String.format("%02d.%01d", seconds, tenthsseconds % 10)
+                val timeFloat = timeString.toFloat()
+                if (timeFloat <= 100) {
+                    earnedPoints = 10
+                } else if (timeFloat <= 108) {
+                    earnedPoints = 9
+                } else if (timeFloat <= 116) {
+                    earnedPoints = 8
+                } else if (timeFloat <= 124) {
+                    earnedPoints = 7
+                } else if (timeFloat <= 132) {
+                    earnedPoints = 6
+                } else if (timeFloat <= 140) {
+                    earnedPoints = 5
+                } else if (timeFloat <= 148) {
+                    earnedPoints = 4
+                } else if (timeFloat <= 156) {
+                    earnedPoints = 3
+                } else if (timeFloat <= 164) {
+                    earnedPoints = 2
+                } else if (timeFloat <= 172) {
+                    earnedPoints = 1
+                } else if (timeFloat > 172) {
+                    earnedPoints = 0
+                }
                 println("Warunki Wygranej. Czas gry: $timeString")
-                binding.textView.text =  "Brawo!\nCzas: $timeString s"
+                binding.textView.text =  "Brawo!\nZdobyte punkty: $earnedPoints"
                 binding.textView.x = dpToPixels(34f)
                 binding.textView.y = dpToPixels(410f)
                 binding.textView.textSize = 50f

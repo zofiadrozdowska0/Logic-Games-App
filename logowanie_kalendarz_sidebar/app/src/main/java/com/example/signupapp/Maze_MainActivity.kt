@@ -22,6 +22,7 @@ class Maze_MainActivity : Activity() {
     private var gameOver = false
     private var level = 1
     private var isNewMazeChecked = false
+    private var collisions = 0
 
     // Timer fields
     private lateinit var timer: CountDownTimer
@@ -62,6 +63,7 @@ class Maze_MainActivity : Activity() {
                             ballView.y = newY
                             checkForNewMaze(newX, newY, timeLeftInMillis) // Przekazujemy timeLeftInMillis
                         } else {
+                            collisions++
                             restartGame()
                         }
                     }
@@ -108,6 +110,7 @@ class Maze_MainActivity : Activity() {
         val intent = Intent(this, Maze_MainActivity::class.java)
         intent.putExtra("TIME_LEFT", timeLeftInMillis)
         intent.putExtra("LEVEL", level)
+        intent.putExtra("COLLISIONS", collisions)
         startActivity(intent)
         finish() // Zamknij bieżącą aktywność
     }
@@ -128,13 +131,14 @@ class Maze_MainActivity : Activity() {
                 timeLeftInMillis = 0
                 timerRunning = false
                 gameOver = true
+                val score = calculateScore(level, collisions)
                 findViewById<TextView>(R.id.gameOverTextView).visibility = View.VISIBLE
                 findViewById<TextView>(R.id.scoreTextView).apply {
                     visibility = View.VISIBLE
-                    text = getString(R.string.score_message, level)
+                    text = getString(R.string.score_message, score)
                 }
                 if (!isFinishing) {
-                    showCompletionDialog()
+                    showCompletionDialog(score)
                 }
             }
         }
@@ -152,6 +156,7 @@ class Maze_MainActivity : Activity() {
         val intent = Intent(this, Maze_MainActivity::class.java)
         intent.putExtra("TIME_LEFT", timeLeftInMillis)
         intent.putExtra("LEVEL", level)
+        intent.putExtra("COLLISIONS", collisions)
         startActivity(intent)
         finish()
     }
@@ -263,11 +268,16 @@ class Maze_MainActivity : Activity() {
         return count
     }
 
-    private fun showCompletionDialog() {
+    private fun calculateScore(level: Int, collisions: Int): Int {
+        val rawScore = level / 2 - collisions
+        return if (rawScore < 0) 0 else rawScore
+    }
+
+    private fun showCompletionDialog(score: Int) {
         if (!isFinishing) {
             AlertDialog.Builder(this)
                 .setTitle("Level Completed")
-                .setMessage("You completed level $level!")
+                .setMessage("You completed level $level with a score of $score!")
                 .setPositiveButton("Next Game") { _, _ ->
                     val intent = Intent(this, WhacAPirateMainActivity::class.java)
                     startActivity(intent)

@@ -32,7 +32,7 @@ class zap_el_zb_MemoryBoard(
     private var isClickable = false
     private var sequence: List<Int> = generateRandomSequence()
     private var secondHalfImages: Pair<List<Int>, Int> = generateRandomImagesForSecondHalf(sequence)
-    private var points =0
+    private var points_el_zb =0
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val cardWidth = parent.width / 2 - 2 * MARGIN_SIZE
         val cardHeight = parent.height / 4 - 2 * MARGIN_SIZE
@@ -61,7 +61,7 @@ class zap_el_zb_MemoryBoard(
             } else {
                 imageButton.setImageResource(R.drawable.zap_el_zb_ic_launcher_background)
             }
-            tvNumMoves.text = "Points: ${points}"
+            tvNumMoves.text = "Points: ${points_el_zb}"
             tvNumPairs.text = "Your Sequence"
 
             // Hide images after delay
@@ -85,13 +85,23 @@ class zap_el_zb_MemoryBoard(
 
                     if (clickedImage == correctImage) {
                         showToast("Good Answer!")
-                        points++
-                        tvNumMoves.text = "Points: ${points}"
+                        points_el_zb++
+                        if (points_el_zb<10){
+                            tvNumMoves.text = "Points: ${points_el_zb}"
+                        }
+                        else{
+                            showToast("Maximum points!")
+                            tvNumMoves.text = "Points: ${points_el_zb}"
+                            points_el_zb = 0
+                            val intent = Intent(context, wybor_gry::class.java)
+                            context.startActivity(intent)
+                        }
+
 
                     } else {
                         showToast("Wrong Answer!")
-                        points = 0
-                        tvNumMoves.text = "Points: ${points}"
+                        points_el_zb = 0
+                        tvNumMoves.text = "Points: ${points_el_zb}"
                         val intent = Intent(context, wybor_gry::class.java)
                         context.startActivity(intent)
                     }
@@ -118,7 +128,7 @@ class zap_el_zb_MemoryBoard(
             secondHalfImages[randomIndex] = randomNonSequenceImage
             return Pair(secondHalfImages, randomIndex)
         } else {
-            Log.e(TAG, "Brak dostępnych obrazków spoza sekwencji")
+            //Log.e(TAG, "Brak dostępnych obrazków spoza sekwencji")
             return Pair(secondHalfImages.shuffled(), secondHalfImages.lastIndex)
         }
     }
