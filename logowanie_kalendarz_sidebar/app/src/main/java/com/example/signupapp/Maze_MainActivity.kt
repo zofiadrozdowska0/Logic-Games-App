@@ -275,15 +275,9 @@ class Maze_MainActivity : Activity() {
 
     private fun showCompletionDialog(score: Int) {
         if (!isFinishing) {
-            AlertDialog.Builder(this)
-                .setTitle("Level Completed")
-                .setMessage("You completed level $level with a score of $score!")
-                .setPositiveButton("Next Game") { _, _ ->
-                    val intent = Intent(this, WhacAPirateMainActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                }
-                .show()
+            val intent = Intent(this, WhacAPirateMainActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 

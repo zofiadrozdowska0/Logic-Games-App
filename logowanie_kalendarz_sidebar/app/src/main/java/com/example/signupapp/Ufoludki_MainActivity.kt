@@ -17,6 +17,7 @@ import androidx.appcompat.app.AlertDialog
 import android.content.Intent
 import android.content.Context
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlin.math.abs
 
 class Ufoludki_MainActivity : AppCompatActivity() {
     private lateinit var layout: ViewGroup
@@ -132,12 +133,21 @@ class Ufoludki_MainActivity : AppCompatActivity() {
     }
 
     private fun sprawdzOdpowiedz(odpowiedz: Int?): Int {
-        val points: Int
+        val maxPoints = 10
+        val difference = abs(wartoscLicznika - odpowiedz!!)
+
+        // Calculate points based on the difference
+        val points: Int = if (odpowiedz == wartoscLicznika) {
+            maxPoints
+        } else {
+            // Ensure points are between 0 and 10
+            0.coerceAtLeast(maxPoints - difference)
+        }
+
+        // Create the message
         val wiadomosc = if (odpowiedz == wartoscLicznika) {
-            points = wartoscLicznika * 10 // Example points calculation, adjust as needed
             "Poprawna odpowiedź! Zdobyłeś $points punktów."
         } else {
-            points = 0 // Example points calculation, adjust as needed
             "Niepoprawna odpowiedź. Na statku jest $wartoscLicznika piratów. Zdobyłeś $points punktów."
         }
 
