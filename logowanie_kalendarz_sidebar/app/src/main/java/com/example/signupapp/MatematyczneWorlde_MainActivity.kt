@@ -13,7 +13,8 @@ import android.widget.Toast
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import android.view.animation.AnimationUtils
-
+import androidx.core.content.ContextCompat
+import android.os.Handler
 
 
 class MatematyczneWorlde_MainActivity : AppCompatActivity() {
@@ -257,6 +258,8 @@ class MatematyczneWorlde_MainActivity : AppCompatActivity() {
         button15.setOnClickListener {
             var equationString = ""
             val checklist = listOfTextViews[currentListIndex]
+
+
             for (text in checklist) {
                 equationString += text.text // Append the text content of each TextView
             }
@@ -270,15 +273,20 @@ class MatematyczneWorlde_MainActivity : AppCompatActivity() {
                     compareEquations(equationString, randomEquation, listOfTextViews[currentListIndex])
                     if (checkRowForWin(listOfTextViews[currentListIndex])) {
                         Toast.makeText(this@MatematyczneWorlde_MainActivity, "Gratulacje, wygrałeś!", Toast.LENGTH_SHORT).show()
-                        val intent1 = Intent(applicationContext, saper_minefield::class.java)
-                        startActivity(intent1)
                         disableButtons()
+                        Handler().postDelayed({
+                            val intent = Intent(applicationContext, saper_minefield::class.java)
+                            startActivity(intent)
+                        }, 1000)
+
                     } else if (currentListIndex == 5) {
                         // Jeśli to ostatni rząd i nie ma zwycięstwa, wyświetl informację o porażce i poprawne równanie
                         Toast.makeText(this@MatematyczneWorlde_MainActivity, "Niestety przegrałeś. Równanie, którego szukałeś to: $randomEquation", Toast.LENGTH_LONG).show()
                         disableButtons()
-                        val intent = Intent(applicationContext, saper_minefield::class.java)
-                        startActivity(intent)
+                        Handler().postDelayed({
+                            val intent = Intent(applicationContext, saper_minefield::class.java)
+                            startActivity(intent)
+                        }, 1000)
                     } else {
                         currentListIndex = (currentListIndex + 1) % listOfTextViews.size // Przejdź do następnego rzędu
                     }
@@ -336,8 +344,11 @@ class MatematyczneWorlde_MainActivity : AppCompatActivity() {
 
             val textView = textViewList[i] // Pobierz odpowiedni TextView z listy
 
+            // Zapisz aktualny kolor tła jako atrybut TextView
+            textView.setTag(R.id.colorTag, colorResId)
+
             // Sprawdź, czy kolor tła TextView ma być zmieniony
-            val currentColor = (textView.background as? ColorDrawable)?.color ?: -1
+            val currentColor = textView.getTag(R.id.colorTag) as Int
             if (resources.getColor(colorResId, null) != currentColor) {
                 // Zastosuj animację tylko w przypadku zmiany koloru
                 val rotateAnimation = AnimationUtils.loadAnimation(this@MatematyczneWorlde_MainActivity, R.anim.rotate_animation)
@@ -346,6 +357,7 @@ class MatematyczneWorlde_MainActivity : AppCompatActivity() {
 
                     override fun onAnimationEnd(animation: Animation?) {
                         textView.setBackgroundResource(colorResId)
+                        textView.setTag(R.id.colorTag, colorResId) // Zaktualizuj atrybut z kolorem tła
                     }
 
                     override fun onAnimationRepeat(animation: Animation?) {}
@@ -354,14 +366,14 @@ class MatematyczneWorlde_MainActivity : AppCompatActivity() {
             }
         }
     }
+
     private fun checkRowForWin(textViewList: List<TextView>): Boolean {
         for (textView in textViewList) {
-            val background = textView.background
-            if (background !is ColorDrawable || background.color != Color.GREEN) {
-                return false // Jeśli nie wszystkie pola są zielone, zwróć false
+            val colorResId = textView.getTag(R.id.colorTag) as Int
+            if (colorResId != R.color.green) {
+                return false // Jeśli jakiekolwiek pole nie jest zielone, zwróć false
             }
         }
         return true // Jeśli wszystkie pola są zielone, zwróć true
     }
-
 }
