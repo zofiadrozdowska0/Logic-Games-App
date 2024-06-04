@@ -16,13 +16,13 @@ import android.widget.Toast
 import android.widget.TextView
 import com.google.firebase.firestore.FirebaseFirestore
 
+
 class zap_el_zb_MemoryBoard(
     private val context: Context,
     private val boardSize: zap_el_zb_BoardSize,
     private val cardImages: List<Int>,
     private val tvNumMoves: TextView,
     private val tvNumPairs: TextView
-
 
 ) : RecyclerView.Adapter<zap_el_zb_MemoryBoard.ViewHolder>() {
 
@@ -56,7 +56,12 @@ class zap_el_zb_MemoryBoard(
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val imageButton: ImageButton = itemView.findViewById(R.id.imageButton)
-        private var numgames=0
+        private fun savePointsToSharedPreferences(key: String, points: Int) {
+            val sharedPreferences = context.getSharedPreferences("game_scores", Context.MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
+            editor.putInt(key, points)
+            editor.apply()
+        }
         fun bind(position: Int) {
             // Display the initial sequence of images
             if (position < sequence.size) {
@@ -89,13 +94,14 @@ class zap_el_zb_MemoryBoard(
                     if (clickedImage == correctImage) {
                         showToast("Good Answer!")
                         points_el_zb++
-                        numgames++
-                        if (points_el_zb<10 && numgames<10){
+                        if (points_el_zb<10){
                             tvNumMoves.text = "Points: ${points_el_zb}"
                         }
                         else{
-                            showToast("Maximum points or 10 games reached!")
+                            showToast("Maximum points!")
                             tvNumMoves.text = "Points: ${points_el_zb}"
+                            savePointsToSharedPreferences("zap_elementy_points", points_el_zb)
+                            saveTotalPointsToDatabase()
                             points_el_zb = 0
                             val intent = Intent(context, wybor_gry::class.java)
                             context.startActivity(intent)
@@ -105,18 +111,11 @@ class zap_el_zb_MemoryBoard(
                     } else {
                         showToast("Wrong Answer!")
                         savePointsToSharedPreferences("zap_elementy_points", points_el_zb)
-                        points_el_zb--
-                        numgames++
-                        if (numgames<10) {
-                            tvNumMoves.text = "Points: ${points_el_zb}"
-                        }
-                        else{
-                            showToast("Maximum points or 10 games reached!")
-                            tvNumMoves.text = "Points: ${points_el_zb}"
-                            points_el_zb = 0
-                            val intent = Intent(context, wybor_gry::class.java)
-                            context.startActivity(intent)
-                        }
+                        points_el_zb = 0
+                        tvNumMoves.text = "Points: ${points_el_zb}"
+                        saveTotalPointsToDatabase()
+                        val intent = Intent(context, wybor_gry::class.java)
+                        context.startActivity(intent)
                     }
                     restartGame()
                 }
@@ -154,14 +153,9 @@ class zap_el_zb_MemoryBoard(
                 println("Error writing document: $e")
             }
     }
+
     private fun generateRandomSequence(): List<Int> {
         return cardImages.shuffled().distinct().take(4)
-    }
-    private fun savePointsToSharedPreferences(key: String, points: Int) {
-        val sharedPreferences = context.getSharedPreferences("game_scores", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putInt(key, points)
-        editor.apply()
     }
 
     private fun generateRandomImagesForSecondHalf(sequence: List<Int>): Pair<List<Int>, Int> {
