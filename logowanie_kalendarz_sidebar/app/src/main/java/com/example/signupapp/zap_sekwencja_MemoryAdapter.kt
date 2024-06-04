@@ -16,6 +16,8 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.math.min
 
+
+
 class zap_sekwencja_MemoryAdapter(
     private val context: Context,
     private val boardSize: zap_sekwencja_BoardSize,
@@ -56,7 +58,12 @@ class zap_sekwencja_MemoryAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(position)
     }
-
+    private fun savePointsToSharedPreferences(key: String, points: Int) {
+        val sharedPreferences = context.getSharedPreferences("game_scores", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putInt(key, points)
+        editor.apply()
+    }
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageButton = itemView.findViewById<ImageButton>(R.id.imageButton)
 
@@ -113,11 +120,11 @@ class zap_sekwencja_MemoryAdapter(
                         sequence=null
                         memoryGame.level = 2
                         currentSequenceIndex=0
+                        savePointsToSharedPreferences("zap_sekwencje_points", points_zap_sek)
                         points_zap_sek = 0
                         val intent = Intent(context, zap_el_zb_MainActivity::class.java)
                         context.startActivity(intent)
                         startGame()
-
 
                     }
                 }
@@ -126,6 +133,7 @@ class zap_sekwencja_MemoryAdapter(
                 //Log.d(TAG, "Gracz kliknął nieprawidłową kartę na pozycji: $position")
                 sequence=null
                 currentSequenceIndex=0
+                savePointsToSharedPreferences("zap_sekwencje_points", points_zap_sek)
                 points_zap_sek = 0
                 tvNumPoints.text = "Points: ${points_zap_sek}"
                 memoryGame.level = 2

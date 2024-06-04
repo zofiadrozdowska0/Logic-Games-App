@@ -1,7 +1,6 @@
 package com.example.signupapp
 
-///package com.example.game
-
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -11,8 +10,12 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import java.util.Timer
 import java.util.TimerTask
 import kotlin.random.Random
@@ -22,10 +25,15 @@ class WhacAPirateMainActivity : AppCompatActivity() {
     private var appearanceTimer: Timer? = null
     private var level = 1
     private var lives = 3 // Poziom trudności
+    private lateinit var firestore: FirebaseFirestore
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.whacapiratelayout)
+
+        firestore = FirebaseFirestore.getInstance()
+        auth = FirebaseAuth.getInstance()
 
         // Inicjalizacja wszystkich przycisków obrazków
         val imageButtons = listOf<ImageButton>(
@@ -83,13 +91,14 @@ class WhacAPirateMainActivity : AppCompatActivity() {
             }
         }
 
-        fun gameOver() {
+        fun gameOver(message: String = "Game Over! Score: $score") {
             runOnUiThread {
-                findViewById<TextView>(R.id.textView4).text = "Game Over! Score: $score"
+                findViewById<TextView>(R.id.textView4).text = message
                 Handler().postDelayed({
+                    saveTotalPoints()
                     val intent1 = Intent(applicationContext, wybor_gry::class.java)
                     startActivity(intent1)
-                },1000)
+                }, 1000)
             }
             appearanceTimer?.cancel()
         }
@@ -143,11 +152,38 @@ class WhacAPirateMainActivity : AppCompatActivity() {
                     score++
                     scoreTextView.text = "Score: $score"
                     imageButton.visibility = ImageButton.INVISIBLE
-                    if (score % 3 == 0) { // Zwiększ poziom trudności co 5 punktów
+                    if (score == 10) {
+                        gameOver("Max Score! Score: $score")
+                    } else if (score % 3 == 0) { // Zwiększ poziom trudności co 3 punkty
                         level++
                     }
                 }
             }
         }
+    }
+
+    private fun saveTotalPoints() {
+        val sharedPreferences = getSharedPreferences("game_scores", Context.MODE_PRIVATE)
+        val kolorPoints = sharedPreferences.getInt("kolor_points", 0)
+        val mazePoints = sharedPreferences.getInt("maze_points", 0)
+        val totalPoints = kolorPoints + mazePoints + score
+
+        val sharedPreferencesUser = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val username = sharedPreferencesUser.getString("username", "Unknown") ?: "Unknown"
+
+        val data = hashMapOf(
+            "timestamp" to com.google.firebase.Timestamp.now(),
+            "reflex_points" to totalPoints,
+            "username" to username
+        )
+
+        firestore.collection("points")
+            .add(data)
+            .addOnSuccessListener {
+                Toast.makeText(this, "Points saved successfully", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Error saving points: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 }

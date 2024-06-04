@@ -14,6 +14,9 @@ import kotlin.math.min
 import android.util.Log
 import android.widget.Toast
 import android.widget.TextView
+import com.google.firebase.firestore.FirebaseFirestore
+
+
 class zap_el_zb_MemoryBoard(
     private val context: Context,
     private val boardSize: zap_el_zb_BoardSize,
@@ -53,7 +56,12 @@ class zap_el_zb_MemoryBoard(
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val imageButton: ImageButton = itemView.findViewById(R.id.imageButton)
-
+        private fun savePointsToSharedPreferences(key: String, points: Int) {
+            val sharedPreferences = context.getSharedPreferences("game_scores", Context.MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
+            editor.putInt(key, points)
+            editor.apply()
+        }
         fun bind(position: Int) {
             // Display the initial sequence of images
             if (position < sequence.size) {
@@ -92,6 +100,8 @@ class zap_el_zb_MemoryBoard(
                         else{
                             showToast("Maximum points!")
                             tvNumMoves.text = "Points: ${points_el_zb}"
+                            savePointsToSharedPreferences("zap_elementy_points", points_el_zb)
+                            saveTotalPointsToDatabase()
                             points_el_zb = 0
                             val intent = Intent(context, wybor_gry::class.java)
                             context.startActivity(intent)
@@ -100,8 +110,10 @@ class zap_el_zb_MemoryBoard(
 
                     } else {
                         showToast("Wrong Answer!")
+                        savePointsToSharedPreferences("zap_elementy_points", points_el_zb)
                         points_el_zb = 0
                         tvNumMoves.text = "Points: ${points_el_zb}"
+                        saveTotalPointsToDatabase()
                         val intent = Intent(context, wybor_gry::class.java)
                         context.startActivity(intent)
                     }
@@ -113,6 +125,33 @@ class zap_el_zb_MemoryBoard(
 
     private fun showToast(message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+    private fun saveTotalPointsToDatabase() {
+        val sharedPreferences = context.getSharedPreferences("game_scores", Context.MODE_PRIVATE)
+        val roznicePoints = sharedPreferences.getInt("memory_points", 0)
+        val ufoludkiPoints = sharedPreferences.getInt("zap_sekwencje_points", 0)
+        val klockiPoints = sharedPreferences.getInt("zap_elementy_points", 0)
+        val totalPoints = roznicePoints + ufoludkiPoints + klockiPoints
+
+        // Retrieve the username from SharedPreferences
+        val userPrefs = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val username = userPrefs.getString("username", "Unknown User")
+
+        val db = FirebaseFirestore.getInstance()
+        val pointsData = hashMapOf(
+            "username" to username,
+            "memory_points" to totalPoints,
+            "date" to com.google.firebase.Timestamp.now()
+        )
+
+        db.collection("points")
+            .add(pointsData)
+            .addOnSuccessListener {
+                println("Points successfully written!")
+            }
+            .addOnFailureListener { e ->
+                println("Error writing document: $e")
+            }
     }
 
     private fun generateRandomSequence(): List<Int> {

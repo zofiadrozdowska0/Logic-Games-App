@@ -1,5 +1,7 @@
 package com.example.signupapp
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.widget.Button
@@ -20,7 +22,6 @@ class Kolor_MainActivity : ComponentActivity() {
         textpoints.text = "Points: 0"
         val texttime: TextView = findViewById(R.id.textTime)
         val mainbut: Button = findViewById(R.id.mainButton)
-        var currentIndex = 0
         var gra = true
         var previousPair: Pair<String, String>? = null
         val listaKolorow: List<Pair<String, String>> = listOf(
@@ -117,14 +118,14 @@ class Kolor_MainActivity : ComponentActivity() {
                     currentTextColor == -16777216 && currentColorName == "black" -> score++
                     else -> score--
                 }
-                if (score==10){
+                if (score == 10) {
                     showCompletionDialog(score)
                 }
                 buttonClickable = false // Ustawiamy flagę na false po kliknięciu
             }
         }
 
-        val timer2 = object : CountDownTimer(61100, 1000) { // 5 minutes countdown
+        val timer2 = object : CountDownTimer(61100, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 val minutes = millisUntilFinished / 60000
                 val seconds = (millisUntilFinished % 60000) / 1000
@@ -135,7 +136,7 @@ class Kolor_MainActivity : ComponentActivity() {
                 texttime.text = "Time's up!"
                 mainbut.isEnabled = false
                 gra = false
-                showCompletionDialog(score) // Show final score dialog when time is up
+                showCompletionDialog(score)
             }
         }
         timer2.start()
@@ -158,11 +159,11 @@ class Kolor_MainActivity : ComponentActivity() {
                         ) {
                             partscore++
 
-                            if (partscore==3){
+                            if (partscore == 3) {
                                 score++
                                 partscore = 0
                             }
-                            if (score==10){
+                            if (score == 10) {
                                 showCompletionDialog(score)
                             }
                             textpoints.text = "Points: $score"
@@ -191,11 +192,11 @@ class Kolor_MainActivity : ComponentActivity() {
                                 ) {
                                     partscore++
 
-                                    if (partscore==3){
+                                    if (partscore == 3) {
                                         score++
                                         partscore = 0
                                     }
-                                    if (score==10){
+                                    if (score == 10) {
                                         showCompletionDialog(score)
                                     }
                                     textpoints.text = "Points: $score"
@@ -224,11 +225,11 @@ class Kolor_MainActivity : ComponentActivity() {
                                         ) {
                                             partscore++
 
-                                            if (partscore==3){
+                                            if (partscore == 3) {
                                                 score++
                                                 partscore = 0
                                             }
-                                            if (score==10){
+                                            if (score == 10) {
                                                 showCompletionDialog(score)
                                             }
                                             textpoints.text = "Points: $score"
@@ -253,7 +254,24 @@ class Kolor_MainActivity : ComponentActivity() {
     }
 
     private fun showCompletionDialog(finalScore: Int) {
-        setResult(RESULT_OK)
-        finish()
+        // Save score to Shared Preferences
+        val sharedPreferences = getSharedPreferences("game_scores", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putInt("kolor_points", finalScore)
+        editor.apply()
+
+        // Show completion dialog
+        AlertDialog.Builder(this).apply {
+            setTitle("Game Over")
+            setMessage("Your score is $finalScore")
+            setPositiveButton("OK") { _, _ ->
+                // Proceed to the next game
+                val intent = Intent(this@Kolor_MainActivity, Maze_MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+            setCancelable(false)
+            show()
+        }
     }
 }
