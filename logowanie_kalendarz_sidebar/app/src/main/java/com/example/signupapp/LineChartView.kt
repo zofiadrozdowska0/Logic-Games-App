@@ -25,8 +25,13 @@ class LineChartView(context: Context, attrs: AttributeSet?) : View(context, attr
     }
 
     private fun fetchDataPointsFromDatabase() {
+        // Retrieve the username from SharedPreferences
+        val userPrefs = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val username = userPrefs.getString("username", "Unknown User")
+
         val db = FirebaseFirestore.getInstance()
         db.collection("points")
+            .whereEqualTo("username", username)
             .get()
             .addOnSuccessListener { result ->
                 val pointsMap = mutableMapOf<String, Pair<Date, Float>>()
@@ -41,7 +46,7 @@ class LineChartView(context: Context, attrs: AttributeSet?) : View(context, attr
 
                         val currentEntry = pointsMap[formattedDate]
                         if (currentEntry == null || dateObj.after(currentEntry.first)) {
-                            pointsMap[formattedDate] = Pair(dateObj, pointsValue/3)
+                            pointsMap[formattedDate] = Pair(dateObj, pointsValue / 3) // Divide by 3 to average the points
                         }
                     }
                 }
