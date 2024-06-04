@@ -17,6 +17,7 @@ class GraRzeczonaActivity : AppCompatActivity() {
     private var correctImagesCount = 0
     private var endTime: Long = 0
     private var penaltytime: Long = 0
+    private var points: Long = 0
     private var clickedWrongImages = mutableSetOf<String>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,9 +112,20 @@ class GraRzeczonaActivity : AppCompatActivity() {
 
     fun showCompletionDialog(totalTime: Long) {
         val totalTimeSeconds = totalTime / 1000
+        points= 0
+        if(totalTimeSeconds<=10){
+          points=10
+        }
+        else{
+           points=10-(totalTimeSeconds-10)/2
+            if (points<0){
+                points=0
+            }
+
+        }
         AlertDialog.Builder(this).apply {
             setTitle("Gra zakończona!")
-            setMessage("Twój czas: $totalTimeSeconds sekund. Czy chcesz zagrać jeszcze raz?")
+            setMessage("Twój wynik: $points. Czy chcesz zagrać jeszcze raz?")
             setPositiveButton("Tak") { dialog, which ->
                 // Reset gry
                 restartGame()

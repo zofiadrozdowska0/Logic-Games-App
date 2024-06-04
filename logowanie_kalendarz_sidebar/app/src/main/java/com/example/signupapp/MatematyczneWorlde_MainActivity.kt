@@ -18,6 +18,7 @@ import android.os.Handler
 
 
 class MatematyczneWorlde_MainActivity : AppCompatActivity() {
+    public var score = 0
     private lateinit var equations: List<String>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -273,6 +274,21 @@ class MatematyczneWorlde_MainActivity : AppCompatActivity() {
                     compareEquations(equationString, randomEquation, listOfTextViews[currentListIndex])
                     if (checkRowForWin(listOfTextViews[currentListIndex])) {
                         Toast.makeText(this@MatematyczneWorlde_MainActivity, "Gratulacje, wygrałeś!", Toast.LENGTH_SHORT).show()
+                        if (currentListIndex == 2){
+                            score=8
+                        }
+                        else if (currentListIndex==3){
+                            score=6
+                        }
+                        else if (currentListIndex==4){
+                            score=4
+                        }
+                        else if (currentListIndex==5){
+                            score=2
+                        }
+                        else{
+                            score=10
+                        }
                         disableButtons()
                         Handler().postDelayed({
                             val intent = Intent(applicationContext, saper_minefield::class.java)
@@ -282,6 +298,7 @@ class MatematyczneWorlde_MainActivity : AppCompatActivity() {
                     } else if (currentListIndex == 5) {
                         // Jeśli to ostatni rząd i nie ma zwycięstwa, wyświetl informację o porażce i poprawne równanie
                         Toast.makeText(this@MatematyczneWorlde_MainActivity, "Niestety przegrałeś. Równanie, którego szukałeś to: $randomEquation", Toast.LENGTH_LONG).show()
+                        score=0
                         disableButtons()
                         Handler().postDelayed({
                             val intent = Intent(applicationContext, saper_minefield::class.java)
