@@ -3,10 +3,12 @@ package com.example.signupapp
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.GridLayout
 import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.firestore.FirebaseFirestore
 
 class Roznice_MainActivity : AppCompatActivity() {
     private lateinit var gridLayoutTop: GridLayout
@@ -16,9 +18,10 @@ class Roznice_MainActivity : AppCompatActivity() {
     private var takes = 20
     private var correctImagesCount = 0
     private var endTime: Long = 0
-    private var penaltytime: Long = 0
+    private var penaltyTime: Long = 0
     private var clickedWrongImages = mutableSetOf<String>()
     private var points = 0
+    private lateinit var firestore: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,10 +29,11 @@ class Roznice_MainActivity : AppCompatActivity() {
         gridLayoutTop = findViewById(R.id.gridLayoutTop)
         gridLayoutBottom = findViewById(R.id.gridLayoutBottom)
         startTime = System.currentTimeMillis()
+        firestore = FirebaseFirestore.getInstance()
         generateAndDisplayImages()
     }
 
-    fun generateAndDisplayImages() {
+    private fun generateAndDisplayImages() {
         val images = listOf(
             "roznice_ic_armata1",
             "roznice_ic_czaszka1",
@@ -86,13 +90,13 @@ class Roznice_MainActivity : AppCompatActivity() {
     }
 
     // Przykładowa obsługa kliknięcia
-    fun onImageClick(imageView: ImageView, imageName: String, isCorrect: Boolean) {
+    private fun onImageClick(imageView: ImageView, imageName: String, isCorrect: Boolean) {
         if (isCorrect) {
             imageView.setBackgroundResource(R.drawable.roznice_changed_image_border)
             correctImagesCount++
             if (correctImagesCount == 3) { // Założenie, że 3 to liczba poprawnych obrazków do znalezienia
                 endTime = System.currentTimeMillis()
-                val totalTime = endTime - startTime + penaltytime
+                val totalTime = endTime - startTime + penaltyTime
                 showCompletionDialog(totalTime)
                 correctImagesCount = 0 // Reset licznika dla nowej gry
                 clickedWrongImages.clear() // Czyszczenie listy klikniętych błędnie obrazków
@@ -100,38 +104,18 @@ class Roznice_MainActivity : AppCompatActivity() {
         } else {
             if (!clickedWrongImages.contains(imageName)) { // Sprawdzenie, czy obrazek nie był kliknięty wcześniej
                 imageView.setBackgroundResource(R.drawable.roznice_wrong_image_border)
-                penaltytime += 5000
+                penaltyTime += 5000
                 clickedWrongImages.add(imageName) // Dodanie obrazka do zestawu klikniętych błędnie
             }
             // Nie dodajemy karnego czasu, jeśli obrazek był już kliknięty jako błędny
         }
     }
 
-    fun showCompletionDialog(totalTime: Long) {
+    private fun showCompletionDialog(totalTime: Long) {
         val totalTimeSeconds = totalTime / 1000
-        if (totalTimeSeconds <= 10) {
-            points = 10
-        } else if (totalTimeSeconds <= 12) {
-            points = 9
-        } else if (totalTimeSeconds <= 14) {
-            points = 8
-        } else if (totalTimeSeconds <= 16) {
-            points = 7
-        } else if (totalTimeSeconds <= 18) {
-            points = 6
-        } else if (totalTimeSeconds <= 20) {
-            points = 5
-        } else if (totalTimeSeconds <= 22) {
-            points = 4
-        } else if (totalTimeSeconds <= 24) {
-            points = 3
-        } else if (totalTimeSeconds <= 26) {
-            points = 2
-        } else if (totalTimeSeconds <= 28) {
-            points = 1
-        } else if (totalTimeSeconds > 28) {
-            points = 0
-        }
+        points = calculatePoints(totalTimeSeconds)
+        savePointsToSharedPreferences("roznice_points", points)
+
         AlertDialog.Builder(this).apply {
             setTitle("Gra zakończona!")
             setMessage("Zdobyłeś: $points punktów")
@@ -144,16 +128,60 @@ class Roznice_MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun calculatePoints(totalTimeSeconds: Long): Int {
+        return when {
+            totalTimeSeconds <= 10 -> 10
+            totalTimeSeconds <= 12 -> 9
+            totalTimeSeconds <= 14 -> 8
+            totalTimeSeconds <= 16 -> 7
+            totalTimeSeconds <= 18 -> 6
+            totalTimeSeconds <= 20 -> 5
+            totalTimeSeconds <= 22 -> 4
+            totalTimeSeconds <= 24 -> 3
+            totalTimeSeconds <= 26 -> 2
+            totalTimeSeconds <= 28 -> 1
+            else -> 0
+        }
+    }
 
-    fun restartGame() {
+    private fun savePointsToSharedPreferences(key: String, points: Int) {
+        val sharedPreferences = getSharedPreferences("game_scores", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putInt(key, points)
+        editor.apply()
+
+        Log.d("Roznice_MainActivity", "Saved $points points to SharedPreferences with key $key")
+
+        val username = sharedPreferences.getString("username", "Unknown User") ?: "Unknown User"
+        savePointsToFirestore(username, points)
+    }
+
+    private fun savePointsToFirestore(username: String, points: Int) {
+        val data = hashMapOf(
+            "username" to username,
+            "game" to "Roznice",
+            "points" to points,
+            "timestamp" to System.currentTimeMillis()
+        )
+
+        firestore.collection("points")
+            .add(data)
+            .addOnSuccessListener {
+                Log.d("Roznice_MainActivity", "Points successfully written to Firestore for user $username")
+            }
+            .addOnFailureListener { e ->
+                Log.e("Roznice_MainActivity", "Error writing points to Firestore", e)
+            }
+    }
+
+    private fun restartGame() {
         correctImagesCount = 0
         startTime = System.currentTimeMillis()
-        penaltytime = 0
+        penaltyTime = 0
         generateAndDisplayImages()
     }
 
-    // Funkcja do dodawania obrazów do GridLayout
-    fun generateImagesSet(gridLayout: GridLayout, imageNames: List<String>, isPreview: Boolean, clickable: Boolean = true) {
+    private fun generateImagesSet(gridLayout: GridLayout, imageNames: List<String>, isPreview: Boolean, clickable: Boolean = true) {
         gridLayout.removeAllViews() // Usuwanie poprzednich obrazów
         val context: Context = gridLayout.context
         imageNames.forEach { imageName ->
@@ -168,24 +196,18 @@ class Roznice_MainActivity : AppCompatActivity() {
                 }
 
                 // Ustaw mniejsze rozmiary dla podglądu
-                val size_vertical = 200 / (takes / 4) // Przykładowe wartości, dostosuj do potrzeb
+                val sizeVertical = 200 / (takes / 4) // Przykładowe wartości, dostosuj do potrzeb
                 layoutParams = GridLayout.LayoutParams().apply {
                     if (!isPreview) {
                         width = GridLayout.LayoutParams.WRAP_CONTENT
                         height = GridLayout.LayoutParams.WRAP_CONTENT
-                        rightMargin = 4 // Ustaw marginesy zgodnie z potrzebami
-                        leftMargin = 4
-                        topMargin = 4
-                        bottomMargin = 4
+                        setMargins(4, 4, 4, 4)
                         columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f)
                         rowSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f)
                     } else {
-                        width = dpToPx(size_vertical, context)
-                        height = dpToPx(size_vertical, context)
-                        rightMargin = 2
-                        leftMargin = 2
-                        topMargin = 2
-                        bottomMargin = 2
+                        width = dpToPx(sizeVertical, context)
+                        height = dpToPx(sizeVertical, context)
+                        setMargins(2, 2, 2, 2)
                     }
                 }
 
@@ -201,11 +223,11 @@ class Roznice_MainActivity : AppCompatActivity() {
         }
     }
 
-    fun isImageCorrect(imageName: String): Boolean {
+    private fun isImageCorrect(imageName: String): Boolean {
         return modifiedImages.contains(imageName)
     }
 
-    fun dpToPx(dp: Int, context: Context): Int {
+    private fun dpToPx(dp: Int, context: Context): Int {
         return (dp * context.resources.displayMetrics.density).toInt()
     }
 }
