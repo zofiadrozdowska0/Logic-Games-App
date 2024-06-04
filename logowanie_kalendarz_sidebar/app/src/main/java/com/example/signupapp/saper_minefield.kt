@@ -16,7 +16,7 @@ import kotlin.random.Random
 class saper_minefield : AppCompatActivity() {
     private var rows=12
     private var columns=8
-    private var mines=1
+    private var mines=16
     private var flaggedMines = 0  // Licznik oflagowanych min
     private val imageResources = listOf(
         R.drawable.saper_bomb,
@@ -24,6 +24,9 @@ class saper_minefield : AppCompatActivity() {
     )
     private lateinit var chronometer: Chronometer
     private var isFirstMove = true
+    private var points = 0
+    private var scaledPoints = 0
+
 
     // Indeks aktualnego obrazka w liście
     private var currentIndex = 0
@@ -108,12 +111,26 @@ class saper_minefield : AppCompatActivity() {
                         button.setBackgroundResource(R.drawable.saper_flag_square)
                     } else { // Jeśli aktualnie wybrany obrazek to nie flaga
                         if (button.hasBomb) {
+                            points = countBombDiscoveries(mineboard)
+                            if (points >=1 && points <= 3){
+                                scaledPoints = 2
+                            } else if (points <= 6) {
+                                scaledPoints = 4
+                            } else if (points <= 10){
+                                scaledPoints = 6
+                            } else if (points <= 13){
+                                scaledPoints = 8
+                            } else if (points <= 15) {
+                                scaledPoints = 9
+                            }
+                            Toast.makeText(this@saper_minefield, "dupa $scaledPoints", Toast.LENGTH_LONG).show()
+
                             // Odslon wszystkie pola z bombami
                             revealAllBombFields(mineboard)
 
                             // Zaczekaj sekudne przed uruchomieniem lost_activity
                             Handler().postDelayed({
-                                Toast.makeText(this@saper_minefield, "Niestety przegrałeś. Przechodzenie do następnęj gry", Toast.LENGTH_LONG).show()
+                                //Toast.makeText(this@saper_minefield, "Niestety przegrałeś. Przechodzenie do następnęj gry", Toast.LENGTH_LONG).show()
                                 val intent = Intent(this, sekwencja_MainActivity::class.java)
                                 startActivity(intent)
                             }, 1000) // Czas w milisekundach
@@ -217,8 +234,10 @@ class saper_minefield : AppCompatActivity() {
 
         // Sprawdź, czy wszystkie pola z bombami są oflagowane i wszystkie pozostałe pola są odkryte
         if (flaggedMines == mines && checkAllCellsRevealedWithoutBomb(mineboard)) {
+            scaledPoints = 10
+            Toast.makeText(this@saper_minefield, "text $scaledPoints", Toast.LENGTH_LONG).show()
             // Jeśli tak, przejdź do won_activity
-            Toast.makeText(this@saper_minefield, "Brawo, wygrałeś! Przechodzenie do następnęj gry", Toast.LENGTH_LONG).show()
+            //Toast.makeText(this@saper_minefield, "Brawo, wygrałeś! Przechodzenie do następnęj gry", Toast.LENGTH_LONG).show()
             val intent = Intent(this, sekwencja_MainActivity::class.java)
             intent.putExtra("TIME", chronometer.text.toString())
             chronometer.stop() // Zatrzymaj chronometr
@@ -243,4 +262,18 @@ class saper_minefield : AppCompatActivity() {
         }
         return allBombsFlagged || allNonBombCellsRevealed || flaggedMines > mines
     }
+
+    private fun countBombDiscoveries(mineboard: Array<Array<saper_MineCell>>): Int {
+        var discoveredBombs = 0
+        for (i in 0 until rows) {
+            for (j in 0 until columns) {
+                val button = mineboard[i][j]
+                if (button.isFlagged && button.hasBomb) {
+                    discoveredBombs++
+                }
+            }
+        }
+        return discoveredBombs
+    }
+
 }
