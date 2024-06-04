@@ -73,8 +73,8 @@ class friendinv : AppCompatActivity() {
                     startActivity(intent)
                 }
                 R.id.nav_friends -> {
-                    // Nie trzeba ponownie uruchamiać tej samej aktywności
-                    drawerLayout.closeDrawer(GravityCompat.START)
+                    val intent = Intent(applicationContext, friends::class.java)
+                    startActivity(intent)
                 }
                 R.id.nav_logout -> {
                     FirebaseAuth.getInstance().signOut()
