@@ -70,7 +70,12 @@ class zap_sekwencja_MemoryAdapter(
             }
         }
     }
-
+    private fun savePointsToSharedPreferences(key: String, points: Int) {
+        val sharedPreferences = context.getSharedPreferences("game_scores", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putInt(key, points)
+        editor.apply()
+    }
     private fun onCardClicked(position: Int) {
 
         if (isClickable) {
@@ -118,7 +123,6 @@ class zap_sekwencja_MemoryAdapter(
                         context.startActivity(intent)
                         startGame()
 
-
                     }
                 }
             } else {
@@ -126,6 +130,7 @@ class zap_sekwencja_MemoryAdapter(
                 //Log.d(TAG, "Gracz kliknął nieprawidłową kartę na pozycji: $position")
                 sequence=null
                 currentSequenceIndex=0
+                savePointsToSharedPreferences("zap_sekwencje_points", points_zap_sek)
                 points_zap_sek = 0
                 tvNumPoints.text = "Points: ${points_zap_sek}"
                 memoryGame.level = 2
