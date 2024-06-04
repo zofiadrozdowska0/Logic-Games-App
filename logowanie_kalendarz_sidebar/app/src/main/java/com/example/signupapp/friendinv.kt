@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -126,7 +127,15 @@ class friendinv : AppCompatActivity() {
                         // Usuń z listy użytkowników, z którymi mamy obustronne zaproszenie
                         inviters.removeAll(myInviters)
 
-                        fetchUserNamesFromFirestore(inviters.toList(), linearLayout)
+                        // Sprawdź czy lista inviters jest pusta
+                        if (inviters.isEmpty()) {
+                            val textView = TextView(this)
+                            textView.text = "Brak zaproszeń do znajomych"
+                            textView.textSize = 20f
+                            linearLayout.addView(textView)
+                        } else {
+                            fetchUserNamesFromFirestore(inviters.toList(), linearLayout)
+                        }
                     }
                     .addOnFailureListener { exception ->
                         // Obsługa błędu
@@ -136,6 +145,7 @@ class friendinv : AppCompatActivity() {
                 // Obsługa błędu
             }
     }
+
 
 
     private fun fetchUserNamesFromFirestore(userIDs: List<String>, linearLayout: LinearLayout) {
