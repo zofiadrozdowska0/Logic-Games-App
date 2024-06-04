@@ -117,6 +117,9 @@ class Kolor_MainActivity : ComponentActivity() {
                     currentTextColor == -16777216 && currentColorName == "black" -> score++
                     else -> score--
                 }
+                if (score==10){
+                    showCompletionDialog(score)
+                }
                 buttonClickable = false // Ustawiamy flagę na false po kliknięciu
             }
         }
@@ -154,9 +157,13 @@ class Kolor_MainActivity : ComponentActivity() {
                                     (currentTextColor == -16777216 && currentColorName == "black"))
                         ) {
                             partscore++
-                            if (partscore == 2) {
+
+                            if (partscore==3){
                                 score++
                                 partscore = 0
+                            }
+                            if (score==10){
+                                showCompletionDialog(score)
                             }
                             textpoints.text = "Points: $score"
                         }
@@ -183,9 +190,13 @@ class Kolor_MainActivity : ComponentActivity() {
                                             (currentTextColor == -16777216 && currentColorName == "black"))
                                 ) {
                                     partscore++
-                                    if (partscore == 2) {
+
+                                    if (partscore==3){
                                         score++
                                         partscore = 0
+                                    }
+                                    if (score==10){
+                                        showCompletionDialog(score)
                                     }
                                     textpoints.text = "Points: $score"
                                 }
@@ -212,9 +223,13 @@ class Kolor_MainActivity : ComponentActivity() {
                                                     (currentTextColor == -16777216 && currentColorName == "black"))
                                         ) {
                                             partscore++
-                                            if (partscore == 2) {
+
+                                            if (partscore==3){
                                                 score++
                                                 partscore = 0
+                                            }
+                                            if (score==10){
+                                                showCompletionDialog(score)
                                             }
                                             textpoints.text = "Points: $score"
                                         }
@@ -238,18 +253,7 @@ class Kolor_MainActivity : ComponentActivity() {
     }
 
     private fun showCompletionDialog(finalScore: Int) {
-        AlertDialog.Builder(this).apply {
-            setTitle("Game Over!")
-            setMessage("Your final score is: $finalScore points. Do you want to play again or proceed to the next game?")
-            setPositiveButton("Play Again") { _, _ ->
-                recreate() // Restart the activity
-            }
-            setNegativeButton("Next Game") { _, _ ->
-                setResult(RESULT_OK)
-                finish() // Ends current game to start the next one
-            }
-            setCancelable(false)
-            show()
-        }
+        setResult(RESULT_OK)
+        finish()
     }
 }
