@@ -1,5 +1,6 @@
 package com.example.signupapp
 
+import android.content.Context
 import android.content.Intent
 import android.content.res.AssetManager
 import android.graphics.Color
@@ -291,6 +292,7 @@ class MatematyczneWorlde_MainActivity : AppCompatActivity() {
                         }
                         disableButtons()
                         Handler().postDelayed({
+                            savePointsToSharedPreferences("pierwsza", score)
                             val intent = Intent(applicationContext, saper_minefield::class.java)
                             startActivity(intent)
                         }, 1000)
@@ -327,6 +329,12 @@ class MatematyczneWorlde_MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+    private fun savePointsToSharedPreferences(key: String, points: Int) {
+        val sharedPreferences = getSharedPreferences("game_scores", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putInt(key, points)
+        editor.apply()
     }
     private fun loadEquationsFromAssets(): List<String> {
         val equationsList = mutableListOf<String>()
