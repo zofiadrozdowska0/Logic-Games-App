@@ -221,7 +221,7 @@ class Klocki_MainActivity : AppCompatActivity() {
                 binding.imageView4.setOnTouchListener(null)
                 binding.imageView5.setOnTouchListener(null)
 
-                val points = calculatePoints()
+                val points = earnedPoints
                 savePointsToSharedPreferences("klocki_points", points)
 
                 Handler(Looper.getMainLooper()).postDelayed({
