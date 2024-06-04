@@ -16,6 +16,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import java.util.Timer
 import java.util.TimerTask
 import kotlin.random.Random
+import com.google.firebase.firestore.FirebaseFirestore
 
 class WhacAPirateMainActivity : AppCompatActivity() {
     private var score = 0
