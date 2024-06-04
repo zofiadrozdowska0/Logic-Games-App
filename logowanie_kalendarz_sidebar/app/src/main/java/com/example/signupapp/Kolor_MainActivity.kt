@@ -6,7 +6,8 @@ import android.widget.TextView
 import androidx.activity.ComponentActivity
 
 class Kolor_MainActivity : ComponentActivity() {
-    private var score = 0
+    public var score = 0
+    private var partscore=0
     private var buttonClickable = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -108,6 +109,7 @@ class Kolor_MainActivity : ComponentActivity() {
                     currentTextColor == -16181 && currentColorName == "pink" -> score++
                     currentTextColor == -1 && currentColorName == "white" -> score++
                     currentTextColor == -16777216 && currentColorName == "black" -> score++
+                    else -> score--
                 }
                 buttonClickable = false // Ustawiamy flagę na false po kliknięciu
             }
@@ -142,7 +144,11 @@ class Kolor_MainActivity : ComponentActivity() {
                                     (currentTextColor == -1 && currentColorName == "white") ||
                                     (currentTextColor == -16777216 && currentColorName == "black"))
                         ) {
-                            score++
+                            partscore++
+                            if (partscore==2){
+                                score++
+                                partscore=0
+                            }
                             textpoints.text = "Points: $score"
                         }
                     }
@@ -167,7 +173,11 @@ class Kolor_MainActivity : ComponentActivity() {
                                             (currentTextColor == -1 && currentColorName == "white") ||
                                             (currentTextColor == -16777216 && currentColorName == "black"))
                                 ) {
-                                    score++
+                                    partscore++
+                                    if (partscore==2){
+                                        score++
+                                        partscore=0
+                                    }
                                     textpoints.text = "Points: $score"
                                 }
                             }
@@ -192,7 +202,11 @@ class Kolor_MainActivity : ComponentActivity() {
                                                     (currentTextColor == -1 && currentColorName == "white") ||
                                                     (currentTextColor == -16777216 && currentColorName == "black"))
                                         ) {
-                                            score++
+                                            partscore++
+                                            if (partscore==2){
+                                                score++
+                                                partscore=0
+                                            }
                                             textpoints.text = "Points: $score"
                                         }
                                     }
