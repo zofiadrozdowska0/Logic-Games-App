@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "SIGNUP APP"
+rootProject.name = "SAMOGON"
 include(":app")
  
