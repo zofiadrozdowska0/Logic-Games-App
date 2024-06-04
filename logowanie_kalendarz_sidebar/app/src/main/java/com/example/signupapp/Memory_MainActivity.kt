@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.signupapp.memory_models.BoardSize
 import com.example.signupapp.memory_models.MemoryGame
+import android.content.Context
 
 class Memory_MainActivity : ComponentActivity() {
 
@@ -49,12 +50,19 @@ class Memory_MainActivity : ComponentActivity() {
             if (memoryGame.isWon()) {
                 val finalScore = calculateScore(memoryGame.getNumMoves())
                 showCompletionDialog(finalScore)
+                savePointsToSharedPreferences("memory_points", finalScore)
+
             }
         }
         numMoves.text = "Moves: ${memoryGame.getNumMoves()}"
         adapter.notifyDataSetChanged()
     }
-
+    private fun savePointsToSharedPreferences(key: String, points: Int) {
+        val sharedPreferences = getSharedPreferences("game_scores", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putInt(key, points)
+        editor.apply()
+    }
     private fun calculateScore(numMoves: Int): Int {
         val baseScore = 10
         val extraMoves = numMoves - 20
