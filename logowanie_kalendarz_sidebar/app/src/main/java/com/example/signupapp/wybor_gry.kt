@@ -1,13 +1,16 @@
 package com.example.signupapp
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +19,9 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class wybor_gry : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
@@ -31,6 +37,7 @@ class wybor_gry : AppCompatActivity() {
         const val REQUEST_WHACAPIRATE = 4
         const val REQUEST_KOLOR = 5
         const val REQUEST_MAZE = 6
+        private const val TAG = "wybor_gry"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,6 +82,9 @@ class wybor_gry : AppCompatActivity() {
 
                             // Set Toolbar title
                             supportActionBar?.title = "Witaj $username!"
+
+                            // Retrieve today's points after setting the username
+                            retrieveTodaysPoints(username)
                         }
                     }
                 }
@@ -159,6 +169,62 @@ class wybor_gry : AppCompatActivity() {
             val intent = Intent(applicationContext, MatematyczneWorlde_MainActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    private fun retrieveTodaysPoints(username: String) {
+        Log.d(TAG, "Starting to retrieve today's points for user: $username")
+        val today = SimpleDateFormat("MMM d", Locale.getDefault()).format(Date())
+
+        firestore.collection("points")
+            .whereEqualTo("username", username)
+            .get()
+            .addOnSuccessListener { documents ->
+                Log.d(TAG, "Successfully retrieved documents.")
+                if (documents.isEmpty) {
+                    Log.d(TAG, "No points found for today.")
+                    Toast.makeText(this, "No points found for today", Toast.LENGTH_SHORT).show()
+                } else {
+                    Log.d(TAG, "Points found, processing documents.")
+                    var reflexPoints = 0
+                    var memoryPoints = 0
+                    var concentrationPoints = 0
+                    var logicPoints = 0
+
+                    for (document in documents) {
+                        val timestamp = document.getTimestamp("date")
+                        if (timestamp != null) {
+                            val date = SimpleDateFormat("MMM d", Locale.getDefault()).format(timestamp.toDate())
+                            Log.d(TAG, "Comparing date: $date with today: $today")
+                            if (date == today) {
+                                reflexPoints += document.getLong("reflex_points")?.toInt() ?: 0
+                                memoryPoints += document.getLong("memory_points")?.toInt() ?: 0
+                                concentrationPoints += document.getLong("perceptiveness_points")?.toInt() ?: 0
+                                logicPoints += document.getLong("logic_points")?.toInt() ?: 0
+                            }
+                        }
+                    }
+
+                    if (reflexPoints == 0 && memoryPoints == 0 && concentrationPoints == 0 && logicPoints == 0) {
+                        Log.d(TAG, "No points found for today after processing documents.")
+                        Toast.makeText(this, "No points found for today", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Log.d(TAG, "Points found: Reflex: $reflexPoints, Memory: $memoryPoints, Concentration: $concentrationPoints, Logic: $logicPoints")
+                        updatePointsUI(reflexPoints, memoryPoints, concentrationPoints, logicPoints)
+                    }
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, "Error getting documents: ${exception.message}")
+                Toast.makeText(this, "Error getting documents: ${exception.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun updatePointsUI(reflexPoints: Int, memoryPoints: Int, concentrationPoints: Int, logicPoints: Int) {
+        findViewById<TextView>(R.id.reflex_points).text = "WYNIK: $reflexPoints"
+        findViewById<TextView>(R.id.memory_points).text = "WYNIK: $memoryPoints"
+        findViewById<TextView>(R.id.concentration_points).text = "WYNIK: $concentrationPoints"
+        findViewById<TextView>(R.id.logic_points).text = "WYNIK: $logicPoints"
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
