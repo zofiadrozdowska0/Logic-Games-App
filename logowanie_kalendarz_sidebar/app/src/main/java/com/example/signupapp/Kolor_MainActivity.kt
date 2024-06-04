@@ -1,6 +1,5 @@
 package com.example.signupapp
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.widget.Button
@@ -9,11 +8,14 @@ import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AlertDialog
 
 class Kolor_MainActivity : ComponentActivity() {
-    private var score = 0
+    public var score = 0
+    private var partscore = 0
     private var buttonClickable = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_kolor_main)
+
         val textpoints: TextView = findViewById(R.id.textPoints)
         textpoints.text = "Points: 0"
         val texttime: TextView = findViewById(R.id.textTime)
@@ -113,12 +115,13 @@ class Kolor_MainActivity : ComponentActivity() {
                     currentTextColor == -16181 && currentColorName == "pink" -> score++
                     currentTextColor == -1 && currentColorName == "white" -> score++
                     currentTextColor == -16777216 && currentColorName == "black" -> score++
+                    else -> score--
                 }
                 buttonClickable = false // Ustawiamy flagę na false po kliknięciu
             }
         }
 
-        val timer2 = object : CountDownTimer(61100, 1000) {
+        val timer2 = object : CountDownTimer(61100, 1000) { // 5 minutes countdown
             override fun onTick(millisUntilFinished: Long) {
                 val minutes = millisUntilFinished / 60000
                 val seconds = (millisUntilFinished % 60000) / 1000
@@ -129,7 +132,7 @@ class Kolor_MainActivity : ComponentActivity() {
                 texttime.text = "Time's up!"
                 mainbut.isEnabled = false
                 gra = false
-                showCompletionDialog()
+                showCompletionDialog(score) // Show final score dialog when time is up
             }
         }
         timer2.start()
@@ -150,7 +153,11 @@ class Kolor_MainActivity : ComponentActivity() {
                                     (currentTextColor == -1 && currentColorName == "white") ||
                                     (currentTextColor == -16777216 && currentColorName == "black"))
                         ) {
-                            score++
+                            partscore++
+                            if (partscore == 2) {
+                                score++
+                                partscore = 0
+                            }
                             textpoints.text = "Points: $score"
                         }
                     }
@@ -175,7 +182,11 @@ class Kolor_MainActivity : ComponentActivity() {
                                             (currentTextColor == -1 && currentColorName == "white") ||
                                             (currentTextColor == -16777216 && currentColorName == "black"))
                                 ) {
-                                    score++
+                                    partscore++
+                                    if (partscore == 2) {
+                                        score++
+                                        partscore = 0
+                                    }
                                     textpoints.text = "Points: $score"
                                 }
                             }
@@ -200,7 +211,11 @@ class Kolor_MainActivity : ComponentActivity() {
                                                     (currentTextColor == -1 && currentColorName == "white") ||
                                                     (currentTextColor == -16777216 && currentColorName == "black"))
                                         ) {
-                                            score++
+                                            partscore++
+                                            if (partscore == 2) {
+                                                score++
+                                                partscore = 0
+                                            }
                                             textpoints.text = "Points: $score"
                                         }
                                     }
@@ -210,7 +225,7 @@ class Kolor_MainActivity : ComponentActivity() {
                             }
 
                             override fun onFinish() {
-                                showCompletionDialog()
+                                showCompletionDialog(score) // Show final score dialog at the end
                             }
                         }
                         timer4.start()
@@ -222,15 +237,19 @@ class Kolor_MainActivity : ComponentActivity() {
         timer.start()
     }
 
-    private fun showCompletionDialog() {
-        AlertDialog.Builder(this)
-            .setTitle("Game Over")
-            .setMessage("You scored $score points!")
-            .setPositiveButton("Next Game") { _, _ ->
-                val intent = Intent(this, Maze_MainActivity::class.java)
-                startActivity(intent)
-                finish()
+    private fun showCompletionDialog(finalScore: Int) {
+        AlertDialog.Builder(this).apply {
+            setTitle("Game Over!")
+            setMessage("Your final score is: $finalScore points. Do you want to play again or proceed to the next game?")
+            setPositiveButton("Play Again") { _, _ ->
+                recreate() // Restart the activity
             }
-            .show()
+            setNegativeButton("Next Game") { _, _ ->
+                setResult(RESULT_OK)
+                finish() // Ends current game to start the next one
+            }
+            setCancelable(false)
+            show()
+        }
     }
 }

@@ -24,6 +24,9 @@ class saper_minefield : AppCompatActivity() {
     )
     private lateinit var chronometer: Chronometer
     private var isFirstMove = true
+    private var points = 0
+    private var scaledPoints = 0
+
 
     // Indeks aktualnego obrazka w liście
     private var currentIndex = 0
@@ -43,12 +46,6 @@ class saper_minefield : AppCompatActivity() {
             currentIndex = (currentIndex + 1) % imageResources.size
             val nextImageResource = imageResources[currentIndex]
             imageButton.setImageResource(nextImageResource)
-        }
-        val resetButton = findViewById<Button>(R.id.button_reset)
-        resetButton.setOnClickListener {
-            isFirstMove = true
-            val intent1 = Intent(this, saper_minefield::class.java)
-            startActivity(intent1)
         }
 
         // Ustawienie początkowej wartości TextView how_many_left na liczbę min
@@ -108,6 +105,20 @@ class saper_minefield : AppCompatActivity() {
                         button.setBackgroundResource(R.drawable.saper_flag_square)
                     } else { // Jeśli aktualnie wybrany obrazek to nie flaga
                         if (button.hasBomb) {
+                            points = countBombDiscoveries(mineboard)
+                            if (points >=1 && points <= 3){
+                                scaledPoints = 2
+                            } else if (points <= 6) {
+                                scaledPoints = 4
+                            } else if (points <= 10){
+                                scaledPoints = 6
+                            } else if (points <= 13){
+                                scaledPoints = 8
+                            } else if (points <= 15) {
+                                scaledPoints = 9
+                            }
+                            //Toast.makeText(this@saper_minefield, "jjj $scaledPoints", Toast.LENGTH_LONG).show()
+
                             // Odslon wszystkie pola z bombami
                             revealAllBombFields(mineboard)
 
@@ -217,6 +228,8 @@ class saper_minefield : AppCompatActivity() {
 
         // Sprawdź, czy wszystkie pola z bombami są oflagowane i wszystkie pozostałe pola są odkryte
         if (flaggedMines == mines && checkAllCellsRevealedWithoutBomb(mineboard)) {
+            scaledPoints = 10
+            //Toast.makeText(this@saper_minefield, "text $scaledPoints", Toast.LENGTH_LONG).show()
             // Jeśli tak, przejdź do won_activity
             Toast.makeText(this@saper_minefield, "Brawo, wygrałeś! Przechodzenie do następnęj gry", Toast.LENGTH_LONG).show()
             val intent = Intent(this, sekwencja_MainActivity::class.java)
@@ -243,4 +256,18 @@ class saper_minefield : AppCompatActivity() {
         }
         return allBombsFlagged || allNonBombCellsRevealed || flaggedMines > mines
     }
+
+    private fun countBombDiscoveries(mineboard: Array<Array<saper_MineCell>>): Int {
+        var discoveredBombs = 0
+        for (i in 0 until rows) {
+            for (j in 0 until columns) {
+                val button = mineboard[i][j]
+                if (button.isFlagged && button.hasBomb) {
+                    discoveredBombs++
+                }
+            }
+        }
+        return discoveredBombs
+    }
+
 }

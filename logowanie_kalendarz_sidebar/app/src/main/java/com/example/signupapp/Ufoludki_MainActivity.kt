@@ -15,6 +15,8 @@ import android.util.Log
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import android.content.Intent
+import android.content.Context
+import com.google.firebase.firestore.FirebaseFirestore
 
 class Ufoludki_MainActivity : AppCompatActivity() {
     private lateinit var layout: ViewGroup
@@ -29,6 +31,7 @@ class Ufoludki_MainActivity : AppCompatActivity() {
     var czas_pirata_1 = 0.toLong()
     var czas_pirata_2 = 0.toLong()
     var czas_animacji = 0.toLong()
+    private val firestore = FirebaseFirestore.getInstance()
     private val zadanie_wchodzenie = object : Runnable {
         override fun run() {
             if (!graRozpoczeta) return
@@ -122,29 +125,39 @@ class Ufoludki_MainActivity : AppCompatActivity() {
             .setView(input)
             .setPositiveButton("OK") { _, _ ->
                 val odpowiedz = input.text.toString().toIntOrNull()
-                sprawdzOdpowiedz(odpowiedz)
+                val points = sprawdzOdpowiedz(odpowiedz)
+                savePointsToSharedPreferences("ufoludki_points", points)
             }
             .show()
     }
 
-    private fun sprawdzOdpowiedz(odpowiedz: Int?) {
+    private fun sprawdzOdpowiedz(odpowiedz: Int?): Int {
+        val points: Int
         val wiadomosc = if (odpowiedz == wartoscLicznika) {
-            "Poprawna odpowiedź!"
+            points = wartoscLicznika * 10 // Example points calculation, adjust as needed
+            "Poprawna odpowiedź! Zdobyłeś $points punktów."
         } else {
-            "Niepoprawna odpowiedź. Na statku jest $wartoscLicznika piratów."
+            points = 0 // Example points calculation, adjust as needed
+            "Niepoprawna odpowiedź. Na statku jest $wartoscLicznika piratów. Zdobyłeś $points punktów."
         }
 
         AlertDialog.Builder(this)
             .setTitle("Wynik")
             .setMessage(wiadomosc)
-            .setPositiveButton("OK") { _, _ ->
-                zresetujGre()
-            }
             .setNeutralButton("Następna gra") { _, _ ->
                 setResult(RESULT_OK) // Set the result to OK
                 finish() // Ends current game to start the next one
             }
             .show()
+
+        return points
+    }
+
+    private fun savePointsToSharedPreferences(key: String, points: Int) {
+        val sharedPreferences = getSharedPreferences("game_scores", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putInt(key, points)
+        editor.apply()
     }
 
     private fun zresetujGre() {

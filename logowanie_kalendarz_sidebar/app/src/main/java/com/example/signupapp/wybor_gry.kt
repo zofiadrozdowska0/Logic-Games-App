@@ -1,5 +1,6 @@
 package com.example.signupapp
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
@@ -66,6 +67,12 @@ class wybor_gry : AppCompatActivity() {
                     if (document != null && document.exists()) {
                         val username = document.getString("username")
                         if (username != null) {
+                            // Save the username to SharedPreferences
+                            val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+                            val editor = sharedPreferences.edit()
+                            editor.putString("username", username)
+                            editor.apply()
+
                             // Set Toolbar title
                             supportActionBar?.title = "Witaj $username!"
                         }
@@ -136,7 +143,7 @@ class wybor_gry : AppCompatActivity() {
 
         val button2 = findViewById<Button>(R.id.button2)
         button2.setOnClickListener {
-            Toast.makeText(this, "Pamięć", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this, "Pamięć", Toast.LENGTH_SHORT).show()
             val intent = Intent(applicationContext, Memory_MainActivity::class.java)
             startActivity(intent)
         }
@@ -148,7 +155,7 @@ class wybor_gry : AppCompatActivity() {
 
         val button4 = findViewById<Button>(R.id.button4)
         button4.setOnClickListener {
-            Toast.makeText(this, "Logika i dedukcja", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this, "Logika i dedukcja", Toast.LENGTH_SHORT).show()
             val intent = Intent(applicationContext, MatematyczneWorlde_MainActivity::class.java)
             startActivity(intent)
         }

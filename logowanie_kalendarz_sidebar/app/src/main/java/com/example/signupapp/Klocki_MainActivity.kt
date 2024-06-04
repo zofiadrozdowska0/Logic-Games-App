@@ -1,7 +1,7 @@
 package com.example.signupapp
 
 import android.annotation.SuppressLint
-import android.content.Intent
+import android.content.Context
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -18,6 +18,7 @@ import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.signupapp.databinding.KlockiActivityMainBinding
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlin.random.Random
 
 class Klocki_MainActivity : AppCompatActivity() {
@@ -30,6 +31,7 @@ class Klocki_MainActivity : AppCompatActivity() {
     private var startTime: Long = SystemClock.elapsedRealtime()
     private var wins = 0
     private var prev_task = 0
+    private var earnedPoints = 0
 
     private var ImageView.rotated: Boolean
         get() = tag as? Boolean ?: false // Pobiera wartość z tagu, domyślnie false
@@ -182,8 +184,32 @@ class Klocki_MainActivity : AppCompatActivity() {
                 val seconds = (elapsedTime / 1000).toInt()
                 val tenthsseconds = (elapsedTime / 100).toInt()
                 val timeString = String.format("%02d.%01d", seconds, tenthsseconds % 10)
+                val timeFloat = timeString.toFloat()
+                if (timeFloat <= 100) {
+                    earnedPoints = 10
+                } else if (timeFloat <= 108) {
+                    earnedPoints = 9
+                } else if (timeFloat <= 116) {
+                    earnedPoints = 8
+                } else if (timeFloat <= 124) {
+                    earnedPoints = 7
+                } else if (timeFloat <= 132) {
+                    earnedPoints = 6
+                } else if (timeFloat <= 140) {
+                    earnedPoints = 5
+                } else if (timeFloat <= 148) {
+                    earnedPoints = 4
+                } else if (timeFloat <= 156) {
+                    earnedPoints = 3
+                } else if (timeFloat <= 164) {
+                    earnedPoints = 2
+                } else if (timeFloat <= 172) {
+                    earnedPoints = 1
+                } else if (timeFloat > 172) {
+                    earnedPoints = 0
+                }
                 println("Warunki Wygranej. Czas gry: $timeString")
-                binding.textView.text =  "Brawo!\nCzas: $timeString s"
+                binding.textView.text =  "Brawo!\nZdobyte punkty: $earnedPoints"
                 binding.textView.x = dpToPixels(34f)
                 binding.textView.y = dpToPixels(410f)
                 binding.textView.textSize = 50f
@@ -194,6 +220,9 @@ class Klocki_MainActivity : AppCompatActivity() {
                 binding.imageView3.setOnTouchListener(null)
                 binding.imageView4.setOnTouchListener(null)
                 binding.imageView5.setOnTouchListener(null)
+
+                val points = calculatePoints()
+                savePointsToSharedPreferences("klocki_points", points)
 
                 Handler(Looper.getMainLooper()).postDelayed({
                     showAllGamesCompletedDialog()
@@ -212,10 +241,51 @@ class Klocki_MainActivity : AppCompatActivity() {
             .setTitle("All games completed!")
             .setMessage("Congratulations! You have completed all games.")
             .setPositiveButton("OK") { _, _ ->
+                saveTotalPointsToDatabase()
                 finish()
             }
             .setCancelable(false)
             .show()
+    }
+
+    private fun saveTotalPointsToDatabase() {
+        val sharedPreferences = getSharedPreferences("game_scores", Context.MODE_PRIVATE)
+        val roznicePoints = sharedPreferences.getInt("roznice_points", 0)
+        val ufoludkiPoints = sharedPreferences.getInt("ufoludki_points", 0)
+        val klockiPoints = sharedPreferences.getInt("klocki_points", 0)
+        val totalPoints = roznicePoints + ufoludkiPoints + klockiPoints
+
+        // Retrieve the username from SharedPreferences
+        val userPrefs = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val username = userPrefs.getString("username", "Unknown User")
+
+        val db = FirebaseFirestore.getInstance()
+        val pointsData = hashMapOf(
+            "username" to username,
+            "perceptiveness_and_concentration_points" to totalPoints,
+            "date" to com.google.firebase.Timestamp.now()
+        )
+
+        db.collection("points")
+            .add(pointsData)
+            .addOnSuccessListener {
+                println("Points successfully written!")
+            }
+            .addOnFailureListener { e ->
+                println("Error writing document: $e")
+            }
+    }
+
+    private fun savePointsToSharedPreferences(key: String, points: Int) {
+        val sharedPreferences = getSharedPreferences("game_scores", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putInt(key, points)
+        editor.apply()
+    }
+
+    private fun calculatePoints(): Int {
+        // Implement your logic to calculate points
+        return wins * 10 // Example: each win gives 10 points
     }
 
     fun findNearestValue(input: Int): Int {

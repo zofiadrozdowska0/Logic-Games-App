@@ -212,8 +212,8 @@ Po 30 sekundach gry gracz zostaje zapytany o liczbę piratów wewnątrz statku.\
 +5 punktów za każdą poprawną odpowiedź\n\n
 RÓŻNICE\n\n
 Na podstawie małej mapy obrazków wyświetlającej się na górze ekranu, wskazać nie pasujące obrazki na dużej mapie. Poprawne wskazanie zaznacza obrazek na zielono, niepoprawne na czerwono.\n\n
-+1 punkt za każde poprawne wskazanie\n
--1 punkt za każde niepoprawne\n\n
+10 punktów za wykonanie gry w mniej niz 10 sekund\n
+-1 punkt za każde 2 sekundy opóźnienia\n\n
 KLOCKI KSZTAŁTY\n\n
 Mając rozrzucone elementy, ułożyć je na wzór wyświetlający się na górze ekranu. Elementy można przesuwać przytrzymując je i przeciągając po ekranie. Można je też obracać klikając na nie.\n\n
 Gracz ma początkowo 6 punktów, po każdych 10 sekundach odejmowany jest 1 punkt.\n"

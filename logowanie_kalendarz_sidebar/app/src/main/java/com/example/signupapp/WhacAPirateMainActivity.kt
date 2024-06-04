@@ -2,7 +2,9 @@ package com.example.signupapp
 
 ///package com.example.game
 
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.view.Gravity
 import android.view.View
 import android.view.animation.AnimationUtils
@@ -84,6 +86,10 @@ class WhacAPirateMainActivity : AppCompatActivity() {
         fun gameOver() {
             runOnUiThread {
                 findViewById<TextView>(R.id.textView4).text = "Game Over! Score: $score"
+                Handler().postDelayed({
+                    val intent1 = Intent(applicationContext, wybor_gry::class.java)
+                    startActivity(intent1)
+                },1000)
             }
             appearanceTimer?.cancel()
         }
