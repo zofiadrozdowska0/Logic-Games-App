@@ -20,7 +20,6 @@ class succes : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
     //private lateinit var lineChartView: LineChartView
-    private lateinit var calendarView: CalendarView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,18 +40,7 @@ class succes : AppCompatActivity() {
         // Inicjalizacja DrawerLayout i NavigationView
         drawerLayout = findViewById(R.id.drawer_layout)
         navView = findViewById(R.id.nav_view)
-        calendarView = findViewById(R.id.calendarView)
-        calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
-            val calendar = Calendar.getInstance()
-            val currentYear = calendar.get(Calendar.YEAR)
-            val currentMonth = calendar.get(Calendar.MONTH)
-            val currentDayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
 
-            if (year == currentYear && month == currentMonth && dayOfMonth == currentDayOfMonth) {
-                val intent = Intent(applicationContext, games::class.java)
-                startActivity(intent)
-            }
-        }
         // Ustaw Toolbar i dodaj Toggle
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
