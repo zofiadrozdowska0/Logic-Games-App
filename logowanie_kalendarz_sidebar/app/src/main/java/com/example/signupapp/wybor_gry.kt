@@ -29,7 +29,10 @@ class wybor_gry : AppCompatActivity() {
     private lateinit var navView: NavigationView
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
-
+    var reflexPoints = 0
+    var memoryPoints = 0
+    var concentrationPoints = 0
+    var logicPoints = 0
     companion object {
         const val REQUEST_ROZNICE = 1
         const val REQUEST_UFOLUDKI = 2
@@ -149,26 +152,34 @@ class wybor_gry : AppCompatActivity() {
         // Handle button clicks
         val button1 = findViewById<Button>(R.id.button1)
         button1.setOnClickListener {
-            startKolorActivity()
+            if (reflexPoints == 0) {
+                startKolorActivity()
+            }
         }
 
         val button2 = findViewById<Button>(R.id.button2)
         button2.setOnClickListener {
-            //Toast.makeText(this, "Pamięć", Toast.LENGTH_SHORT).show()
-            val intent = Intent(applicationContext, Memory_MainActivity::class.java)
-            startActivity(intent)
+            if (memoryPoints == 0) {
+                //Toast.makeText(this, "Pamięć", Toast.LENGTH_SHORT).show()
+                val intent = Intent(applicationContext, Memory_MainActivity::class.java)
+                startActivity(intent)
+            }
         }
 
         val button3 = findViewById<Button>(R.id.button3)
         button3.setOnClickListener {
-            startRozniceActivity()
+            if (concentrationPoints == 0) {
+                startRozniceActivity()
+            }
         }
 
         val button4 = findViewById<Button>(R.id.button4)
         button4.setOnClickListener {
-            //Toast.makeText(this, "Logika i dedukcja", Toast.LENGTH_SHORT).show()
-            val intent = Intent(applicationContext, MatematyczneWorlde_MainActivity::class.java)
-            startActivity(intent)
+            if (logicPoints == 0) {
+                //Toast.makeText(this, "Logika i dedukcja", Toast.LENGTH_SHORT).show()
+                val intent = Intent(applicationContext, MatematyczneWorlde_MainActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 
@@ -186,10 +197,7 @@ class wybor_gry : AppCompatActivity() {
                     Toast.makeText(this, "No points found for today", Toast.LENGTH_SHORT).show()
                 } else {
                     Log.d(TAG, "Points found, processing documents.")
-                    var reflexPoints = 0
-                    var memoryPoints = 0
-                    var concentrationPoints = 0
-                    var logicPoints = 0
+
 
                     for (document in documents) {
                         val timestamp = document.getTimestamp("date")
