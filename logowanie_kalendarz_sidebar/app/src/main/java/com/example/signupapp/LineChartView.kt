@@ -3,8 +3,10 @@ package com.example.signupapp
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.os.Build
 import android.util.AttributeSet
 import android.view.View
+import androidx.annotation.RequiresApi
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.*
@@ -22,9 +24,7 @@ class LineChartView(context: Context, attrs: AttributeSet?) : View(context, attr
         this.dataPointsList = dataPointsList
         invalidate() // Refresh the view to draw new data
     }
-
     private fun fetchDataPointsFromDatabase() {
-        // Retrieve the username from SharedPreferences
         val userPrefs = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         val username = userPrefs.getString("username", "Unknown User")
 
@@ -33,10 +33,10 @@ class LineChartView(context: Context, attrs: AttributeSet?) : View(context, attr
             .whereEqualTo("username", username)
             .get()
             .addOnSuccessListener { result ->
-                val reflexPointsMap = mutableMapOf<String, Pair<Date, Float>>()
-                val perceptivenessPointsMap = mutableMapOf<String, Pair<Date, Float>>()
-                val memoryPointsMap = mutableMapOf<String, Pair<Date, Float>>()
-                val logicPointsMap = mutableMapOf<String, Pair<Date, Float>>()
+                val reflexPointsMap = mutableMapOf<String, MutableList<Pair<Date, Float>>>()
+                val perceptivenessPointsMap = mutableMapOf<String, MutableList<Pair<Date, Float>>>()
+                val memoryPointsMap = mutableMapOf<String, MutableList<Pair<Date, Float>>>()
+                val logicPointsMap = mutableMapOf<String, MutableList<Pair<Date, Float>>>()
 
                 for (document in result) {
                     val date = document.getTimestamp("date")
@@ -49,10 +49,39 @@ class LineChartView(context: Context, attrs: AttributeSet?) : View(context, attr
                         val dateObj = date.toDate()
                         val formattedDate = formatDate(dateObj)
 
-                        updatePointsMap(reflexPointsMap, formattedDate, dateObj, reflexPointsValue)
-                        updatePointsMap(perceptivenessPointsMap, formattedDate, dateObj, perceptivenessPointsValue)
-                        updatePointsMap(memoryPointsMap, formattedDate, dateObj, memoryPointsValue)
-                        updatePointsMap(logicPointsMap, formattedDate, dateObj, logicPointsValue)
+                        updatePointsMap(reflexPointsMap, formattedDate, dateObj, reflexPointsValue, "reflex")
+                        updatePointsMap(perceptivenessPointsMap, formattedDate, dateObj, perceptivenessPointsValue, "perceptiveness")
+                        updatePointsMap(memoryPointsMap, formattedDate, dateObj, memoryPointsValue, "memory")
+                        updatePointsMap(logicPointsMap, formattedDate, dateObj, logicPointsValue, "logic")
+                    }
+                }
+
+                // Wypisanie punktów dla każdej kategorii
+                println("Reflex Points:")
+                reflexPointsMap.forEach { (date, pointsList) ->
+                    pointsList.forEach { points ->
+                        println("Date: $date, Points: ${points.second}")
+                    }
+                }
+
+                println("Perceptiveness Points:")
+                perceptivenessPointsMap.forEach { (date, pointsList) ->
+                    pointsList.forEach { points ->
+                        println("Date: $date, Points: ${points.second}")
+                    }
+                }
+
+                println("Memory Points:")
+                memoryPointsMap.forEach { (date, pointsList) ->
+                    pointsList.forEach { points ->
+                        println("Date: $date, Points: ${points.second}")
+                    }
+                }
+
+                println("Logic Points:")
+                logicPointsMap.forEach { (date, pointsList) ->
+                    pointsList.forEach { points ->
+                        println("Date: $date, Points: ${points.second}")
                     }
                 }
 
@@ -68,19 +97,53 @@ class LineChartView(context: Context, attrs: AttributeSet?) : View(context, attr
             }
     }
 
-    private fun updatePointsMap(pointsMap: MutableMap<String, Pair<Date, Float>>, formattedDate: String, dateObj: Date, pointsValue: Float) {
-        val currentEntry = pointsMap[formattedDate]
-        if (currentEntry == null || dateObj.after(currentEntry.first)) {
-            pointsMap[formattedDate] = Pair(dateObj, pointsValue / 3) // Divide by 3 to average the points
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun updatePointsMap(
+        pointsMap: MutableMap<String, MutableList<Pair<Date, Float>>>,
+        formattedDate: String,
+        dateObj: Date,
+        pointsValue: Float,
+        category: String
+    ) {
+        val currentEntries = pointsMap[formattedDate]
+
+        if (currentEntries == null) {
+            // Brak wpisów dla tej daty, tworzymy nową listę i dodajemy nową parę wartości
+            pointsMap[formattedDate] = mutableListOf(Pair(dateObj, pointsValue / 3))
+        } else {
+            // Jeśli są już wpisy dla tej daty i kategorii
+            val existingEntry = currentEntries.firstOrNull { it.first.after(dateObj) }
+            if (existingEntry == null) {
+                // Brak wpisu z datą starszą niż aktualna, nadpisujemy istniejący wpis
+                currentEntries.removeIf { it.first == dateObj } // Usuwamy istniejącą parę z tą samą datą
+                currentEntries.add(Pair(dateObj, pointsValue / 3)) // Dodajemy nową parę
+            }
+            // Jeśli istnieje wpis z datą starszą niż aktualna, nie robimy nic
         }
     }
 
-    private fun mapToPointsList(pointsMap: Map<String, Pair<Date, Float>>): List<Pair<Float, Float>> {
-        return pointsMap.map { entry ->
-            val dayIndex = getDayIndex(formatDate(entry.value.first))
-            Pair(dayIndex.toFloat(), entry.value.second)
+
+    private fun mapToPointsList(pointsMap: Map<String, List<Pair<Date, Float>>>): List<Pair<Float, Float>> {
+        val pointsList = mutableListOf<Pair<Float, Float>>()
+        val dates = getDatesFromLast7Days()
+
+        for (date in dates) {
+            val points = pointsMap[date]
+            if (points != null && points.isNotEmpty()) {
+                val averagePoints = points.map { it.second }.average().toFloat()
+                val dayIndex = getDayIndex(date)
+                pointsList.add(Pair(dayIndex.toFloat(), averagePoints))
+            } else {
+                // Jeśli nie ma punktów dla danego dnia, dodajemy pustą parę
+                val dayIndex = getDayIndex(date)
+                pointsList.add(Pair(dayIndex.toFloat(), 0f))
+            }
         }
+
+        return pointsList
     }
+
 
     private fun formatDate(date: Date): String {
         val dateFormat = SimpleDateFormat("dd-MM", Locale.getDefault())
@@ -142,26 +205,28 @@ class LineChartView(context: Context, attrs: AttributeSet?) : View(context, attr
     }
 
     private fun drawDataPoints(canvas: Canvas) {
+        val radius = 10f
         val paintList = listOf(
-            Paint().apply { color = resources.getColor(android.R.color.holo_blue_dark) },
-            Paint().apply { color = resources.getColor(android.R.color.holo_red_dark) },
-            Paint().apply { color = resources.getColor(android.R.color.holo_green_dark) },
-            Paint().apply { color = resources.getColor(android.R.color.holo_orange_dark) }
+        Paint().apply { color = resources.getColor(android.R.color.holo_blue_dark) },
+        Paint().apply { color = resources.getColor(android.R.color.holo_red_dark) },
+        Paint().apply { color = resources.getColor(android.R.color.holo_green_dark) },
+        Paint().apply { color = resources.getColor(android.R.color.holo_orange_dark) }
         )
-
-        val radius = 8f
-
         for ((index, points) in dataPointsList.withIndex()) {
             val paint = paintList[index % paintList.size]
+
+            // Ustawienie odpowiedniego promienia punktów
+
+            paint.strokeWidth = 10f // Ustawienie grubości linii
 
             var lastX: Float? = null
             var lastY: Float? = null
 
             for (point in points) {
                 val x = 100f + point.first * ((width - 200) / 6)
-                val y = height.toFloat() - 150f - point.second * ((height - 250) / 10)
+                val y = height.toFloat() - 250f - point.second * ((height - 350) / 10) // Adjusted y by subtracting 50
 
-                if (!(x < 100f || x > width.toFloat() - 100f || y < 100f || y > height.toFloat() - 150f)) {
+                if (!(x < 100f || x > width.toFloat() - 100f || y < 100f || y > height.toFloat() - 250f)) {
                     canvas.drawCircle(x, y, radius, paint)
 
                     if (lastX != null && lastY != null && paint.color == paintList[index % paintList.size].color) {
@@ -174,6 +239,7 @@ class LineChartView(context: Context, attrs: AttributeSet?) : View(context, attr
             }
         }
     }
+
 
     private fun drawLegend(canvas: Canvas) {
         val paintList = listOf(
