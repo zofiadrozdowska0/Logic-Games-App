@@ -11,6 +11,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import android.os.CountDownTimer
 import androidx.appcompat.app.AlertDialog
+import android.content.Context
 
 class Maze_MainActivity : Activity() {
 
@@ -28,6 +29,7 @@ class Maze_MainActivity : Activity() {
     private lateinit var timer: CountDownTimer
     private var timeLeftInMillis: Long = 60000 // 1 minute in milliseconds
     private var timerRunning = false
+    private var score = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +40,7 @@ class Maze_MainActivity : Activity() {
         ballView = findViewById(R.id.ballView)
         timerTextView = findViewById(R.id.timerTextView)
 
-        // Pozostała wartość czasu, jeśli została przekazana
+        // Retrieve the remaining time if passed
         timeLeftInMillis = intent.getLongExtra("TIME_LEFT", 60000)
 
         level = intent.getIntExtra("LEVEL", 1)
@@ -61,7 +63,7 @@ class Maze_MainActivity : Activity() {
                         if (isInBounds(newX, newY)) {
                             ballView.x = newX
                             ballView.y = newY
-                            checkForNewMaze(newX, newY, timeLeftInMillis) // Przekazujemy timeLeftInMillis
+                            checkForNewMaze(newX, newY, timeLeftInMillis) // Passing timeLeftInMillis
                         } else {
                             collisions++
                             restartGame()
@@ -76,31 +78,31 @@ class Maze_MainActivity : Activity() {
     }
 
     private fun disableGameInteraction() {
-        mazeView.setOnTouchListener(null) // Dezaktywacja onTouchListener
+        mazeView.setOnTouchListener(null) // Disable onTouchListener
     }
 
     private fun generateNewMaze() {
         val maze = generateMaze(8, 8)
         if (maze != null) {
             mazeView.setMaze(convertToBooleanArray(maze), ballView)
-            ballView.x = 0f // Resetuj pozycję kuli
+            ballView.x = 0f // Reset ball position
             ballView.y = 0f
-            gameOver = false // Resetuj stan gry
-            findViewById<TextView>(R.id.gameOverTextView).visibility = View.INVISIBLE // Ukryj tekst końca gry
+            gameOver = false // Reset game state
+            findViewById<TextView>(R.id.gameOverTextView).visibility = View.INVISIBLE // Hide game over text
         } else {
-            // Jeśli nie udało się wygenerować labiryntu, próbujemy ponownie
+            // If maze generation fails, try again
             generateNewMaze()
         }
     }
 
     private fun checkForNewMaze(newX: Float, newY: Float, timeLeftInMillis: Long) {
-        // Sprawdź czy kula wejdzie w skarb
+        // Check if ball reaches the treasure
         if (mazeView.isBallOnTreasure(newX, newY) && !isNewMazeChecked) {
-            // Zwiększ poziom
+            // Increase level
             level++
-            isNewMazeChecked = true // Ustaw flagę na true, aby uniknąć wielokrotnego sprawdzania w jednym ruchu
-            // Aktualizuj etykietę na ekranie
-            // Restartuj grę z przekazaniem aktualnej wartości timera
+            isNewMazeChecked = true // Set flag to avoid multiple checks in one move
+            // Update the label on the screen
+            // Restart the game with the current timer value
             restartActivity(level, timeLeftInMillis)
         }
     }
@@ -112,7 +114,7 @@ class Maze_MainActivity : Activity() {
         intent.putExtra("LEVEL", level)
         intent.putExtra("COLLISIONS", collisions)
         startActivity(intent)
-        finish() // Zamknij bieżącą aktywność
+        finish() // Close current activity
     }
 
     private fun startTimer() {
@@ -179,22 +181,22 @@ class Maze_MainActivity : Activity() {
 
     private fun generateMaze(width: Int, height: Int): Array<IntArray>? {
         val maze: Array<IntArray> = Array(width) { IntArray(height) }
-        // Wypełnij labirynt ścianami
+        // Fill the maze with walls
         for (x in 0 until width) {
             for (y in 0 until height) {
                 maze[x][y] = WALL
             }
         }
 
-        // Wybierz losowy punkt startowy
+        // Choose a random starting point
         val random = Random()
         val startX = random.nextInt(width)
         val startY = random.nextInt(height)
 
-        // Wygeneruj labirynt zaczynając od punktu startowego
+        // Generate the maze starting from the starting point
         generateMazeRecursive(maze, startX, startY)
 
-        // Sprawdź czy labirynt zawiera co najmniej 5 wolnych pól
+        // Check if the maze contains at least 5 free spaces
         var freeSpaceCount = 0
         var singleNeighborCount = 0
         var singleNeighborX = 0
@@ -213,43 +215,43 @@ class Maze_MainActivity : Activity() {
             }
         }
 
-        // Sprawdź warunki na ilość wolnych pól z jednym sąsiadem
+        // Check conditions on the number of free spaces with one neighbor
         if (freeSpaceCount >= 6 && singleNeighborCount == 2) {
-            // Jeśli spełnione, zwróć wygenerowany labirynt
+            // If satisfied, return the generated maze
             return maze
         } else {
-            // W przeciwnym razie, wygeneruj nowy labirynt
+            // Otherwise, generate a new maze
             return generateMaze(width, height)
         }
     }
 
     private fun countSurroundingSpaces(maze: Array<IntArray>, x: Int, y: Int): Int {
         var count = 0
-        if (maze[x - 1][y] == EMPTY) count++ // lewo
-        if (maze[x + 1][y] == EMPTY) count++ // prawo
-        if (maze[x][y - 1] == EMPTY) count++ // góra
-        if (maze[x][y + 1] == EMPTY) count++ // dół
+        if (maze[x - 1][y] == EMPTY) count++ // left
+        if (maze[x + 1][y] == EMPTY) count++ // right
+        if (maze[x][y - 1] == EMPTY) count++ // up
+        if (maze[x][y + 1] == EMPTY) count++ // down
         return count
     }
 
     private fun generateMazeRecursive(maze: Array<IntArray>, x: Int, y: Int) {
         val directions = arrayOf(
-            intArrayOf(-1, 0), // lewo
-            intArrayOf(1, 0),  // prawo
-            intArrayOf(0, -1), // góra
-            intArrayOf(0, 1)   // dół
+            intArrayOf(-1, 0), // left
+            intArrayOf(1, 0),  // right
+            intArrayOf(0, -1), // up
+            intArrayOf(0, 1)   // down
         )
 
-        // Przetasuj kierunki
+        // Shuffle directions
         directions.shuffle()
 
         for (direction in directions) {
             val newX = x + direction[0]
             val newY = y + direction[1]
 
-            // Sprawdź czy nowa pozycja jest w granicach i czy jest ścianą
+            // Check if the new position is within bounds and is a wall
             if (newX in 1 until maze.size - 1 && newY in 1 until maze[0].size - 1 && maze[newX][newY] == WALL) {
-                // Sprawdź czy sąsiadujące komórki są ścianami
+                // Check if surrounding cells are walls
                 val surroundingWalls = countSurroundingWalls(maze, newX, newY)
                 if (surroundingWalls >= 3) {
                     maze[newX][newY] = EMPTY
@@ -261,10 +263,10 @@ class Maze_MainActivity : Activity() {
 
     private fun countSurroundingWalls(maze: Array<IntArray>, x: Int, y: Int): Int {
         var count = 0
-        if (maze[x - 1][y] == WALL) count++ // lewo
-        if (maze[x + 1][y] == WALL) count++ // prawo
-        if (maze[x][y - 1] == WALL) count++ // góra
-        if (maze[x][y + 1] == WALL) count++ // dół
+        if (maze[x - 1][y] == WALL) count++ // left
+        if (maze[x + 1][y] == WALL) count++ // right
+        if (maze[x][y - 1] == WALL) count++ // up
+        if (maze[x][y + 1] == WALL) count++ // down
         return count
     }
 
@@ -274,10 +276,24 @@ class Maze_MainActivity : Activity() {
     }
 
     private fun showCompletionDialog(score: Int) {
-        if (!isFinishing) {
-            val intent = Intent(this, WhacAPirateMainActivity::class.java)
-            startActivity(intent)
-            finish()
+        // Save score to Shared Preferences
+        val sharedPreferences = getSharedPreferences("game_scores", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putInt("maze_points", score)
+        editor.apply()
+
+        // Show completion dialog
+        AlertDialog.Builder(this).apply {
+            setTitle("Game Over")
+            setMessage("Your score is $score")
+            setPositiveButton("OK") { _, _ ->
+                // Proceed to the next game
+                val intent = Intent(this@Maze_MainActivity, WhacAPirateMainActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+            setCancelable(false)
+            show()
         }
     }
 
