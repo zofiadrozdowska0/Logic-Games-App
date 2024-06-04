@@ -34,7 +34,7 @@ class zap_sekwencja_MemoryAdapter(
     }
     private var sequence: List<Int>? = null
     private var isClickable = false
-    private var points = 0
+    private var points_zap_sek = 0
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -100,22 +100,40 @@ class zap_sekwencja_MemoryAdapter(
                     //Log.d(TAG, "Sequence correct.")
                     memoryGame.level++
                     tvNumElements.text = "Level: ${memoryGame.level-1}" // Aktualizacja TextView z wartością level
-                    points++
-                    tvNumPoints.text = "Points: ${points}"
-                    currentSequenceIndex = 0
-                    startGame()
+                    points_zap_sek++
+                    if (points_zap_sek<10) {
+                        tvNumPoints.text = "Points: ${points_zap_sek}"
+                        currentSequenceIndex = 0
+                        startGame()
+
+                    }
+                    else{
+                        tvNumPoints.text = "Points: ${points_zap_sek}"
+                        Toast.makeText(context, "Maximum points!", Toast.LENGTH_SHORT).show()
+                        sequence=null
+                        memoryGame.level = 2
+                        currentSequenceIndex=0
+                        points_zap_sek = 0
+                        val intent = Intent(context, zap_el_zb_MainActivity::class.java)
+                        context.startActivity(intent)
+                        startGame()
+
+
+                    }
                 }
             } else {
                 Toast.makeText(context, "Wrong choice!", Toast.LENGTH_SHORT).show()
                 //Log.d(TAG, "Gracz kliknął nieprawidłową kartę na pozycji: $position")
                 sequence=null
                 currentSequenceIndex=0
-                points = 0
-                tvNumPoints.text = "Points: ${points}"
+                points_zap_sek = 0
+                tvNumPoints.text = "Points: ${points_zap_sek}"
                 memoryGame.level = 2
                 val intent = Intent(context, zap_el_zb_MainActivity::class.java)
                 context.startActivity(intent)
+                startGame()
             }
+
         }
     }
 
