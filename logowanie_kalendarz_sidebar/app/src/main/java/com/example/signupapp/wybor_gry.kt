@@ -1,5 +1,6 @@
 package com.example.signupapp
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
@@ -66,6 +67,12 @@ class wybor_gry : AppCompatActivity() {
                     if (document != null && document.exists()) {
                         val username = document.getString("username")
                         if (username != null) {
+                            // Save the username to SharedPreferences
+                            val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+                            val editor = sharedPreferences.edit()
+                            editor.putString("username", username)
+                            editor.apply()
+
                             // Set Toolbar title
                             supportActionBar?.title = "Witaj $username!"
                         }

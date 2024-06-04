@@ -7,6 +7,7 @@ import android.widget.GridLayout
 import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.firestore.FirebaseFirestore
 
 class GraRzeczonaActivity : AppCompatActivity() {
     private lateinit var gridLayoutTop: GridLayout
@@ -18,6 +19,7 @@ class GraRzeczonaActivity : AppCompatActivity() {
     private var endTime: Long = 0
     private var penaltytime: Long = 0
     private var clickedWrongImages = mutableSetOf<String>()
+    private lateinit var firestore: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +27,7 @@ class GraRzeczonaActivity : AppCompatActivity() {
         gridLayoutTop = findViewById(R.id.gridLayoutTop)
         gridLayoutBottom = findViewById(R.id.gridLayoutBottom)
         startTime = System.currentTimeMillis()
+        firestore = FirebaseFirestore.getInstance()
         generateAndDisplayImages()
     }
 
@@ -73,8 +76,7 @@ class GraRzeczonaActivity : AppCompatActivity() {
 
         // Zastąpienie 3 obrazów innymi
         toReplace.forEachIndexed { index, image ->
-            val replaceWithIndex =
-                index % availableToReplaceWith.size // Zapobieganie IndexOutOfBoundsException
+            val replaceWithIndex = index % availableToReplaceWith.size // Zapobieganie IndexOutOfBoundsException
             modifiedImages[modifiedImages.indexOf(image)] = availableToReplaceWith[replaceWithIndex]
         }
 
@@ -108,9 +110,22 @@ class GraRzeczonaActivity : AppCompatActivity() {
 
     fun showCompletionDialog(totalTime: Long) {
         val totalTimeSeconds = totalTime / 1000
+        val points = calculatePoints(totalTimeSeconds)
+
+        // Save points to SharedPreferences
+        savePointsToSharedPreferences("roznice_points", points)
+
+        // Retrieve username from intent
+        val username = intent.getStringExtra("username")
+
+        // Save points to Firestore
+        if (username != null) {
+            savePointsToFirestore(username, points)
+        }
+
         AlertDialog.Builder(this).apply {
             setTitle("Gra zakończona!")
-            setMessage("Twój czas: $totalTimeSeconds sekund. Czy chcesz zagrać jeszcze raz?")
+            setMessage("Twój czas: $totalTimeSeconds sekund. Zdobyłeś $points punktów. Czy chcesz zagrać jeszcze raz?")
             setPositiveButton("Tak") { dialog, which ->
                 // Reset gry
                 restartGame()
@@ -127,6 +142,35 @@ class GraRzeczonaActivity : AppCompatActivity() {
             setCancelable(false) // Zapobiega zamknięciu dialogu przez kliknięcie poza jego obszarem
             show()
         }
+    }
+
+    private fun calculatePoints(totalTimeSeconds: Long): Int {
+        return 100 - totalTimeSeconds.toInt() // Example calculation, adjust as needed
+    }
+
+    private fun savePointsToSharedPreferences(key: String, points: Int) {
+        val sharedPreferences = getSharedPreferences("game_scores", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putInt(key, points)
+        editor.apply()
+    }
+
+    private fun savePointsToFirestore(username: String, points: Int) {
+        val data = hashMapOf(
+            "username" to username,
+            "game" to "Roznice",
+            "points" to points,
+            "timestamp" to System.currentTimeMillis()
+        )
+
+        firestore.collection("points")
+            .add(data)
+            .addOnSuccessListener { documentReference ->
+                // Success
+            }
+            .addOnFailureListener { e ->
+                // Handle the error
+            }
     }
 
     fun restartGame() {

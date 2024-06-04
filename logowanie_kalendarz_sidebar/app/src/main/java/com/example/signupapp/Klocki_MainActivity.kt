@@ -1,7 +1,7 @@
 package com.example.signupapp
 
 import android.annotation.SuppressLint
-import android.content.Intent
+import android.content.Context
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -18,6 +18,7 @@ import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.signupapp.databinding.KlockiActivityMainBinding
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlin.random.Random
 
 class Klocki_MainActivity : AppCompatActivity() {
@@ -195,6 +196,9 @@ class Klocki_MainActivity : AppCompatActivity() {
                 binding.imageView4.setOnTouchListener(null)
                 binding.imageView5.setOnTouchListener(null)
 
+                val points = calculatePoints()
+                savePointsToSharedPreferences("klocki_points", points)
+
                 Handler(Looper.getMainLooper()).postDelayed({
                     showAllGamesCompletedDialog()
                 }, 2000) // Show the "All games completed!" dialog after 2 seconds
@@ -212,10 +216,51 @@ class Klocki_MainActivity : AppCompatActivity() {
             .setTitle("All games completed!")
             .setMessage("Congratulations! You have completed all games.")
             .setPositiveButton("OK") { _, _ ->
+                saveTotalPointsToDatabase()
                 finish()
             }
             .setCancelable(false)
             .show()
+    }
+
+    private fun saveTotalPointsToDatabase() {
+        val sharedPreferences = getSharedPreferences("game_scores", Context.MODE_PRIVATE)
+        val roznicePoints = sharedPreferences.getInt("roznice_points", 0)
+        val ufoludkiPoints = sharedPreferences.getInt("ufoludki_points", 0)
+        val klockiPoints = sharedPreferences.getInt("klocki_points", 0)
+        val totalPoints = roznicePoints + ufoludkiPoints + klockiPoints
+
+        // Retrieve the username from SharedPreferences
+        val userPrefs = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val username = userPrefs.getString("username", "Unknown User")
+
+        val db = FirebaseFirestore.getInstance()
+        val pointsData = hashMapOf(
+            "username" to username,
+            "perceptiveness_and_concentration_points" to totalPoints,
+            "date" to com.google.firebase.Timestamp.now()
+        )
+
+        db.collection("points")
+            .add(pointsData)
+            .addOnSuccessListener {
+                println("Points successfully written!")
+            }
+            .addOnFailureListener { e ->
+                println("Error writing document: $e")
+            }
+    }
+
+    private fun savePointsToSharedPreferences(key: String, points: Int) {
+        val sharedPreferences = getSharedPreferences("game_scores", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putInt(key, points)
+        editor.apply()
+    }
+
+    private fun calculatePoints(): Int {
+        // Implement your logic to calculate points
+        return wins * 10 // Example: each win gives 10 points
     }
 
     fun findNearestValue(input: Int): Int {

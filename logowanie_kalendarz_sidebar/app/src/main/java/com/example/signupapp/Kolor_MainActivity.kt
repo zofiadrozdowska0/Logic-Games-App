@@ -1,12 +1,9 @@
 package com.example.signupapp
-
-import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.widget.Button
 import android.widget.TextView
 import androidx.activity.ComponentActivity
-import androidx.appcompat.app.AlertDialog
 
 class Kolor_MainActivity : ComponentActivity() {
     private var score = 0
@@ -15,11 +12,11 @@ class Kolor_MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_kolor_main)
         val textpoints: TextView = findViewById(R.id.textPoints)
-        textpoints.text = "Points: 0"
+        textpoints.text="Points: 0"
         val texttime: TextView = findViewById(R.id.textTime)
         val mainbut: Button = findViewById(R.id.mainButton)
         var currentIndex = 0
-        var gra = true
+        var gra=true
         var previousPair: Pair<String, String>? = null
         val listaKolorow: List<Pair<String, String>> = listOf(
             Pair("red", "#FF0000"),
@@ -86,7 +83,6 @@ class Kolor_MainActivity : ComponentActivity() {
             Pair("black", "#FFC0CB"),
             Pair("black", "#FFFFFF")
         )
-
         fun updateButtonColorAndText() {
             var randomPair: Pair<String, String>
             do {
@@ -99,7 +95,6 @@ class Kolor_MainActivity : ComponentActivity() {
             previousPair = randomPair
             buttonClickable = true
         }
-
         mainbut.setOnClickListener {
             if (buttonClickable) {
                 val currentTextColor = mainbut.currentTextColor
@@ -117,8 +112,7 @@ class Kolor_MainActivity : ComponentActivity() {
                 buttonClickable = false // Ustawiamy flagę na false po kliknięciu
             }
         }
-
-        val timer2 = object : CountDownTimer(61100, 1000) {
+        val timer2 = object : CountDownTimer(61100, 1000) { // 5 minutes countdown
             override fun onTick(millisUntilFinished: Long) {
                 val minutes = millisUntilFinished / 60000
                 val seconds = (millisUntilFinished % 60000) / 1000
@@ -128,13 +122,11 @@ class Kolor_MainActivity : ComponentActivity() {
             override fun onFinish() {
                 texttime.text = "Time's up!"
                 mainbut.isEnabled = false
-                gra = false
-                showCompletionDialog()
+                gra=false
             }
         }
         timer2.start()
-
-        var roundcount = 0
+        var roundcount=0
         val timer = object : CountDownTimer(31200, 2400) {
             override fun onTick(millisUntilFinished: Long) {
                 if (gra) {
@@ -210,7 +202,6 @@ class Kolor_MainActivity : ComponentActivity() {
                             }
 
                             override fun onFinish() {
-                                showCompletionDialog()
                             }
                         }
                         timer4.start()
@@ -222,15 +213,4 @@ class Kolor_MainActivity : ComponentActivity() {
         timer.start()
     }
 
-    private fun showCompletionDialog() {
-        AlertDialog.Builder(this)
-            .setTitle("Game Over")
-            .setMessage("You scored $score points!")
-            .setPositiveButton("Next Game") { _, _ ->
-                val intent = Intent(this, Maze_MainActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
-            .show()
-    }
 }
