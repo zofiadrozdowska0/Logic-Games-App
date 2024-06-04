@@ -2,7 +2,11 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+<<<<<<< HEAD
       <entry key="app">
+=======
+      <entry key="apka">
+>>>>>>> cf77110a16521e0e207e5a3af5417ef6c8faa5cc
         <State />
       </entry>
     </value>

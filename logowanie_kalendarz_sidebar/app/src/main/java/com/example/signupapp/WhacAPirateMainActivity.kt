@@ -1,7 +1,5 @@
 package com.example.signupapp
 
-///package com.example.game
-
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -16,7 +14,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import java.util.Timer
 import java.util.TimerTask
 import kotlin.random.Random
-import com.google.firebase.firestore.FirebaseFirestore
 
 class WhacAPirateMainActivity : AppCompatActivity() {
     private var score = 0
@@ -84,13 +81,13 @@ class WhacAPirateMainActivity : AppCompatActivity() {
             }
         }
 
-        fun gameOver() {
+        fun gameOver(message: String = "Game Over! Score: $score") {
             runOnUiThread {
-                findViewById<TextView>(R.id.textView4).text = "Game Over! Score: $score"
+                findViewById<TextView>(R.id.textView4).text = message
                 Handler().postDelayed({
                     val intent1 = Intent(applicationContext, wybor_gry::class.java)
                     startActivity(intent1)
-                },1000)
+                }, 1000)
             }
             appearanceTimer?.cancel()
         }
@@ -144,7 +141,9 @@ class WhacAPirateMainActivity : AppCompatActivity() {
                     score++
                     scoreTextView.text = "Score: $score"
                     imageButton.visibility = ImageButton.INVISIBLE
-                    if (score % 3 == 0) { // Zwiększ poziom trudności co 5 punktów
+                    if (score == 10) {
+                        gameOver("Max Score! Score: $score")
+                    } else if (score % 3 == 0) { // Zwiększ poziom trudności co 3 punkty
                         level++
                     }
                 }
