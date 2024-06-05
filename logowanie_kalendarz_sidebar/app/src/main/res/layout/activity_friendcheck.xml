@@ -67,17 +67,6 @@
             app:layout_constraintTop_toBottomOf="@id/chartContainer"
             app:layout_constraintWidth_percent="0.9" />
 
-        <TextView
-            android:id="@+id/textView10"
-            android:layout_width="289dp"
-            android:layout_height="38dp"
-            android:layout_margin="5dp"
-            android:text=""
-            android:textColor="#E5BE94"
-            android:textSize="30dp"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="17dp"
-            tools:layout_editor_absoluteY="12dp" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

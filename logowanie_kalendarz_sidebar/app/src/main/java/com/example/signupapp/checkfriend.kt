@@ -5,7 +5,12 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
@@ -14,6 +19,8 @@ import java.util.*
 
 class checkfriend : AppCompatActivity() {
 
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var toggle: ActionBarDrawerToggle
     private var dataPointsList: List<List<Pair<Float, Float>>> = emptyList()
     private var username: String? = null  // To hold the friend's username
     private lateinit var currentUserId: String
@@ -23,15 +30,51 @@ class checkfriend : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_friendcheck)
 
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
+        drawerLayout = findViewById(R.id.drawer_layout)
+        val navigationView: NavigationView = findViewById(R.id.nav_view)
+
+        toggle = ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close)
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_ryba_navbar)
+
         currentUserId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
         username = intent.getStringExtra("FRIEND_USERNAME")
         if (username.isNullOrEmpty()) {
             Toast.makeText(this, "No username provided", Toast.LENGTH_SHORT).show()
             finish()  // Close the activity if no username
         } else {
-            val textView = findViewById<TextView>(R.id.textView10)
-            textView.text = "$username"  // Display the username
+            supportActionBar?.title = "$username"
             fetchDataPointsFromDatabase()
+        }
+
+        navigationView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_home -> {
+                    val intent = Intent(applicationContext, succes::class.java)
+                    startActivity(intent)
+                }
+                R.id.nav_rules -> {
+                    val intent = Intent(applicationContext, rules::class.java)
+                    startActivity(intent)
+                }
+                R.id.nav_friends -> {
+                    val intent = Intent(applicationContext, friends::class.java)
+                    startActivity(intent)
+                }
+                R.id.nav_logout -> {
+                    FirebaseAuth.getInstance().signOut()
+                    val intent = Intent(applicationContext, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+            }
+            drawerLayout.closeDrawer(GravityCompat.START)
+            true
         }
 
         val removeFriendButton = findViewById<Button>(R.id.remove_friend_Button)
