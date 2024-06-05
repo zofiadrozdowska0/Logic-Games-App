@@ -303,6 +303,7 @@ class MatematyczneWorlde_MainActivity : AppCompatActivity() {
                         score=0
                         disableButtons()
                         Handler().postDelayed({
+                            savePointsToSharedPreferences("pierwsza", score)
                             val intent = Intent(applicationContext, saper_minefield::class.java)
                             startActivity(intent)
                         }, 1000)
