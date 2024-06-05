@@ -40,8 +40,8 @@
             app:layout_constraintTop_toBottomOf="@id/toolbar"
             app:layout_constraintWidth_percent="0.9">
 
-            <com.example.signupapp.LineChartView
-                android:id="@+id/lineChartView"
+            <com.example.signupapp.LineChartView2
+                android:id="@+id/lineChartView2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </FrameLayout>

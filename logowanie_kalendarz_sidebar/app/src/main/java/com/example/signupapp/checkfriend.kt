@@ -3,7 +3,6 @@ package com.example.signupapp
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -16,19 +15,26 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.runBlocking
 
 class checkfriend : AppCompatActivity() {
 
+    private lateinit var lineChartView2: LineChartView2
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toggle: ActionBarDrawerToggle
     private var dataPointsList: List<List<Pair<Float, Float>>> = emptyList()
     private var username: String? = null  // To hold the friend's username
     private lateinit var currentUserId: String
     val firestore = FirebaseFirestore.getInstance()
+    var userId = ""
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_friendcheck)
+
+        lineChartView2 = findViewById(R.id.lineChartView2)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -45,12 +51,16 @@ class checkfriend : AppCompatActivity() {
         currentUserId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
         username = intent.getStringExtra("FRIEND_USERNAME")
         if (username.isNullOrEmpty()) {
-            Toast.makeText(this, "No username provided", Toast.LENGTH_SHORT).show()
-            finish()  // Close the activity if no username
+            Toast.makeText(this, "Nie podano nazwy użytkownika", Toast.LENGTH_SHORT).show()
+            finish()  // Zamknij aktywność, jeśli nie podano nazwy użytkownika
         } else {
-            supportActionBar?.title = "$username"
-            fetchDataPointsFromDatabase()
+            supportActionBar?.title = username
+            lineChartView2.setUsername(username!!)
+            lineChartView2.invalidate()
+            lineChartView2.fetchDataPointsFromDatabase(username!!)
+
         }
+
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
@@ -136,74 +146,24 @@ class checkfriend : AppCompatActivity() {
     }
 
 
-    private fun fetchDataPointsFromDatabase() {
-        val db = FirebaseFirestore.getInstance()
-        db.collection("points")
-            .whereEqualTo("username", username)
-            .get()
-            .addOnSuccessListener { result ->
-                val pointsMap = processResult(result)
-                val dataPoints = mapToPointsList(pointsMap)
-                setDataPointsList(dataPoints)
-            }
-            .addOnFailureListener { exception ->
-                Toast.makeText(this, "Error getting documents: $exception", Toast.LENGTH_LONG).show()
-            }
-    }
 
-    private fun processResult(result: QuerySnapshot): Map<String, Pair<Date, Float>> {
-        val pointsMap = mutableMapOf<String, Pair<Date, Float>>()
-        for (document in result) {
-            val date = document.getTimestamp("date")?.toDate()
-            val reflexPointsValue = document.getLong("reflex_points")?.toFloat() ?: 0f
 
-            date?.let {
-                val formattedDate = formatDate(it)
-                updatePointsMap(pointsMap, formattedDate, it, reflexPointsValue)
-            }
-        }
-        return pointsMap
-    }
 
-    private fun updatePointsMap(pointsMap: MutableMap<String, Pair<Date, Float>>, formattedDate: String, dateObj: Date, pointsValue: Float) {
-        val currentEntry = pointsMap[formattedDate]
-        if (currentEntry == null || dateObj.after(currentEntry.first)) {
-            pointsMap[formattedDate] = Pair(dateObj, pointsValue)
-        }
-    }
 
-    private fun mapToPointsList(pointsMap: Map<String, Pair<Date, Float>>): List<List<Pair<Float, Float>>> {
-        val list = mutableListOf<Pair<Float, Float>>()
-        pointsMap.forEach { (_, pair) ->
-            list.add(Pair(getDayIndex(formatDate(pair.first)).toFloat(), pair.second))
-        }
-        return listOf(list)
-    }
 
-    private fun setDataPointsList(dataPointsList: List<List<Pair<Float, Float>>>) {
-        this.dataPointsList = dataPointsList
-        // Here you would update your view with the new data points
-    }
 
-    private fun formatDate(date: Date): String {
-        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-        return dateFormat.format(date)
-    }
 
-    private fun getDayIndex(formattedDate: String): Int {
-        val dates = getDatesFromLast7Days()
-        return dates.indexOf(formattedDate)
-    }
 
-    private fun getDatesFromLast7Days(): List<String> {
-        val dates = mutableListOf<String>()
-        val calendar = Calendar.getInstance()
-        for (i in 0..6) {
-            dates.add(SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(calendar.time))
-            calendar.add(Calendar.DATE, -1)
-        }
-        return dates
-    }
+
+
+
+
+
+
+
+
+
+
 
     fun findUserIdByUsername(username: String, callback: (String?) -> Unit) {
         val db = FirebaseFirestore.getInstance()
@@ -227,6 +187,28 @@ class checkfriend : AppCompatActivity() {
                 callback(null)  // Obsługa błędu, zwróć null
             }
     }
+
+
+    suspend fun findUserIdByUsername2(username: String): String? {
+        val db = FirebaseFirestore.getInstance()
+        return try {
+            val documents = db.collection("users")
+                .whereEqualTo("username", username)
+                .limit(1)  // Zakładamy, że nazwy użytkowników są unikalne
+                .get()
+                .await()
+
+            if (documents.isEmpty) {
+                null  // Brak użytkownika o tej nazwie
+            } else {
+                documents.documents[0].id  // Pobierz ID pierwszego (i jedynego) dokumentu
+            }
+        } catch (exception: Exception) {
+            println("Error getting documents: $exception")
+            null  // W przypadku błędu, zwróć null
+        }
+    }
+
     private fun navigateToFriendsActivity() {
         val intent = Intent(applicationContext, friends::class.java)
         startActivity(intent)
