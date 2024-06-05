@@ -1,12 +1,14 @@
 package com.example.signupapp
 
 import android.content.Context
+import android.database.CursorWindowAllocationException
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.RequiresApi
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.*
@@ -15,8 +17,15 @@ import kotlin.collections.ArrayList
 class LineChartView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
 
     private var dataPointsList: List<List<Pair<Float, Float>>> = emptyList()
+    private lateinit var currentUserId: String
+    private lateinit var auth: FirebaseAuth
+    private lateinit var firestore: FirebaseFirestore
+    private lateinit var CurrentUsername: String
 
     init {
+        auth = FirebaseAuth.getInstance()
+        firestore = FirebaseFirestore.getInstance()
+
         fetchDataPointsFromDatabase()
     }
 
@@ -24,15 +33,32 @@ class LineChartView(context: Context, attrs: AttributeSet?) : View(context, attr
         this.dataPointsList = dataPointsList
         invalidate() // Refresh the view to draw new data
     }
-    private fun fetchDataPointsFromDatabase() {
-        val userPrefs = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-        val username = userPrefs.getString("username", "Unknown User")
 
-        val db = FirebaseFirestore.getInstance()
-        db.collection("points")
+    private fun fetchDataPointsFromDatabase() {
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            val uid = currentUser.uid
+            firestore.collection("users").document(uid)
+                .get()
+                .addOnSuccessListener { document ->
+                    if (document != null && document.exists()) {
+                        val username = document.getString("username")
+                        if (username != null) {
+                            CurrentUsername = username
+                            fetchPointsForUser(CurrentUsername)
+                        }
+                    }
+                }
+        }
+    }
+
+    private fun fetchPointsForUser(username: String) {
+        println("Fetching points for user: $username")
+        firestore.collection("points")
             .whereEqualTo("username", username)
             .get()
             .addOnSuccessListener { result ->
+                println("Successfully fetched points for user: $username")
                 val reflexPointsMap = mutableMapOf<String, MutableList<Pair<Date, Float>>>()
                 val perceptivenessPointsMap = mutableMapOf<String, MutableList<Pair<Date, Float>>>()
                 val memoryPointsMap = mutableMapOf<String, MutableList<Pair<Date, Float>>>()
@@ -49,14 +75,14 @@ class LineChartView(context: Context, attrs: AttributeSet?) : View(context, attr
                         val dateObj = date.toDate()
                         val formattedDate = formatDate(dateObj)
 
-                        updatePointsMap(reflexPointsMap, formattedDate, dateObj, reflexPointsValue, "reflex")
-                        updatePointsMap(perceptivenessPointsMap, formattedDate, dateObj, perceptivenessPointsValue, "perceptiveness")
-                        updatePointsMap(memoryPointsMap, formattedDate, dateObj, memoryPointsValue, "memory")
-                        updatePointsMap(logicPointsMap, formattedDate, dateObj, logicPointsValue, "logic")
+                        updatePointsMap(reflexPointsMap, formattedDate, dateObj, reflexPointsValue)
+                        updatePointsMap(perceptivenessPointsMap, formattedDate, dateObj, perceptivenessPointsValue)
+                        updatePointsMap(memoryPointsMap, formattedDate, dateObj, memoryPointsValue)
+                        updatePointsMap(logicPointsMap, formattedDate, dateObj, logicPointsValue)
                     }
                 }
 
-                // Wypisanie punktów dla każdej kategorii
+                // Print points for each category
                 println("Reflex Points:")
                 reflexPointsMap.forEach { (date, pointsList) ->
                     pointsList.forEach { points ->
@@ -93,16 +119,16 @@ class LineChartView(context: Context, attrs: AttributeSet?) : View(context, attr
                 setDataPointsList(listOf(reflexPoints, perceptivenessPoints, memoryPoints, logicPoints))
             }
             .addOnFailureListener { exception ->
-                println("Error getting documents: $exception")
+                println("Error fetching points for user $username: $exception")
             }
     }
+
 
     private fun updatePointsMap(
         pointsMap: MutableMap<String, MutableList<Pair<Date, Float>>>,
         formattedDate: String,
         dateObj: Date,
         pointsValue: Float,
-        category: String
     ) {
         val currentEntries = pointsMap[formattedDate]
 
@@ -278,8 +304,6 @@ class LineChartView(context: Context, attrs: AttributeSet?) : View(context, attr
     }
 
 
-
-
     private fun getDatesFromLast7Days(): List<String> {
         val dates = ArrayList<String>()
         val calendar = Calendar.getInstance()
@@ -293,4 +317,6 @@ class LineChartView(context: Context, attrs: AttributeSet?) : View(context, attr
 
         return dates.reversed()
     }
+
+
 }
