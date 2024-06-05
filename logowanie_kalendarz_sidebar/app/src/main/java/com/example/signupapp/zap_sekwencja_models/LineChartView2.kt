@@ -18,23 +18,13 @@ import kotlin.collections.ArrayList
 class LineChartView2(context: Context, attrs: AttributeSet?) : View(context, attrs) {
 
     private var dataPointsList: List<List<Pair<Float, Float>>> = emptyList()
-    private lateinit var currentUserId: String
-    private lateinit var auth: FirebaseAuth
-    private lateinit var firestore: FirebaseFirestore
-    private lateinit var CurrentUsername: String
     private var username: String? = null
 
-    init {
-
-        //fetchDataPointsFromDatabase(username.toString())
-    }
 
     fun setDataPointsList(dataPointsList: List<List<Pair<Float, Float>>>) {
         this.dataPointsList = dataPointsList
         invalidate() // Refresh the view to draw new data
     }
-
-
 
 
     fun fetchDataPointsFromDatabase(username: String) {

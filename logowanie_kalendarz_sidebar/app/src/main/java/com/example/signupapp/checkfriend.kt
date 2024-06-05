@@ -13,21 +13,16 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.runBlocking
+
 
 class checkfriend : AppCompatActivity() {
 
     private lateinit var lineChartView2: LineChartView2
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toggle: ActionBarDrawerToggle
-    private var dataPointsList: List<List<Pair<Float, Float>>> = emptyList()
     private var username: String? = null  // To hold the friend's username
     private lateinit var currentUserId: String
     val firestore = FirebaseFirestore.getInstance()
-    var userId = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -149,22 +144,6 @@ class checkfriend : AppCompatActivity() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     fun findUserIdByUsername(username: String, callback: (String?) -> Unit) {
         val db = FirebaseFirestore.getInstance()
         db.collection("users")
@@ -189,25 +168,6 @@ class checkfriend : AppCompatActivity() {
     }
 
 
-    suspend fun findUserIdByUsername2(username: String): String? {
-        val db = FirebaseFirestore.getInstance()
-        return try {
-            val documents = db.collection("users")
-                .whereEqualTo("username", username)
-                .limit(1)  // Zakładamy, że nazwy użytkowników są unikalne
-                .get()
-                .await()
-
-            if (documents.isEmpty) {
-                null  // Brak użytkownika o tej nazwie
-            } else {
-                documents.documents[0].id  // Pobierz ID pierwszego (i jedynego) dokumentu
-            }
-        } catch (exception: Exception) {
-            println("Error getting documents: $exception")
-            null  // W przypadku błędu, zwróć null
-        }
-    }
 
     private fun navigateToFriendsActivity() {
         val intent = Intent(applicationContext, friends::class.java)
