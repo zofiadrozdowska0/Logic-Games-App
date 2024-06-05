@@ -16,6 +16,10 @@
         android:textStyle="bold"
         android:fontFamily="@font/amendrapl"
         android:layout_marginBottom="32dp"
+        android:shadowColor="#80000000"
+        android:shadowDx="6"
+        android:shadowDy="6"
+        android:shadowRadius="3"
         />
 
     <Button
@@ -24,11 +28,16 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="428dp"
-        android:background="@color/gold"
+        android:background="@drawable/roznice_rounded_button"
         android:backgroundTint="#E6D00D"
         android:fontFamily="@font/amendrapl"
+        android:shadowRadius="10"
+        android:shadowColor="#80000000"
         android:text="Rozpocznij grę"
-        android:textColor="@color/black" />
+        android:textColor="@color/black"
+        android:shadowDx="6"
+        android:shadowDy="6"
+        />
 
     <!--<Button
         android:id="@+id/chooseDifficultyButton"

@@ -1,16 +1,51 @@
 package com.example.signupapp
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.os.Looper
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.firestore.FirebaseFirestore
 
 class sekwencja_correct : AppCompatActivity() {
+    private fun savePointsToSharedPreferences(key: String, points: Int) {
+        val sharedPreferences = getSharedPreferences("game_scores", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putInt(key, points)
+        editor.apply()
+    }
+
+    private fun saveTotalPointsToDatabase() {
+        val sharedPreferences = getSharedPreferences("game_scores", Context.MODE_PRIVATE)
+        val roznicePoints = sharedPreferences.getInt("pierwsza", 0)
+        val ufoludkiPoints = sharedPreferences.getInt("druga", 0)
+        val klockiPoints = sharedPreferences.getInt("trzecia", 0)
+        val totalPoints = roznicePoints + ufoludkiPoints + klockiPoints
+
+        // Retrieve the username from SharedPreferences
+        val userPrefs = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val username = userPrefs.getString("username", "Unknown User")
+
+        val db = FirebaseFirestore.getInstance()
+        val pointsData = hashMapOf(
+            "username" to username,
+            "logic_points" to totalPoints,
+            "date" to com.google.firebase.Timestamp.now()
+        )
+
+        db.collection("points")
+            .add(pointsData)
+            .addOnSuccessListener {
+                println("Points successfully written!")
+            }
+            .addOnFailureListener { e ->
+                println("Error writing document: $e")
+            }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.sekwencja_activity_correct)
@@ -56,28 +91,30 @@ class sekwencja_correct : AppCompatActivity() {
         if (correctCount + wrongCount >= 10) {
             showAllGamesCompletedDialog()
             Handler().postDelayed({
+                savePointsToSharedPreferences("trzecia", correctCount)
+                saveTotalPointsToDatabase()
                 val intent = Intent(this, wybor_gry::class.java)
                 startActivity(intent)
                 finish()
             }, 2000) // Show the "All games completed!" dialog after 2 seconds
-
         }
 
         val nextButton = findViewById<Button>(R.id.nextB)
-        nextButton.setOnClickListener{
+        nextButton.setOnClickListener {
             val intent1 = Intent(this, sekwencja_MainActivity::class.java)
             intent1.putExtra("CORRECT_COUNT", correctCount)
             intent1.putExtra("WRONG_COUNT", wrongCount)
             startActivity(intent1)
         }
-
     }
 
     private fun showAllGamesCompletedDialog() {
+        saveTotalPointsToDatabase()
         AlertDialog.Builder(this)
             .setTitle("All games completed!")
             .setMessage("Congratulations! You have completed all games.")
             .setPositiveButton("OK") { _, _ ->
+
                 finish()
             }
             .setCancelable(false)

@@ -91,7 +91,7 @@ Na ekranie wyświetlają się szybko znikające czaszki. Gracz musi kliknąć na
 -1 za każdą pominiętą czaszkę\n\n
 LABIRYNT\n\n
 Na ekranie zostaje wyświetlony biały labirynt na czarnym tle. Gracz ma za zadanie przeciągnąć obiekt do końca labiryntu oznaczonego kolorem czerwonym. Po dotknięciu ściany labiryntu, gra zostaje zresetowana i gracz rozpoczyna od punktu startowego. \n\n
-Gracz początkowo ma 10 punktów, za każde dotknięcie ściany -1\n\n
+Punkty przyznane są za przechodzenie poziomów tzn. liczba ukończonych poziomów dzielona przed 2, dodatkowo za każde dotknięcie ściany -1 punkt \n\n
 KOLOR SŁOWO\n\n
 Przez minutę gracz obserwuje wyświetlające się kolorowe napisy. Kiedy kolor zgadza się z napisem (np. napis red wyświetlany jest czerwonym kolorem) gracz musi nacisnąć ekran.\n\n
 +1 punkt za każde 2 poprawnie pominięte słowa\n
@@ -145,15 +145,16 @@ Przez minutę gracz obserwuje wyświetlające się kolorowe napisy. Kiedy kolor 
                 android:padding="16dp"
                 android:text="MEMORY\n\n
 Na ekranie zostaje wyświetlona plansza z kart. Gracz, klikając na kart, ma za zadanie znaleźć pasujące do siebie pary.\n\n
-Za każdą odkrytą parę +5\n
-Każdą kartę można odkryć 2 razy. Za każde dodatkowe -1 \n\n
+10 punktów za ukończenie w 20 ruchach +5\n
+Każde kolejne 3 ruchy to -1 punkt\n\n
 ZAPAMIĘTYWANIE SEKWENCJI\n\n
 Na ekranie wyświetlana jest plansza przycisków. Graczowi zostaje przedstawiona sekwencja - podświetlane zostają w kolejności przyciski. Gracz musi powtórzyć sekwencję klikając w odpowiedniej kolejności na przyciski. Po poprawnym odgadnięciu sekwencji zostaje przedstawiona następna o jeden dłuższa\n\n
-Za każde poprawne przejście sekwencji gracz otrzymuje ilość punktów odpowiadającą długości sekwencji.\n\n
+Gracz otrzymuje liczbe punktów odpowiadającą poziomowi do którego doszedł, maksymalnie 10 punktów\n\n
 ZAPAMIĘTYWANIE ELEMENTÓW\n\n
 Ekran podzielony jest na dwie części. początkowo dolna jest zakryta a na górnej wyświetlają się elementy należące do zbioru. Po 10 sekundach górna plansza zostaje zakryta i widoczna jest dolna część w której wyświetlane są elementy. Gracz musi wskazać elementy nie należące do górnego zboru poprzez kliknięcie na nie.\n\n
 +1 punkt za każde poprawne zaznaczenie elementu\n
--1 punkt za każde niepoprawne zaznaczenie elementu\n"
+-1 punkt za każde niepoprawne zaznaczenie elementu\n
+Maksymalnie 10 punktów\n"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -209,14 +210,15 @@ wychodzący piraci:\n
 zielony: -1\n
 niebieski 0\n
 Po 30 sekundach gry gracz zostaje zapytany o liczbę piratów wewnątrz statku.\n\n
-+5 punktów za każdą poprawną odpowiedź\n\n
+Za poprawną odpowiedź gracz otrzymuje 10 punktów, im dalej od poprawnej odpowiedzi tym gracz otrzymuje ich mniej\n\n
 RÓŻNICE\n\n
 Na podstawie małej mapy obrazków wyświetlającej się na górze ekranu, wskazać nie pasujące obrazki na dużej mapie. Poprawne wskazanie zaznacza obrazek na zielono, niepoprawne na czerwono.\n\n
-10 punktów za wykonanie gry w mniej niz 10 sekund\n
--1 punkt za każde 2 sekundy opóźnienia\n\n
+Znalezienie punktów w pierwszych 10 sekundach daje 10 punktów\n
+- 1 punkt za każde kolejne 2 sekundy\n\n
 KLOCKI KSZTAŁTY\n\n
 Mając rozrzucone elementy, ułożyć je na wzór wyświetlający się na górze ekranu. Elementy można przesuwać przytrzymując je i przeciągając po ekranie. Można je też obracać klikając na nie.\n\n
-Gracz ma początkowo 6 punktów, po każdych 10 sekundach odejmowany jest 1 punkt.\n"
+Za przejście gry w 100 sekundach gracz otrzymuje 10 punktów\n
+- 1 punkt za każde kolejne 8 sekund\n"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -283,11 +285,12 @@ Na podstawie % zaznaczonych bomb w momencie przegranej/końca gry:\n
 41-60% - 6\n
 61-80% - 8\n
 81-99% - 9\n
-100% (wygrana) - 10\n
+100% (wygrana) - 10\n\n
 SEKWENCJE LICZB\n\n
 Na ekranie zostaje wyświetlona 3 elementowa sekwencja liczba z zasłoniętym 4 elementem. Gracz musi wskazać ten 4 element z elementów dostępnych na dole planszy.\n\n
 +1 - za każde poprawne wskazanie\n
--1 - za każde niepoprawne wskazanie\n"
+-1 - za każde niepoprawne wskazanie\n
+Maksymalnie 10 punktów\n"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
