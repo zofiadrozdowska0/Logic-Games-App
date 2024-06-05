@@ -13,13 +13,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.Calendar
 
-
 class succes : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navView: NavigationView
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
-    //private lateinit var lineChartView: LineChartView
+    private lateinit var lineChartView: LineChartView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,10 +28,13 @@ class succes : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
+        // Znajdź LineChartView
+        lineChartView = findViewById(R.id.lineChartView)
+
         // przycisk do rozpoczecia gier
         val przygodaButton = findViewById<Button>(R.id.przygodaButton)
 
-        przygodaButton.setOnClickListener{
+        przygodaButton.setOnClickListener {
             val intent = Intent(applicationContext, wybor_gry::class.java)
             startActivity(intent)
         }
@@ -53,11 +55,8 @@ class succes : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_ryba_navbar)
-        //lineChartView = findViewById(R.id.lineChart)
-
 
         // Pobranie bieżącego użytkownika i jego UID
-
         val currentUser = auth.currentUser
         if (currentUser != null) {
             val uid = currentUser.uid
@@ -105,6 +104,7 @@ class succes : AppCompatActivity() {
             true
         }
     }
+
     private fun fetchPointsFromFirestore(uid: String) {
         val pointsList = mutableListOf<List<Pair<Float, Float>>>()
         val categories = listOf("memory_points", "reflex_points", "observation_points", "sobriety_points")
@@ -129,8 +129,8 @@ class succes : AppCompatActivity() {
 
                 pointsList.addAll(categoryPoints)
 
-                // Ustawienie danych na wykresie
-                //lineChartView.setDataPointsList(pointsList)
+                // Przekaż dane do LineChartView
+                lineChartView.invalidate() // Odśwież widok
             }
             .addOnFailureListener { e ->
                 Toast.makeText(this, "Błąd podczas pobierania punktów: ${e.message}", Toast.LENGTH_SHORT).show()
