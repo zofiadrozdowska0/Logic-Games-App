@@ -3,10 +3,12 @@ package com.example.signupapp
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.GridLayout
 import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.google.firebase.firestore.FirebaseFirestore
 
 class GraRzeczonaActivity : AppCompatActivity() {
@@ -24,10 +26,18 @@ class GraRzeczonaActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.roznice_gra)
+
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_ryba_navbar)  // Adjust this drawable resource as necessary
+
+        firestore = FirebaseFirestore.getInstance()
+
         gridLayoutTop = findViewById(R.id.gridLayoutTop)
         gridLayoutBottom = findViewById(R.id.gridLayoutBottom)
         startTime = System.currentTimeMillis()
-        firestore = FirebaseFirestore.getInstance()
+
         generateAndDisplayImages()
     }
 
