@@ -261,12 +261,9 @@ class LineChartView2(context: Context, attrs: AttributeSet?) : View(context, att
             var textOffset = 0f
             var colorBoxXOffset = 0f
 
-            if (labels[i] == "Perceptiveness Points") {
-                textOffset = -10f // Move "Perceptiveness Points" label to the left
-                colorBoxXOffset = -150f // Move its color box to the left
-            } else if (labels[i] == "Logic Points") {
-                textOffset = -10f // Move "Logic Points" label to the right
-                colorBoxXOffset = 30f // Move its color box to the right
+            if (labels[i] == "Logika") {
+                textOffset = 0f // No offset for the text
+                colorBoxXOffset = 220f // Align color box with "Spostrzegawczość"
             }
 
             val colorBoxX = legendMargin + column * (legendBoxSize + legendSpacing + columnSpacing + paint.measureText(labels[i])) + colorBoxXOffset
