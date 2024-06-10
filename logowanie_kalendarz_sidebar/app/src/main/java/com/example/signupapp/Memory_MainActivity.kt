@@ -79,7 +79,6 @@ class Memory_MainActivity : ComponentActivity() {
                 val intent = Intent(this, zap_sekwencja_MainActivity::class.java)
                 intent.putExtra("FINAL_SCORE", finalScore)
                 startActivity(intent)
-                finish()
             }
             .show()
     }

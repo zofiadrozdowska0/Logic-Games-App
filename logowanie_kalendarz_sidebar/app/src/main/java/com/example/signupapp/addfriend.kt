@@ -67,7 +67,8 @@ class addfriend : AppCompatActivity() {
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_home -> {
-                    drawerLayout.closeDrawer(GravityCompat.START)
+                    val intent = Intent(applicationContext, succes::class.java)
+                    startActivity(intent)
                 }
                 R.id.nav_rules -> {
                     val intent = Intent(applicationContext, rules::class.java)

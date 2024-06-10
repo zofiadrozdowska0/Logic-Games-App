@@ -95,6 +95,7 @@ class WhacAPirateMainActivity : AppCompatActivity() {
             runOnUiThread {
                 findViewById<TextView>(R.id.textView4).text = message
                 Handler().postDelayed({
+                    savePointsToSharedPreferences("whac_points", score)
                     saveTotalPoints()
                     val intent1 = Intent(applicationContext, wybor_gry::class.java)
                     startActivity(intent1)
@@ -161,12 +162,18 @@ class WhacAPirateMainActivity : AppCompatActivity() {
             }
         }
     }
-
+    private fun savePointsToSharedPreferences(key: String, points: Int) {
+        val sharedPreferences = getSharedPreferences("game_scores", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putInt(key, points)
+        editor.apply()
+    }
     private fun saveTotalPoints() {
         val sharedPreferences = getSharedPreferences("game_scores", Context.MODE_PRIVATE)
         val kolorPoints = sharedPreferences.getInt("kolor_points", 0)
         val mazePoints = sharedPreferences.getInt("maze_points", 0)
-        val totalPoints = kolorPoints + mazePoints + score
+        val whacPoints = sharedPreferences.getInt("whac_points", 0)
+        val totalPoints = kolorPoints + mazePoints + whacPoints
 
         val sharedPreferencesUser = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         val username = sharedPreferencesUser.getString("username", "Unknown") ?: "Unknown"

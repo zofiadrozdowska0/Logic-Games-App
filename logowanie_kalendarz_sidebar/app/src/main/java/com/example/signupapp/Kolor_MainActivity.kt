@@ -102,6 +102,22 @@ class Kolor_MainActivity : ComponentActivity() {
             previousPair = randomPair
             buttonClickable = true
         }
+        val timer2 = object : CountDownTimer(61100, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                val minutes = millisUntilFinished / 60000
+                val seconds = (millisUntilFinished % 60000) / 1000
+                texttime.text = "Time left: $minutes:${String.format("%02d", seconds)}"
+            }
+
+            override fun onFinish() {
+                texttime.text = "Time's up!"
+                mainbut.isEnabled = false
+                gra = false
+                showCompletionDialog(score)
+
+            }
+        }
+        timer2.start()
 
         mainbut.setOnClickListener {
             if (buttonClickable) {
@@ -120,29 +136,16 @@ class Kolor_MainActivity : ComponentActivity() {
                 }
                 if (score == 10) {
                     showCompletionDialog(score)
+                    timer2.cancel()
                 }
                 buttonClickable = false // Ustawiamy flagę na false po kliknięciu
             }
         }
 
-        val timer2 = object : CountDownTimer(61100, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                val minutes = millisUntilFinished / 60000
-                val seconds = (millisUntilFinished % 60000) / 1000
-                texttime.text = "Time left: $minutes:${String.format("%02d", seconds)}"
-            }
 
-            override fun onFinish() {
-                texttime.text = "Time's up!"
-                mainbut.isEnabled = false
-                gra = false
-                showCompletionDialog(score)
-            }
-        }
-        timer2.start()
 
         var roundcount = 0
-        val timer = object : CountDownTimer(31200, 2400) {
+        val timer5 = object : CountDownTimer(31200, 2400) {
             override fun onTick(millisUntilFinished: Long) {
                 if (gra) {
                     textpoints.text = "Points: $score"
@@ -165,6 +168,7 @@ class Kolor_MainActivity : ComponentActivity() {
                             }
                             if (score == 10) {
                                 showCompletionDialog(score)
+                                timer2.cancel()
                             }
                             textpoints.text = "Points: $score"
                         }
@@ -198,6 +202,7 @@ class Kolor_MainActivity : ComponentActivity() {
                                     }
                                     if (score == 10) {
                                         showCompletionDialog(score)
+                                        timer2.cancel()
                                     }
                                     textpoints.text = "Points: $score"
                                 }
@@ -231,6 +236,7 @@ class Kolor_MainActivity : ComponentActivity() {
                                             }
                                             if (score == 10) {
                                                 showCompletionDialog(score)
+                                                timer2.cancel()
                                             }
                                             textpoints.text = "Points: $score"
                                         }
@@ -242,6 +248,7 @@ class Kolor_MainActivity : ComponentActivity() {
 
                             override fun onFinish() {
                                 showCompletionDialog(score) // Show final score dialog at the end
+                                timer2.cancel()
                             }
                         }
                         timer4.start()
@@ -250,7 +257,7 @@ class Kolor_MainActivity : ComponentActivity() {
                 timer3.start()
             }
         }
-        timer.start()
+        timer5.start()
     }
 
     private fun showCompletionDialog(finalScore: Int) {
@@ -268,7 +275,7 @@ class Kolor_MainActivity : ComponentActivity() {
                 // Proceed to the next game
                 val intent = Intent(this@Kolor_MainActivity, Maze_MainActivity::class.java)
                 startActivity(intent)
-                finish()
+
             }
             setCancelable(false)
             show()

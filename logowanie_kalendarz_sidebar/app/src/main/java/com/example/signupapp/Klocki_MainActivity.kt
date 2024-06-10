@@ -223,7 +223,7 @@ class Klocki_MainActivity : AppCompatActivity() {
 
                 val points = earnedPoints
                 savePointsToSharedPreferences("klocki_points", points)
-
+                saveTotalPointsToDatabase()
                 Handler(Looper.getMainLooper()).postDelayed({
                     showAllGamesCompletedDialog()
                 }, 2000) // Show the "All games completed!" dialog after 2 seconds
@@ -241,7 +241,6 @@ class Klocki_MainActivity : AppCompatActivity() {
             .setTitle("All games completed!")
             .setMessage("Congratulations! You have completed all games.")
             .setPositiveButton("OK") { _, _ ->
-                saveTotalPointsToDatabase()
                 finish()
             }
             .setCancelable(false)
