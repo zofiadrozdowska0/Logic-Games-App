@@ -11,13 +11,7 @@
         android:background="@drawable/roznice_tlo_menu2"
         android:padding="16dp">
 
-        <!-- Toolbar layout -->
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="#2F1F2B"
-            android:titleTextColor="#E5BE95" />
+
 
         <GridLayout
             android:id="@+id/gridLayoutTop"
@@ -48,14 +42,6 @@
 
     </RelativeLayout>
 
-    <!-- NavigationView -->
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="#2F1F2B"
-        app:itemTextColor="#E5BE95"
-        app:menu="@menu/drawer_menu" />
+
 
 </androidx.drawerlayout.widget.DrawerLayout>

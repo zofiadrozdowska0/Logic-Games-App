@@ -27,11 +27,6 @@ class GraRzeczonaActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.roznice_gra)
 
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_ryba_navbar)  // Adjust this drawable resource as necessary
-
         firestore = FirebaseFirestore.getInstance()
 
         gridLayoutTop = findViewById(R.id.gridLayoutTop)
