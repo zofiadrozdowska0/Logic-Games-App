@@ -87,7 +87,7 @@ class zap_sekwencja_MemoryAdapter(
                 viewHolder.imageButton.setBackgroundColor(
                     ContextCompat.getColor(
                         context,
-                        android.R.color.holo_green_light
+                        android.R.color.holo_blue_light
                     )
                 )
                 // Post a delayed action to revert the color after 0.5 seconds
@@ -127,7 +127,7 @@ class zap_sekwencja_MemoryAdapter(
                         savePointsToSharedPreferences("zap_sekwencje_points", points_zap_sek)
                         showCompletionDialog(points_zap_sek)
                         points_zap_sek = 0
-                        startGame()
+
 
                     }
                 }
@@ -150,8 +150,11 @@ class zap_sekwencja_MemoryAdapter(
                 val intent = Intent(context, zap_el_zb_MainActivity::class.java)
                 intent.putExtra("FINAL_SCORE", finalScore)
                 context.startActivity(intent)
+                startGame()
+
             }
             .show()
+
     }
 
 
@@ -179,7 +182,7 @@ class zap_sekwencja_MemoryAdapter(
                         viewHolder.imageButton.setBackgroundColor(
                             ContextCompat.getColor(
                                 context,
-                                android.R.color.holo_green_light
+                                android.R.color.holo_blue_light
                             )
                         )
 

@@ -115,7 +115,7 @@ class Ufoludki_MainActivity : AppCompatActivity() {
         Handler(Looper.getMainLooper()).postDelayed({
             graRozpoczeta = false // Zakończ grę po 40 sekundach
             zapytajOUzyskanePunkty()
-        }, 25000) // 40 sekund w milisekundach
+        }, 25000) // 25 sekund w milisekundach
     }
 
     private fun zapytajOUzyskanePunkty() {

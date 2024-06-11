@@ -194,7 +194,6 @@ class wybor_gry : AppCompatActivity() {
                 Log.d(TAG, "Successfully retrieved documents.")
                 if (documents.isEmpty) {
                     Log.d(TAG, "No points found for today.")
-                    Toast.makeText(this, "No points found for today", Toast.LENGTH_SHORT).show()
                 } else {
                     Log.d(TAG, "Points found, processing documents.")
 
@@ -215,7 +214,6 @@ class wybor_gry : AppCompatActivity() {
 
                     if (reflexPoints == 0 && memoryPoints == 0 && concentrationPoints == 0 && logicPoints == 0) {
                         Log.d(TAG, "No points found for today after processing documents.")
-                        Toast.makeText(this, "No points found for today", Toast.LENGTH_SHORT).show()
                     } else {
                         Log.d(TAG, "Points found: Reflex: $reflexPoints, Memory: $memoryPoints, Concentration: $concentrationPoints, Logic: $logicPoints")
                         updatePointsUI(reflexPoints, memoryPoints, concentrationPoints, logicPoints)
@@ -224,7 +222,6 @@ class wybor_gry : AppCompatActivity() {
             }
             .addOnFailureListener { exception ->
                 Log.e(TAG, "Error getting documents: ${exception.message}")
-                Toast.makeText(this, "Error getting documents: ${exception.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
