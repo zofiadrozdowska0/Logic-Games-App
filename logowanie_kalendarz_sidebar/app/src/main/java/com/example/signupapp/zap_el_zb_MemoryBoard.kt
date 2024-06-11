@@ -94,9 +94,9 @@ class zap_el_zb_MemoryBoard(
 
                     if (clickedImage == correctImage) {
                         showToast("Good Answer!")
-                        points_el_zb++
+                        points_el_zb+=2
                         roundnumber++
-                        if ((points_el_zb<10) and (roundnumber<15)){
+                        if ((points_el_zb<10) and (roundnumber<5)){
                             tvNumMoves.text = "Points: ${points_el_zb}"
                         }
                         else{
@@ -113,10 +113,19 @@ class zap_el_zb_MemoryBoard(
                     } else {
                         showToast("Wrong Answer!")
                         if (points_el_zb>0){
-                            points_el_zb--
+                            points_el_zb-=2
                         }
-                        roundnumber++
                         tvNumMoves.text = "Points: ${points_el_zb}"
+                        if (roundnumber >=5) {
+                            savePointsToSharedPreferences("zap_elementy_points", points_el_zb)
+                            saveTotalPointsToDatabase()
+                            points_el_zb = 0
+                            val intent = Intent(context, wybor_gry::class.java)
+                            context.startActivity(intent)
+                        }
+                        else{
+                            roundnumber++
+                        }
                     }
                     restartGame()
                 }

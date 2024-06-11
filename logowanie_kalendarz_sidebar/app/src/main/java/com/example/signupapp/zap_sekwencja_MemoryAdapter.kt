@@ -109,9 +109,9 @@ class zap_sekwencja_MemoryAdapter(
                     memoryGame.level++
                     roundnumber++
                     tvNumElements.text = "Level: ${memoryGame.level-1}" // Aktualizacja TextView z wartością level
-                    points_zap_sek++
+                    points_zap_sek+=2
 
-                    if ((points_zap_sek<10) and (roundnumber<15)) {
+                    if ((points_zap_sek<10) and (roundnumber<5)) {
                         tvNumPoints.text = "Points: ${points_zap_sek}"
                         currentSequenceIndex = 0
                         startGame()
@@ -134,10 +134,20 @@ class zap_sekwencja_MemoryAdapter(
             } else {
                 Toast.makeText(context, "Wrong choice!", Toast.LENGTH_SHORT).show()
                 //Log.d(TAG, "Gracz kliknął nieprawidłową kartę na pozycji: $position")
-                roundnumber++
-                currentSequenceIndex=0
-                tvNumPoints.text = "Points: ${points_zap_sek}"
-                startGame()
+                if (roundnumber>=5){
+                    roundnumber=0
+                    memoryGame.level = 2
+                    currentSequenceIndex=0
+                    savePointsToSharedPreferences("zap_sekwencje_points", points_zap_sek)
+                    showCompletionDialog(points_zap_sek)
+                    points_zap_sek = 0
+                }
+                else {
+                    roundnumber++
+                    currentSequenceIndex = 0
+                    tvNumPoints.text = "Points: ${points_zap_sek}"
+                    startGame()
+                }
             }
 
         }
