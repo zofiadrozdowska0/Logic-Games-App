@@ -25,7 +25,7 @@ class Maze_MazeView : View {
     private var backgroundBitmap: Bitmap? = null
 
     private val passagePaint = Paint().apply {
-        color = Color.WHITE // Kolor ścieżek
+        color = Color.argb(170, 255, 255, 255)
         style = Paint.Style.FILL
     }
 
@@ -47,7 +47,7 @@ class Maze_MazeView : View {
         // Załaduj obrazek skarbu
         treasureBitmap = BitmapFactory.decodeResource(resources, R.drawable.maze_treasure)
         // Załaduj obrazek tła
-        backgroundBitmap = BitmapFactory.decodeResource(resources, R.drawable.maze_background_texture)
+        backgroundBitmap = BitmapFactory.decodeResource(resources, R.drawable.maze_bg_octopus)
 
         if (treasureBitmap == null) {
             // Handle the error gracefully if the resource is not found
