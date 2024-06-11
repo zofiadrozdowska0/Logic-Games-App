@@ -89,14 +89,16 @@
 Przez minutę gracz obserwuje wyświetlające się kolorowe napisy. Kiedy kolor zgadza się z napisem (np. napis red wyświetlany jest czerwonym kolorem) gracz musi nacisnąć ekran.\n\n
 +1 punkt za każde 5 poprawnie pominięte słowa\n
 +1 punkt za każde poprawne wskazanie\n
--1 punkt za każde niepoprawne wskazanie\n
+-1 punkt za każde niepoprawne wskazanie\n\n
 LABIRYNT\n\n
 Na ekranie zostaje wyświetlony biały labirynt na czarnym tle. Gracz ma za zadanie przeciągnąć obiekt do końca labiryntu oznaczonego kolorem czerwonym. Po dotknięciu ściany labiryntu, gra zostaje zresetowana i gracz rozpoczyna od punktu startowego. \n\n
 Punkty przyznane są za przechodzenie poziomów tzn. liczba ukończonych poziomów, dodatkowo za każde dotknięcie ściany -1 punkt \n\n
 WHAC-A-PIRATE\n\n
 Na ekranie wyświetlają się szybko znikające czaszki. Gracz musi kliknąć na czaszkę przed jej zniknięciem.\n\n
-+0.5 za każdą poprawnie klikniętą czaszkę\n
--1 za każdą pominiętą czaszkę\n\n"
++1 za każdą poprawnie klikniętą czaszkę\n
+Maksymalnie można zdobyć 10 punktów\n
+Gracz posiada 3 życia i traci jedno przy nie kliknięciu na pirata\n
+\n\n"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -145,16 +147,16 @@ Na ekranie wyświetlają się szybko znikające czaszki. Gracz musi kliknąć na
                 android:padding="16dp"
                 android:text="MEMORY\n\n
 Na ekranie zostaje wyświetlona plansza z kart. Gracz, klikając na kart, ma za zadanie znaleźć pasujące do siebie pary.\n\n
-10 punktów za ukończenie w 20 ruchach +5\n
+10 punktów za ukończenie w 20 ruchach\n
 Każde kolejne 3 ruchy to -1 punkt\n\n
 ZAPAMIĘTYWANIE SEKWENCJI\n\n
 Na ekranie wyświetlana jest plansza przycisków. Graczowi zostaje przedstawiona sekwencja - podświetlane zostają w kolejności przyciski. Gracz musi powtórzyć sekwencję klikając w odpowiedniej kolejności na przyciski. Po poprawnym odgadnięciu sekwencji zostaje przedstawiona następna o jeden dłuższa\n\n
-Gracz otrzymuje liczbe punktów odpowiadającą poziomowi do którego doszedł, maksymalnie 10 punktów\n\n
+Gracz otrzymuje +2 za każde poprawne wykoanie sekwencji. Maksymlanie można dojść do 5 poziomu\n\n
 ZAPAMIĘTYWANIE ELEMENTÓW\n\n
 Ekran podzielony jest na dwie części. początkowo dolna jest zakryta a na górnej wyświetlają się elementy należące do zbioru. Po 10 sekundach górna plansza zostaje zakryta i widoczna jest dolna część w której wyświetlane są elementy. Gracz musi wskazać elementy nie należące do górnego zboru poprzez kliknięcie na nie.\n\n
-+1 punkt za każde poprawne zaznaczenie elementu\n
--1 punkt za każde niepoprawne zaznaczenie elementu\n
-Maksymalnie 10 punktów\n"
++2 punkt za każde poprawne zaznaczenie elementu\n
+-2 punkt za każde niepoprawne zaznaczenie elementu\n
+Maksymalnie 5 rund\n"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -289,8 +291,7 @@ Na podstawie % zaznaczonych bomb w momencie przegranej/końca gry:\n
 SEKWENCJE LICZB\n\n
 Na ekranie zostaje wyświetlona 3 elementowa sekwencja liczba z zasłoniętym 4 elementem. Gracz musi wskazać ten 4 element z elementów dostępnych na dole planszy.\n\n
 +1 - za każde poprawne wskazanie\n
--1 - za każde niepoprawne wskazanie\n
-Maksymalnie 10 punktów\n"
+Gra ma 10 rund\n"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
