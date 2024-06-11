@@ -161,12 +161,16 @@ class saper_minefield : AppCompatActivity() {
             val row = random.nextInt(rows)
             val column = random.nextInt(columns)
 
-            if (!mineboard[row][column].hasBomb && (row != firstMoveRow || column != firstMoveColumn)) {
+            // Avoid placing bombs in the first move cell and the surrounding cells
+            val isInFirstMoveArea = row in (firstMoveRow - 1)..(firstMoveRow + 1) && column in (firstMoveColumn - 1)..(firstMoveColumn + 1)
+
+            if (!mineboard[row][column].hasBomb && !isInFirstMoveArea) {
                 mineboard[row][column].hasBomb = true
                 minesPlaced++
             }
         }
     }
+
 
     private fun countAdjacentBombs(mineboard: Array<Array<saper_MineCell>>, row: Int, column: Int): Int {
         var count = 0
