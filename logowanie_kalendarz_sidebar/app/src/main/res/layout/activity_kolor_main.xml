@@ -8,6 +8,29 @@
     android:background="#f3eaaf"
     tools:context=".Kolor_MainActivity">
 
+    <!-- Tło główne -->
+    <ImageView
+        android:id="@+id/ivBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg_underwater"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Półprzezroczysta warstwa -->
+    <View
+        android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#33FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/mainButton"
         android:layout_width="384dp"
@@ -16,11 +39,11 @@
         android:layout_marginTop="1dp"
         android:layout_marginEnd="14dp"
         android:layout_marginBottom="125dp"
+        android:background="#66FFFFFF"
         android:text="black"
-        android:textStyle="bold"
         android:textColor="#000000"
         android:textSize="100sp"
-        android:background="#eedc9a"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
