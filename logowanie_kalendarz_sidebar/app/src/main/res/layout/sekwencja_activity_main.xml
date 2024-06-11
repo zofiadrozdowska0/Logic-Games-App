@@ -3,8 +3,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@drawable/sekwencja_tlo2"
     android:layout_height="match_parent">
+    <!-- Tło główne -->
+    <ImageView
+        android:id="@+id/ivBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg_beach"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <!-- Półprzezroczysta warstwa -->
+    <View
+        android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#33FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/text_time"
@@ -12,6 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="4dp"
+        android:background="#55FFFFFF"
         android:text="Time:"
         android:textColor="@color/black"
         android:textSize="20dp"
@@ -24,6 +45,7 @@
         android:layout_height="43dp"
         android:layout_marginEnd="172dp"
         android:layout_marginBottom="52dp"
+        android:background="#55FFFFFF"
         android:gravity="center"
         android:textColor="@color/black"
         android:textSize="20sp"
@@ -34,8 +56,8 @@
         android:id="@+id/linearlayout1"
         android:layout_width="0dp"
         android:layout_height="59dp"
-        android:background="#7F3F7F"
         android:layout_marginTop="72dp"
+        android:background="#EAD5A2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
@@ -81,18 +103,18 @@
             android:layout_marginEnd="16dp"
             android:layout_weight="1"
             android:scaleType="fitCenter"
+            android:src="@drawable/sekwencja_questionmarek"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/button3"
-            app:layout_constraintTop_toTopOf="@+id/button1"
-            android:src="@drawable/sekwencja_pirate_face" />
+            app:layout_constraintTop_toTopOf="@+id/button1" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearlayout2"
         android:layout_width="0dp"
         android:layout_height="59dp"
-        android:background="#7F3F7F"
         android:layout_marginTop="516dp"
+        android:background="#EAD5A2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
@@ -149,6 +171,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="120dp"
         android:layout_marginTop="32dp"
+        android:background="#55FFFFFF"
         android:text="Find missing value"
         android:textColor="@color/black"
         android:textSize="20dp"
@@ -161,6 +184,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="148dp"
         android:layout_marginTop="344dp"
+        android:background="#55FFFFFF"
         android:text="Choose one:"
         android:textColor="@color/black"
         android:textSize="20dp"
