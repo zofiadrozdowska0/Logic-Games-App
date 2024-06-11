@@ -85,18 +85,18 @@
                 android:layout_height="wrap_content"
                 android:background="#80E5BE95"
                 android:padding="16dp"
-                android:text="WHAC-A-PIRATE\n\n
-Na ekranie wyświetlają się szybko znikające czaszki. Gracz musi kliknąć na czaszkę przed jej zniknięciem.\n\n
-+0.5 za każdą poprawnie klikniętą czaszkę\n
--1 za każdą pominiętą czaszkę\n\n
-LABIRYNT\n\n
-Na ekranie zostaje wyświetlony biały labirynt na czarnym tle. Gracz ma za zadanie przeciągnąć obiekt do końca labiryntu oznaczonego kolorem czerwonym. Po dotknięciu ściany labiryntu, gra zostaje zresetowana i gracz rozpoczyna od punktu startowego. \n\n
-Punkty przyznane są za przechodzenie poziomów tzn. liczba ukończonych poziomów dzielona przed 2, dodatkowo za każde dotknięcie ściany -1 punkt \n\n
-KOLOR SŁOWO\n\n
+                android:text="KOLOR SŁOWO\n\n
 Przez minutę gracz obserwuje wyświetlające się kolorowe napisy. Kiedy kolor zgadza się z napisem (np. napis red wyświetlany jest czerwonym kolorem) gracz musi nacisnąć ekran.\n\n
 +1 punkt za każde 5 poprawnie pominięte słowa\n
 +1 punkt za każde poprawne wskazanie\n
--1 punkt za każde niepoprawne wskazanie\n"
+-1 punkt za każde niepoprawne wskazanie\n
+LABIRYNT\n\n
+Na ekranie zostaje wyświetlony biały labirynt na czarnym tle. Gracz ma za zadanie przeciągnąć obiekt do końca labiryntu oznaczonego kolorem czerwonym. Po dotknięciu ściany labiryntu, gra zostaje zresetowana i gracz rozpoczyna od punktu startowego. \n\n
+Punkty przyznane są za przechodzenie poziomów tzn. liczba ukończonych poziomów, dodatkowo za każde dotknięcie ściany -1 punkt \n\n
+WHAC-A-PIRATE\n\n
+Na ekranie wyświetlają się szybko znikające czaszki. Gracz musi kliknąć na czaszkę przed jej zniknięciem.\n\n
++0.5 za każdą poprawnie klikniętą czaszkę\n
+-1 za każdą pominiętą czaszkę\n\n"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -200,7 +200,11 @@ Maksymalnie 10 punktów\n"
                 android:layout_height="wrap_content"
                 android:background="#80E5BE95"
                 android:padding="16dp"
-                android:text="UFOLUDKI\n\n
+                android:text="RÓŻNICE\n\n
+Na podstawie małej mapy obrazków wyświetlającej się na górze ekranu, wskazać nie pasujące obrazki na dużej mapie. Poprawne wskazanie zaznacza obrazek na zielono, niepoprawne na czerwono.\n\n
+Znalezienie punktów w pierwszych 10 sekundach daje 10 punktów\n
+- 1 punkt za każde kolejne 2 sekundy\n\n
+UFOLUDKI\n\n
 Na ekranie wyświetlony zostaje statek do którego z lewej strony wchodzą piraci a z prawej wychodzą. Gracz ma za zadanie zliczać piratów znajdujących się wewnątrz statku.
 wchodzący piraci:\n
 zielony: +1\n
@@ -209,12 +213,8 @@ niebieski: 0\n
 wychodzący piraci:\n
 zielony: -1\n
 niebieski 0\n
-Po 30 sekundach gry gracz zostaje zapytany o liczbę piratów wewnątrz statku.\n\n
+Po 25 sekundach gry gracz zostaje zapytany o liczbę piratów wewnątrz statku.\n\n
 Za poprawną odpowiedź gracz otrzymuje 10 punktów, im dalej od poprawnej odpowiedzi tym gracz otrzymuje ich mniej\n\n
-RÓŻNICE\n\n
-Na podstawie małej mapy obrazków wyświetlającej się na górze ekranu, wskazać nie pasujące obrazki na dużej mapie. Poprawne wskazanie zaznacza obrazek na zielono, niepoprawne na czerwono.\n\n
-Znalezienie punktów w pierwszych 10 sekundach daje 10 punktów\n
-- 1 punkt za każde kolejne 2 sekundy\n\n
 KLOCKI KSZTAŁTY\n\n
 Mając rozrzucone elementy, ułożyć je na wzór wyświetlający się na górze ekranu. Elementy można przesuwać przytrzymując je i przeciągając po ekranie. Można je też obracać klikając na nie.\n\n
 Za przejście gry w 100 sekundach gracz otrzymuje 10 punktów\n
