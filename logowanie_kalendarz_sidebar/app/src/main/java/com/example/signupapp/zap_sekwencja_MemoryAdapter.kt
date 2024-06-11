@@ -16,7 +16,7 @@ import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.math.min
-
+import kotlin.math.round
 
 
 class zap_sekwencja_MemoryAdapter(
@@ -134,6 +134,7 @@ class zap_sekwencja_MemoryAdapter(
             } else {
                 Toast.makeText(context, "Wrong choice!", Toast.LENGTH_SHORT).show()
                 //Log.d(TAG, "Gracz kliknął nieprawidłową kartę na pozycji: $position")
+                roundnumber++
                 currentSequenceIndex=0
                 tvNumPoints.text = "Points: ${points_zap_sek}"
                 startGame()
