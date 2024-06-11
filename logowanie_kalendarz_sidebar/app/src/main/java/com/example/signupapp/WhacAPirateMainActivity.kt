@@ -13,7 +13,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.Timer
@@ -94,12 +93,10 @@ class WhacAPirateMainActivity : AppCompatActivity() {
         fun gameOver(message: String = "Game Over! Score: $score") {
             runOnUiThread {
                 findViewById<TextView>(R.id.textView4).text = message
-                Handler().postDelayed({
-                    savePointsToSharedPreferences("whac_points", score)
-                    saveTotalPoints()
-                    val intent1 = Intent(applicationContext, wybor_gry::class.java)
-                    startActivity(intent1)
-                }, 1000)
+                savePointsToSharedPreferences("whac_points", score)
+                saveTotalPoints()
+                val intent1 = Intent(this, wybor_gry::class.java)
+                startActivity(intent1)
             }
             appearanceTimer?.cancel()
         }
@@ -176,21 +173,22 @@ class WhacAPirateMainActivity : AppCompatActivity() {
         val totalPoints = kolorPoints + mazePoints + whacPoints
 
         val sharedPreferencesUser = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-        val username = sharedPreferencesUser.getString("username", "Unknown") ?: "Unknown"
+        val username = sharedPreferencesUser.getString("username", "Unknown User")
 
-        val data = hashMapOf(
-            "timestamp" to com.google.firebase.Timestamp.now(),
+        val db = FirebaseFirestore.getInstance()
+        val pointsData = hashMapOf(
+            "username" to username,
             "reflex_points" to totalPoints,
-            "username" to username
+            "date" to com.google.firebase.Timestamp.now()
         )
 
-        firestore.collection("points")
-            .add(data)
+        db.collection("points")
+            .add(pointsData)
             .addOnSuccessListener {
-                Toast.makeText(this, "Points saved successfully", Toast.LENGTH_SHORT).show()
+                println("Points successfully written!")
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error saving points: ${e.message}", Toast.LENGTH_SHORT).show()
+                println("Error writing document: $e")
             }
     }
 }
