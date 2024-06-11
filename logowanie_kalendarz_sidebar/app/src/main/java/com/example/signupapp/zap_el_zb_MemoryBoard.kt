@@ -113,6 +113,7 @@ class zap_el_zb_MemoryBoard(
                     } else {
                         showToast("Wrong Answer!")
                         points_el_zb--
+                        roundnumber++
                         tvNumMoves.text = "Points: ${points_el_zb}"
                     }
                     restartGame()
