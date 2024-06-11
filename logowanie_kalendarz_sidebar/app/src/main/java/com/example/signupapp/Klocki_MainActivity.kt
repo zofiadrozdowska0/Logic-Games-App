@@ -238,6 +238,7 @@ class Klocki_MainActivity : AppCompatActivity() {
                 savePointsToSharedPreferences("klocki_points", points)
                 saveTotalPointsToDatabase()
                 Handler(Looper.getMainLooper()).postDelayed({
+                    Thread.sleep(300)
                     showAllGamesCompletedDialog()
                 }, 2000) // Show the "All games completed!" dialog after 2 seconds
 
