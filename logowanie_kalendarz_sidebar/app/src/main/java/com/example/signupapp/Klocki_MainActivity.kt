@@ -19,6 +19,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.signupapp.databinding.KlockiActivityMainBinding
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlin.math.abs
 import kotlin.random.Random
 
 class Klocki_MainActivity : AppCompatActivity() {
@@ -72,9 +73,9 @@ class Klocki_MainActivity : AppCompatActivity() {
                         .z(dz)
                     view.animate().setDuration(0).start()
                 }
-                else -> {
-                    if (orgx - view.x <= 3f && orgy - view.y <= 3f) {
-                        view.animate().setDuration(60)
+                MotionEvent.ACTION_UP -> {
+                    if (abs(orgx - view.x) <= 1f && abs(orgy - view.y) <= 1f) {
+                        view.animate().setDuration(0)
                         view.animate().rotationBy(90f)
                         if (view.rotation % 90 != 0f) //zabezpieczenie przed zatrzymaniem animacji przed wykonaniem całego obrotu
                         {
@@ -84,18 +85,29 @@ class Klocki_MainActivity : AppCompatActivity() {
                             }
                         }
                         dz += 1f
-                        view.animate().z(dz)
+                        view.animate()
+                            .z(dz)
+                            .start()
                         if (view is ImageView && view.tag != 'o') {
                             view.rotated = !view.rotated
                         }
+                        supportActionBar?.hide()
+                        grid(binding.imageView2)
+                        grid(binding.imageView3)
+                        grid(binding.imageView4)
+                        grid(binding.imageView5)
+                        checkWin()
                     }
-                    grid(binding.imageView2)
-                    grid(binding.imageView3)
-                    grid(binding.imageView4)
-                    grid(binding.imageView5)
-                    checkWin()
-                    supportActionBar?.hide()
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        supportActionBar?.hide()
+                        grid(binding.imageView2)
+                        grid(binding.imageView3)
+                        grid(binding.imageView4)
+                        grid(binding.imageView5)
+                        checkWin() }, 10) // Opóźnienie o 10 ms w celu poczekania na koniec animacji
+
                     return@OnTouchListener false
+
                 }
             }
             true
@@ -179,33 +191,33 @@ class Klocki_MainActivity : AppCompatActivity() {
         }
         if (filledRect == 16) {
             wins++
-            if (wins >= 5) {
+            if (wins >= 3) {
                 val elapsedTime = SystemClock.elapsedRealtime() - startTime
                 val seconds = (elapsedTime / 1000).toInt()
                 val tenthsseconds = (elapsedTime / 100).toInt()
                 val timeString = String.format("%02d.%01d", seconds, tenthsseconds % 10)
                 val timeFloat = timeString.toFloat()
-                if (timeFloat <= 100) {
+                if (timeFloat <= 60) {
                     earnedPoints = 10
-                } else if (timeFloat <= 108) {
+                } else if (timeFloat <= 68) {
                     earnedPoints = 9
-                } else if (timeFloat <= 116) {
+                } else if (timeFloat <= 76) {
                     earnedPoints = 8
-                } else if (timeFloat <= 124) {
+                } else if (timeFloat <= 84) {
                     earnedPoints = 7
-                } else if (timeFloat <= 132) {
+                } else if (timeFloat <= 92) {
                     earnedPoints = 6
-                } else if (timeFloat <= 140) {
+                } else if (timeFloat <= 100) {
                     earnedPoints = 5
-                } else if (timeFloat <= 148) {
+                } else if (timeFloat <= 108) {
                     earnedPoints = 4
-                } else if (timeFloat <= 156) {
+                } else if (timeFloat <= 116) {
                     earnedPoints = 3
-                } else if (timeFloat <= 164) {
+                } else if (timeFloat <= 124) {
                     earnedPoints = 2
-                } else if (timeFloat <= 172) {
+                } else if (timeFloat <= 132) {
                     earnedPoints = 1
-                } else if (timeFloat > 172) {
+                } else if (timeFloat > 132) {
                     earnedPoints = 0
                 }
                 println("Warunki Wygranej. Czas gry: $timeString")
