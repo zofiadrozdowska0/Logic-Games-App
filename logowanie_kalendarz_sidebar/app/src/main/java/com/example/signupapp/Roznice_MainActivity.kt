@@ -149,29 +149,6 @@ class Roznice_MainActivity : AppCompatActivity() {
         val editor = sharedPreferences.edit()
         editor.putInt(key, points)
         editor.apply()
-
-        Log.d("Roznice_MainActivity", "Saved $points points to SharedPreferences with key $key")
-
-        val username = sharedPreferences.getString("username", "Unknown User") ?: "Unknown User"
-        savePointsToFirestore(username, points)
-    }
-
-    private fun savePointsToFirestore(username: String, points: Int) {
-        val data = hashMapOf(
-            "username" to username,
-            "game" to "Roznice",
-            "points" to points,
-            "timestamp" to System.currentTimeMillis()
-        )
-
-        firestore.collection("points")
-            .add(data)
-            .addOnSuccessListener {
-                Log.d("Roznice_MainActivity", "Points successfully written to Firestore for user $username")
-            }
-            .addOnFailureListener { e ->
-                Log.e("Roznice_MainActivity", "Error writing points to Firestore", e)
-            }
     }
 
     private fun restartGame() {

@@ -5,48 +5,39 @@
     android:id="@+id/clRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EAD5A2"
     tools:context=".Memory_MainActivity">
 
-    <LinearLayout
-        android:id="@+id/llGameInfo"
+    <!-- Tło główne -->
+    <ImageView
+        android:id="@+id/ivBackground"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#E3C57C"
-        android:orientation="horizontal"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg_waves"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            app:cardCornerRadius="8dp">
-
-            <TextView
-                android:id="@+id/textViewNumMoves"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="Moves: 0"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-        </androidx.cardview.widget.CardView>
-
-    </LinearLayout>
+    <!-- Półprzezroczysta warstwa -->
+    <View
+        android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#33FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvBoard"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:overScrollMode="never"
-        app:layout_constraintBottom_toTopOf="@+id/llGameInfo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

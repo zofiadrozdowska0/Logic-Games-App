@@ -120,13 +120,7 @@ class GraRzeczonaActivity : AppCompatActivity() {
         // Save points to SharedPreferences
         savePointsToSharedPreferences("roznice_points", points)
 
-        // Retrieve username from intent
-        val username = intent.getStringExtra("username")
 
-        // Save points to Firestore
-        if (username != null) {
-            savePointsToFirestore(username, points)
-        }
 
         AlertDialog.Builder(this).apply {
             setTitle("Gra zakończona!")
@@ -158,24 +152,6 @@ class GraRzeczonaActivity : AppCompatActivity() {
         val editor = sharedPreferences.edit()
         editor.putInt(key, points)
         editor.apply()
-    }
-
-    private fun savePointsToFirestore(username: String, points: Int) {
-        val data = hashMapOf(
-            "username" to username,
-            "game" to "Roznice",
-            "points" to points,
-            "timestamp" to System.currentTimeMillis()
-        )
-
-        firestore.collection("points")
-            .add(data)
-            .addOnSuccessListener { documentReference ->
-                // Success
-            }
-            .addOnFailureListener { e ->
-                // Handle the error
-            }
     }
 
     fun restartGame() {

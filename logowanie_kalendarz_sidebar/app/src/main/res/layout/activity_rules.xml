@@ -87,7 +87,7 @@
                 android:padding="16dp"
                 android:text="KOLOR SŁOWO\n\n
 Przez minutę gracz obserwuje wyświetlające się kolorowe napisy. Kiedy kolor zgadza się z napisem (np. napis red wyświetlany jest czerwonym kolorem) gracz musi nacisnąć ekran.\n\n
-+1 punkt za każde 2 poprawnie pominięte słowa\n
++1 punkt za każde 5 poprawnie pominięte słowa\n
 +1 punkt za każde poprawne wskazanie\n
 -1 punkt za każde niepoprawne wskazanie\n
 LABIRYNT\n\n

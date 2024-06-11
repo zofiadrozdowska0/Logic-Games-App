@@ -25,7 +25,6 @@ class Memory_MainActivity : ComponentActivity() {
         setContentView(R.layout.memory_activity_main)
 
         board = findViewById(R.id.rvBoard)
-        numMoves = findViewById(R.id.textViewNumMoves)
 
         memoryGame = MemoryGame(boardSize)
 
@@ -54,7 +53,6 @@ class Memory_MainActivity : ComponentActivity() {
 
             }
         }
-        numMoves.text = "Moves: ${memoryGame.getNumMoves()}"
         adapter.notifyDataSetChanged()
     }
     private fun savePointsToSharedPreferences(key: String, points: Int) {
