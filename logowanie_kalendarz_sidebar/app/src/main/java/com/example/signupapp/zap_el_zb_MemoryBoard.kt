@@ -36,6 +36,7 @@ class zap_el_zb_MemoryBoard(
     private var sequence: List<Int> = generateRandomSequence()
     private var secondHalfImages: Pair<List<Int>, Int> = generateRandomImagesForSecondHalf(sequence)
     private var points_el_zb =0
+    private var roundnumber=0
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val cardWidth = parent.width / 2 - 2 * MARGIN_SIZE
         val cardHeight = parent.height / 4 - 2 * MARGIN_SIZE
@@ -94,11 +95,12 @@ class zap_el_zb_MemoryBoard(
                     if (clickedImage == correctImage) {
                         showToast("Good Answer!")
                         points_el_zb++
-                        if (points_el_zb<10){
+                        roundnumber++
+                        if ((points_el_zb<10) and (roundnumber<15)){
                             tvNumMoves.text = "Points: ${points_el_zb}"
                         }
                         else{
-                            showToast("Maximum points!")
+                            showToast("Maximum points or round limit!")
                             tvNumMoves.text = "Points: ${points_el_zb}"
                             savePointsToSharedPreferences("zap_elementy_points", points_el_zb)
                             saveTotalPointsToDatabase()
@@ -110,12 +112,8 @@ class zap_el_zb_MemoryBoard(
 
                     } else {
                         showToast("Wrong Answer!")
-                        savePointsToSharedPreferences("zap_elementy_points", points_el_zb)
-                        points_el_zb = 0
+                        points_el_zb--
                         tvNumMoves.text = "Points: ${points_el_zb}"
-                        saveTotalPointsToDatabase()
-                        val intent = Intent(context, wybor_gry::class.java)
-                        context.startActivity(intent)
                     }
                     restartGame()
                 }
