@@ -27,7 +27,7 @@ class Maze_MainActivity : Activity() {
 
     // Timer fields
     private lateinit var timer: CountDownTimer
-    private var timeLeftInMillis: Long = 60000 // 1 minute in milliseconds
+    private var timeLeftInMillis: Long = 35000 // 35 s
     private var timerRunning = false
     private var score = 0
 
@@ -41,7 +41,7 @@ class Maze_MainActivity : Activity() {
         timerTextView = findViewById(R.id.timerTextView)
 
         // Retrieve the remaining time if passed
-        timeLeftInMillis = intent.getLongExtra("TIME_LEFT", 60000)
+        timeLeftInMillis = intent.getLongExtra("TIME_LEFT", 35000)
 
         level = intent.getIntExtra("LEVEL", 1)
         findViewById<TextView>(R.id.levelTextView).text = "Level: $level"
@@ -271,8 +271,8 @@ class Maze_MainActivity : Activity() {
     }
 
     private fun calculateScore(level: Int, collisions: Int): Int {
-        val rawScore = level / 2 - collisions
-        return if (rawScore < 0) 0 else rawScore
+        val rawScore = level - collisions
+        return 0.coerceAtLeast(rawScore).coerceAtMost(10) // Obliczanie punktów i ograniczenie do 10
     }
 
     private fun showCompletionDialog(score: Int) {

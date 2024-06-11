@@ -16,6 +16,8 @@ import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import android.content.Intent
 import android.content.Context
+import android.text.Editable
+import android.text.TextWatcher
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlin.math.abs
 
@@ -113,25 +115,42 @@ class Ufoludki_MainActivity : AppCompatActivity() {
         Handler(Looper.getMainLooper()).postDelayed({
             graRozpoczeta = false // Zakończ grę po 40 sekundach
             zapytajOUzyskanePunkty()
-        }, 40000) // 40 sekund w milisekundach
+        }, 25000) // 40 sekund w milisekundach
     }
 
     private fun zapytajOUzyskanePunkty() {
         val input = EditText(this)
         input.inputType = InputType.TYPE_CLASS_NUMBER
 
-        AlertDialog.Builder(this)
+        val dialog = AlertDialog.Builder(this)
             .setTitle("Koniec gry!")
             .setMessage("Ile piratów jest na statku?")
             .setView(input)
-            .setPositiveButton("OK") { _, _ ->
-                val odpowiedz = input.text.toString().toIntOrNull()
-                val points = sprawdzOdpowiedz(odpowiedz)
-                savePointsToSharedPreferences("ufoludki_points", points)
-            }
-            .show()
-    }
+            .setPositiveButton("OK", null)
+            .create()
 
+        dialog.show()
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
+
+        input.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val text = s.toString()
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = text.isNotEmpty() && text.toIntOrNull() != null
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            val odpowiedz = input.text.toString().toIntOrNull()
+            val points = sprawdzOdpowiedz(odpowiedz)
+            savePointsToSharedPreferences("ufoludki_points", points)
+            dialog.dismiss()
+        }
+    }
     private fun sprawdzOdpowiedz(odpowiedz: Int?): Int {
         val maxPoints = 10
         val difference = abs(wartoscLicznika - odpowiedz!!)
