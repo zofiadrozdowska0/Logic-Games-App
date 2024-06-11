@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -121,9 +122,8 @@ class zap_sekwencja_MemoryAdapter(
                         memoryGame.level = 2
                         currentSequenceIndex=0
                         savePointsToSharedPreferences("zap_sekwencje_points", points_zap_sek)
+                        showCompletionDialog(points_zap_sek)
                         points_zap_sek = 0
-                        val intent = Intent(context, zap_el_zb_MainActivity::class.java)
-                        context.startActivity(intent)
                         startGame()
 
                     }
@@ -134,18 +134,27 @@ class zap_sekwencja_MemoryAdapter(
                 sequence=null
                 currentSequenceIndex=0
                 savePointsToSharedPreferences("zap_sekwencje_points", points_zap_sek)
+                showCompletionDialog(points_zap_sek)
                 points_zap_sek = 0
                 tvNumPoints.text = "Points: ${points_zap_sek}"
                 memoryGame.level = 2
-                val intent = Intent(context, zap_el_zb_MainActivity::class.java)
-                context.startActivity(intent)
                 startGame()
             }
 
         }
     }
 
-
+    private fun showCompletionDialog(finalScore: Int) {
+        AlertDialog.Builder(context)
+            .setTitle("Game Completed")
+            .setMessage("Your score is $finalScore points.")
+            .setPositiveButton("Next Game") { _, _ ->
+                val intent = Intent(context, zap_el_zb_MainActivity::class.java)
+                intent.putExtra("FINAL_SCORE", finalScore)
+                context.startActivity(intent)
+            }
+            .show()
+    }
 
 
     fun startGame() {
@@ -191,7 +200,7 @@ class zap_sekwencja_MemoryAdapter(
                                     // Dodanie numeru indeksu
                                     nr_indeksu = (0 until sequence!!.size).random()
                                     nr_indeksu_wyswietl = nr_indeksu+1
-                                    tvText.text = "YOUR SEQUENCE"
+                                    tvText.text = "ANSWER"
                                 }
                             }, 100)
 
