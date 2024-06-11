@@ -67,7 +67,7 @@ class zap_el_zb_MemoryBoard(
             if (position < sequence.size) {
                 imageButton.setImageResource(sequence[position])
             } else {
-                imageButton.setImageResource(R.drawable.zap_el_zb_ic_launcher_background)
+                imageButton.setImageResource(R.drawable.memory_skrzynia)
             }
             tvNumMoves.text = "Points: ${points_el_zb}"
             tvNumPairs.text = "Your Sequence"
@@ -80,7 +80,7 @@ class zap_el_zb_MemoryBoard(
                     val secondHalfPosition = position - sequence.size
                     imageButton.setImageResource(secondHalfImages.first[secondHalfPosition])
                 } else {
-                    imageButton.setImageResource(R.drawable.zap_el_zb_ic_launcher_background)
+                    imageButton.setImageResource(R.drawable.memory_skrzynia)
                 }
             }, DELAY_BEFORE_HIDING_UPPER_CARDS)
             tvNumPairs.text = "Your Sequence"
