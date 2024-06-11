@@ -162,7 +162,7 @@ class Kolor_MainActivity : ComponentActivity() {
                         ) {
                             partscore++
 
-                            if (partscore == 3) {
+                            if (partscore == 5) {
                                 score++
                                 partscore = 0
                             }
@@ -196,7 +196,7 @@ class Kolor_MainActivity : ComponentActivity() {
                                 ) {
                                     partscore++
 
-                                    if (partscore == 3) {
+                                    if (partscore == 5) {
                                         score++
                                         partscore = 0
                                     }
@@ -230,7 +230,7 @@ class Kolor_MainActivity : ComponentActivity() {
                                         ) {
                                             partscore++
 
-                                            if (partscore == 3) {
+                                            if (partscore == 5) {
                                                 score++
                                                 partscore = 0
                                             }

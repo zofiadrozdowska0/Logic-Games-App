@@ -94,7 +94,7 @@ Na ekranie zostaje wyświetlony biały labirynt na czarnym tle. Gracz ma za zada
 Punkty przyznane są za przechodzenie poziomów tzn. liczba ukończonych poziomów dzielona przed 2, dodatkowo za każde dotknięcie ściany -1 punkt \n\n
 KOLOR SŁOWO\n\n
 Przez minutę gracz obserwuje wyświetlające się kolorowe napisy. Kiedy kolor zgadza się z napisem (np. napis red wyświetlany jest czerwonym kolorem) gracz musi nacisnąć ekran.\n\n
-+1 punkt za każde 2 poprawnie pominięte słowa\n
++1 punkt za każde 5 poprawnie pominięte słowa\n
 +1 punkt za każde poprawne wskazanie\n
 -1 punkt za każde niepoprawne wskazanie\n"
                 android:textColor="@android:color/black"

@@ -2,6 +2,7 @@ package com.example.signupapp
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -253,6 +254,8 @@ class Klocki_MainActivity : AppCompatActivity() {
             .setTitle("All games completed!")
             .setMessage("Congratulations! You have completed all games.")
             .setPositiveButton("OK") { _, _ ->
+                val intent = Intent(this, wybor_gry::class.java)
+                startActivity(intent)
                 finish()
             }
             .setCancelable(false)
@@ -273,7 +276,7 @@ class Klocki_MainActivity : AppCompatActivity() {
         val db = FirebaseFirestore.getInstance()
         val pointsData = hashMapOf(
             "username" to username,
-            "perceptiveness_points" to totalPoints,
+            "concentration_points" to totalPoints,
             "date" to com.google.firebase.Timestamp.now()
         )
 

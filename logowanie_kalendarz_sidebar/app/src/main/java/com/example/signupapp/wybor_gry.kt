@@ -207,7 +207,7 @@ class wybor_gry : AppCompatActivity() {
                             if (date == today) {
                                 reflexPoints += document.getLong("reflex_points")?.toInt() ?: 0
                                 memoryPoints += document.getLong("memory_points")?.toInt() ?: 0
-                                concentrationPoints += document.getLong("perceptiveness_points")?.toInt() ?: 0
+                                concentrationPoints += document.getLong("concentration_points")?.toInt() ?: 0
                                 logicPoints += document.getLong("logic_points")?.toInt() ?: 0
                             }
                         }
