@@ -276,7 +276,7 @@ class Klocki_MainActivity : AppCompatActivity() {
         val db = FirebaseFirestore.getInstance()
         val pointsData = hashMapOf(
             "username" to username,
-            "concentration_points" to totalPoints,
+            "perceptiveness_points" to totalPoints,
             "date" to com.google.firebase.Timestamp.now()
         )
 
