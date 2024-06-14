@@ -38,21 +38,21 @@ Organizacja i przydzielanie zadań członkom zespołu, gra Memory, poprawki wizu
 ### Joanna Ryś
 Gra w zliczanie piratów na statku, podłączanie gier do aplikacji głównej, opracowanie punktacji i sformatowanie okna informującego o niej, dodanie okna do wyboru gry oraz zaimplementowanie łączenia punktacji i możliwości grania raz dziennie.
 ### Aleksander Fuks
-Gry Saper i dopasowanie zakończenia sekwencji
+Gry Saper i dopasowanie zakończenia sekwencji, implementacja wykresów, przyłączanie gier do głównej aplikacji, naprawy pojawiających się błędów.
 ### Tomasz Sekrecki
-Gry Matematyczne Wordle i Kolor-słowo
+Gry Matematyczne Wordle i Kolor-słowo, poprawki implementacji zliczania punktów (przykładowo gdy przewidziano zbyt dużą liczbę tur lub poprostu były one nieoptymalne), naprawy pojawiających się błędów, pomoc przy gicie, łączenie gier w sekcjach.
 ### Łukasz Poździał
-Gra w zapamiętywanie elementów zbioru
+Gra w zapamiętywanie elementów zbioru, napisanie pierwszego szkieletu aplikacji wraz z SQL i podziałem na karty wchodzące w skład głównej aplikacji.
 ### Kacper Chwiedor
-Gra Whac-a-Pirate
+Gra Whac-a-Pirate, przenoszenie z SQL do Firebase, poprawy w kompatybilności niektórych gier.
 ### Maksymilian Burdziej
-Gra w układnie klocków w zadany kształt
+Gra w układnie klocków w zadany kształt, poprawki przy zmianie z SQL na Firebase, implementacja wszystkich elementów związanych ze znajomymi i aplikacji.
 ### Tobiasz Mańkowski
-Gra znajdź różnice
+Gra znajdź różnice, poprawki wizualne, tworzenie podstaw strony głównej i dodanie funkcjonalnego panelu bocznego.
 ### Łukasz Marcinkowski
-Gra w zapamiętywanie sekwencji
+Gra w zapamiętywanie sekwencji, włączenie zapisu punktacji do bazy danych (2 kategorie gier) i zarządzanie bazą danych. 
 ### Jakub Gawędzki
-Gra w labirynt
+Gra w labirynt, włączenie zapisu punktacji do bazy danych (2 kategorie gier), implementacja punktacji w grach.
 
 ### Instalacja i korzystanie z aplikacji
 1. Pobierz plik APK ze strony projektu na GitLabie.
